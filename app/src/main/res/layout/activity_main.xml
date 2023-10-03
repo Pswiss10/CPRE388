@@ -7,157 +7,264 @@
     android:background="@color/grass"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/hole1"
-        android:layout_width="wrap_content"
-        android:backgroundTint="@color/hole"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="43dp"
-        tools:layout_editor_absoluteY="105dp" />
 
-    <Button
-        android:id="@+id/hole2"
-        android:backgroundTint="@color/hole"
+    <TextView
+        android:id="@+id/highscore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="165dp"
-        tools:layout_editor_absoluteY="105dp" />
+        android:text="High Score: "
+        android:textSize="30dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="16dp" />
 
-    <Button
-        android:id="@+id/hole3"
-        android:backgroundTint="@color/hole"
+    <TextView
+        android:id="@+id/score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="285dp"
-        tools:layout_editor_absoluteY="106dp" />
-
-    <Button
-        android:id="@+id/hole4"
-        android:backgroundTint="@color/hole"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="38dp"
-        tools:layout_editor_absoluteY="206dp" />
-
-    <Button
-        android:id="@+id/hole5"
-        android:backgroundTint="@color/hole"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="162dp"
-        tools:layout_editor_absoluteY="211dp" />
-
-    <Button
-        android:id="@+id/hole6"
-        android:backgroundTint="@color/hole"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="289dp"
-        tools:layout_editor_absoluteY="207dp" />
-
-    <Button
-        android:id="@+id/hole7"
-        android:backgroundTint="@color/hole"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="32dp"
-        tools:layout_editor_absoluteY="306dp" />
-
-    <Button
-        android:id="@+id/hole8"
-        android:backgroundTint="@color/hole"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="157dp"
-        tools:layout_editor_absoluteY="305dp" />
-
-    <Button
-        android:id="@+id/hole9"
-        android:backgroundTint="@color/hole"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="283dp"
-        tools:layout_editor_absoluteY="302dp" />
-
-    <Button
-        android:id="@+id/hole10"
-        android:backgroundTint="@color/hole"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="29dp"
-        tools:layout_editor_absoluteY="400dp" />
-
-    <Button
-        android:id="@+id/hole11"
-        android:backgroundTint="@color/hole"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="160dp"
-        tools:layout_editor_absoluteY="401dp" />
-
-    <Button
-        android:id="@+id/hole12"
-        android:backgroundTint="@color/hole"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="283dp"
-        tools:layout_editor_absoluteY="403dp" />
-
-    <Button
-        android:id="@+id/hole13"
-        android:backgroundTint="@color/hole"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="28dp"
-        tools:layout_editor_absoluteY="492dp" />
-
-    <Button
-        android:id="@+id/hole14"
-        android:backgroundTint="@color/hole"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="159dp"
-        tools:layout_editor_absoluteY="493dp" />
-
-    <Button
-        android:id="@+id/hole15"
-        android:backgroundTint="@color/hole"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="288dp"
-        tools:layout_editor_absoluteY="496dp" />
-
-    <Button
-        android:id="@+id/hole16"
-        android:backgroundTint="@color/hole"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="595dp" />
-
-    <Button
-        android:id="@+id/hole17"
-        android:backgroundTint="@color/hole"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="152dp"
-        tools:layout_editor_absoluteY="594dp" />
-
-    <Button
-        android:id="@+id/hole18"
-        android:backgroundTint="@color/hole"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="287dp"
-        tools:layout_editor_absoluteY="591dp" />
+        android:text="Score: "
+        android:textSize="30dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="66dp" />
 
     <ImageView
-        android:id="@+id/imageView"
-        android:background="@android:color/transparent"
-        android:layout_width="126dp"
-        android:layout_height="173dp"
-        app:srcCompat="@drawable/mole2"
-        tools:layout_editor_absoluteX="26dp"
+        android:id="@+id/hole1"
+        android:layout_width="180dp"
+        android:layout_height="111dp"
+        android:background="#00000000"
+        app:srcCompat="@drawable/hole2"
+        tools:layout_editor_absoluteX="115dp"
+        tools:layout_editor_absoluteY="156dp" />
+
+    <ImageView
+        android:id="@+id/hole2"
+        android:layout_width="180dp"
+        android:layout_height="111dp"
+        android:background="#00000000"
+        app:srcCompat="@drawable/hole2"
+        tools:layout_editor_absoluteX="251dp"
+        tools:layout_editor_absoluteY="156dp" />
+
+    <ImageView
+        android:id="@+id/hole3"
+        android:layout_width="180dp"
+        android:layout_height="111dp"
+        android:background="#00000000"
+        app:srcCompat="@drawable/hole2"
+        tools:layout_editor_absoluteX="-18dp"
+        tools:layout_editor_absoluteY="156dp" />
+
+    <ImageView
+        android:id="@+id/hole4"
+        android:layout_width="180dp"
+        android:layout_height="111dp"
+        android:background="#00000000"
+        app:srcCompat="@drawable/hole2"
+        tools:layout_editor_absoluteX="-18dp"
+        tools:layout_editor_absoluteY="267dp" />
+
+    <ImageView
+        android:id="@+id/hole6"
+        android:layout_width="180dp"
+        android:layout_height="111dp"
+        android:background="#00000000"
+        app:srcCompat="@drawable/hole2"
+        tools:layout_editor_absoluteX="251dp"
+        tools:layout_editor_absoluteY="267dp" />
+
+    <ImageView
+        android:id="@+id/hole5"
+        android:layout_width="180dp"
+        android:layout_height="111dp"
+        android:background="#00000000"
+        app:srcCompat="@drawable/hole2"
+        tools:layout_editor_absoluteX="115dp"
+        tools:layout_editor_absoluteY="267dp" />
+
+    <ImageView
+        android:id="@+id/hole7"
+        android:layout_width="180dp"
+        android:layout_height="111dp"
+        android:background="#00000000"
+        app:srcCompat="@drawable/hole2"
+        tools:layout_editor_absoluteX="-18dp"
+        tools:layout_editor_absoluteY="378dp" />
+
+    <ImageView
+        android:id="@+id/hole8"
+        android:layout_width="180dp"
+        android:layout_height="111dp"
+        android:background="#00000000"
+        app:srcCompat="@drawable/hole2"
+        tools:layout_editor_absoluteX="115dp"
+        tools:layout_editor_absoluteY="378dp" />
+
+    <ImageView
+        android:id="@+id/hole9"
+        android:layout_width="180dp"
+        android:layout_height="111dp"
+        android:background="#00000000"
+        app:srcCompat="@drawable/hole2"
+        tools:layout_editor_absoluteX="251dp"
+        tools:layout_editor_absoluteY="378dp" />
+
+    <ImageView
+        android:id="@+id/hole10"
+        android:layout_width="180dp"
+        android:layout_height="111dp"
+        android:background="#00000000"
+        app:srcCompat="@drawable/hole2"
+        tools:layout_editor_absoluteX="-18dp"
+        tools:layout_editor_absoluteY="489dp" />
+
+    <ImageView
+        android:id="@+id/hole11"
+        android:layout_width="180dp"
+        android:layout_height="111dp"
+        android:background="#00000000"
+        app:srcCompat="@drawable/hole2"
+        tools:layout_editor_absoluteX="115dp"
+        tools:layout_editor_absoluteY="489dp" />
+
+    <ImageView
+        android:id="@+id/hole12"
+        android:layout_width="180dp"
+        android:layout_height="111dp"
+        android:background="#00000000"
+        app:srcCompat="@drawable/hole2"
+        tools:layout_editor_absoluteX="251dp"
+        tools:layout_editor_absoluteY="489dp" />
+
+    <ImageView
+        android:id="@+id/mole1"
+        android:layout_width="97dp"
+        android:visibility="invisible"
+        android:layout_height="81dp"
+        app:srcCompat="@drawable/mole"
+        tools:layout_editor_absoluteX="25dp"
+        tools:layout_editor_absoluteY="142dp" />
+
+    <ImageView
+        android:id="@+id/mole2"
+        android:layout_width="97dp"
+        android:layout_height="81dp"
+        app:srcCompat="@drawable/mole"
+        android:visibility="invisible"
+        tools:layout_editor_absoluteX="154dp"
+        tools:layout_editor_absoluteY="142dp" />
+
+    <ImageView
+        android:id="@+id/mole3"
+        android:layout_width="97dp"
+        android:layout_height="81dp"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/mole"
+        tools:layout_editor_absoluteX="295dp"
+        tools:layout_editor_absoluteY="142dp" />
+
+    <ImageView
+        android:id="@+id/mole4"
+        android:layout_width="97dp"
+        android:layout_height="81dp"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/mole"
+        tools:layout_editor_absoluteX="25dp"
+        tools:layout_editor_absoluteY="250dp" />
+
+    <ImageView
+        android:id="@+id/mole5"
+        android:layout_width="97dp"
+        android:layout_height="81dp"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/mole"
+        tools:layout_editor_absoluteX="154dp"
+        tools:layout_editor_absoluteY="250dp" />
+
+    <ImageView
+        android:id="@+id/mole6"
+        android:layout_width="97dp"
+        android:layout_height="81dp"
+        app:srcCompat="@drawable/mole"
+        android:visibility="invisible"
+        tools:layout_editor_absoluteX="295dp"
+        tools:layout_editor_absoluteY="250dp" />
+
+    <ImageView
+        android:id="@+id/mole7"
+        android:layout_width="97dp"
+        android:layout_height="81dp"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/mole"
+        tools:layout_editor_absoluteX="25dp"
+        tools:layout_editor_absoluteY="363dp" />
+
+    <ImageView
+        android:id="@+id/mole8"
+        android:layout_width="97dp"
+        android:layout_height="81dp"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/mole"
+        tools:layout_editor_absoluteX="295dp"
+        tools:layout_editor_absoluteY="363dp" />
+
+    <ImageView
+        android:id="@+id/mole9"
+        android:layout_width="97dp"
+        android:layout_height="81dp"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/mole"
+        tools:layout_editor_absoluteX="154dp"
+        tools:layout_editor_absoluteY="363dp" />
+
+    <ImageView
+        android:id="@+id/mole10"
+        android:layout_width="97dp"
+        android:layout_height="81dp"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/mole"
+        tools:layout_editor_absoluteX="25dp"
+        tools:layout_editor_absoluteY="472dp" />
+
+    <ImageView
+        android:id="@+id/mole11"
+        android:layout_width="97dp"
+        android:layout_height="81dp"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/mole"
+        tools:layout_editor_absoluteX="157dp"
+        tools:layout_editor_absoluteY="472dp" />
+
+    <ImageView
+        android:id="@+id/mole12"
+        android:layout_width="97dp"
+        android:layout_height="81dp"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/mole"
+        tools:layout_editor_absoluteX="295dp"
+        tools:layout_editor_absoluteY="472dp" />
+
+    <ImageView
+        android:id="@+id/life3"
+        android:layout_width="32dp"
+        android:layout_height="30dp"
+        app:srcCompat="@drawable/mole"
+        tools:layout_editor_absoluteX="363dp"
         tools:layout_editor_absoluteY="16dp" />
+
+    <ImageView
+        android:id="@+id/life2"
+        android:layout_width="32dp"
+        android:layout_height="30dp"
+        app:srcCompat="@drawable/mole"
+        tools:layout_editor_absoluteX="321dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <ImageView
+        android:id="@+id/life1"
+        android:layout_width="32dp"
+        android:layout_height="30dp"
+        app:srcCompat="@drawable/mole"
+        tools:layout_editor_absoluteX="279dp"
+        tools:layout_editor_absoluteY="16dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
