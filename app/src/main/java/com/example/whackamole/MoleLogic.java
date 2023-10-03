@@ -35,10 +35,10 @@ public class MoleLogic extends ViewModel {
         int nextHole;
         final int numHoles = 12;
         Random holePicker = new Random();
-        nextHole = holePicker.nextInt() % numHoles + 1;
+        nextHole = (holePicker.nextInt(12) % numHoles) + 1;
 
         while (nextHole == previousHole){
-            nextHole = holePicker.nextInt() % numHoles + 1;
+            nextHole = (holePicker.nextInt(12) % numHoles) + 1;
         }
 
         nextStart = System.currentTimeMillis();
@@ -57,7 +57,7 @@ public class MoleLogic extends ViewModel {
     {
         final int numHoles = 12;
         Random holePicker = new Random();
-        currentHole = holePicker.nextInt() % numHoles + 1;
+        currentHole = (holePicker.nextInt(12) % numHoles) + 1;
         return currentHole;
     }
 

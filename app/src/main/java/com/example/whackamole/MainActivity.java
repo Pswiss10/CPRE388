@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
         mole8.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 game.checkClick(8); mole8.setVisibility(View.INVISIBLE);
-                score.setText("Score:" + game.score);
+                score.setText("Score: " + game.score);
                 game.nextRandomMole();
                 changeTransparency(game.currentHole);
             }
@@ -188,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
         else if (hole == 9) { mole9.setVisibility(View.VISIBLE); }
         else if (hole == 10) { mole10.setVisibility(View.VISIBLE); }
         else if (hole == 11) { mole11.setVisibility(View.VISIBLE); }
-        else  { mole12.setVisibility(View.VISIBLE); }
+        else if (hole == 12) { mole12.setVisibility(View.VISIBLE); }
     }
 
 }
