@@ -25,7 +25,7 @@ public class MoleLogic extends ViewModel {
     public MoleLogic() {
         previousHole = -1;
         score = 0;
-        maxTime = 10L;
+        maxTime = 10000L;
         lives = 3;
         currentHole = -1;
 
@@ -43,6 +43,15 @@ public class MoleLogic extends ViewModel {
 
         nextStart = System.currentTimeMillis();
         return nextHole;
+    }
+
+    public void checkClick(int holeNum){
+        if (holeNum == currentHole) {
+            score += 10;
+        } else {
+            loseLife();
+        }
+        currentHole = nextRandomMole();
     }
 
     public int setCurrentMole()
