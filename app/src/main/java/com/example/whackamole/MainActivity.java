@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
                 boolean outOfTime = game.updateTime();
                 if (outOfTime) {
                     game.loseLife();
+
                 }
             }
         };

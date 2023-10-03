@@ -32,7 +32,7 @@ public class MoleLogic extends ViewModel {
     }
 
     public int nextRandomMole() {
-        int nextHole = -1;
+        int nextHole;
         final int numHoles = 12;
         Random holePicker = new Random();
         nextHole = holePicker.nextInt() % numHoles + 1;
@@ -67,6 +67,7 @@ public class MoleLogic extends ViewModel {
         if (score > highScore) {
             highScore = score;
         }
+        score = 0;
     }
 
     public boolean updateTime() {
@@ -84,6 +85,7 @@ public class MoleLogic extends ViewModel {
 
     public void checkGameOver() {
         if (lives <= 0) {
+            updateHighScore();
             //TODO
         }
     }
