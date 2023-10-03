@@ -12,261 +12,312 @@
         android:id="@+id/highscore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
         android:text="High Score: "
         android:textSize="30dp"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="16dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="12dp"
         android:text="Score: "
         android:textSize="30dp"
-        app:layout_constraintTop_toBottomOf="@+id/highscore"
-        tools:layout_editor_absoluteX="16dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/highscore" />
 
     <ImageView
         android:id="@+id/hole1"
         android:layout_width="180dp"
         android:layout_height="111dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="250dp"
         android:background="#00000000"
-        app:srcCompat="@drawable/hole2"
-        tools:layout_editor_absoluteX="115dp"
-        tools:layout_editor_absoluteY="156dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/score"
+        app:srcCompat="@drawable/hole2" />
 
     <ImageView
         android:id="@+id/hole2"
         android:layout_width="180dp"
         android:layout_height="111dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="40dp"
         android:background="#00000000"
-        app:srcCompat="@drawable/hole2"
-        tools:layout_editor_absoluteX="251dp"
-        tools:layout_editor_absoluteY="156dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/score"
+        app:srcCompat="@drawable/hole2" />
 
     <ImageView
         android:id="@+id/hole3"
         android:layout_width="180dp"
         android:layout_height="111dp"
+        android:layout_marginStart="250dp"
+        android:layout_marginTop="40dp"
         android:background="#00000000"
-        app:srcCompat="@drawable/hole2"
-        tools:layout_editor_absoluteX="-18dp"
-        tools:layout_editor_absoluteY="156dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/score"
+        app:srcCompat="@drawable/hole2" />
 
     <ImageView
         android:id="@+id/hole4"
         android:layout_width="180dp"
         android:layout_height="111dp"
+        android:layout_marginEnd="250dp"
         android:background="#00000000"
-        app:srcCompat="@drawable/hole2"
-        tools:layout_editor_absoluteX="-18dp"
-        tools:layout_editor_absoluteY="267dp" />
-
-    <ImageView
-        android:id="@+id/hole6"
-        android:layout_width="180dp"
-        android:layout_height="111dp"
-        android:background="#00000000"
-        app:srcCompat="@drawable/hole2"
-        tools:layout_editor_absoluteX="251dp"
-        tools:layout_editor_absoluteY="267dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hole1"
+        app:srcCompat="@drawable/hole2" />
 
     <ImageView
         android:id="@+id/hole5"
         android:layout_width="180dp"
         android:layout_height="111dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="1dp"
         android:background="#00000000"
-        app:srcCompat="@drawable/hole2"
-        tools:layout_editor_absoluteX="115dp"
-        tools:layout_editor_absoluteY="267dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hole2"
+        app:srcCompat="@drawable/hole2" />
+
+    <ImageView
+        android:id="@+id/hole6"
+        android:layout_width="180dp"
+        android:layout_height="111dp"
+        android:layout_marginStart="250dp"
+        android:background="#00000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hole2"
+        app:srcCompat="@drawable/hole2" />
 
     <ImageView
         android:id="@+id/hole7"
         android:layout_width="180dp"
         android:layout_height="111dp"
+        android:layout_marginEnd="250dp"
         android:background="#00000000"
-        app:srcCompat="@drawable/hole2"
-        tools:layout_editor_absoluteX="-18dp"
-        tools:layout_editor_absoluteY="378dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hole4"
+        app:srcCompat="@drawable/hole2" />
 
     <ImageView
         android:id="@+id/hole8"
         android:layout_width="180dp"
         android:layout_height="111dp"
+        android:layout_marginStart="120dp"
         android:background="#00000000"
-        app:srcCompat="@drawable/hole2"
-        tools:layout_editor_absoluteX="115dp"
-        tools:layout_editor_absoluteY="378dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hole5"
+        app:srcCompat="@drawable/hole2" />
 
     <ImageView
         android:id="@+id/hole9"
         android:layout_width="180dp"
         android:layout_height="111dp"
+        android:layout_marginStart="250dp"
+        android:layout_marginTop="1dp"
         android:background="#00000000"
-        app:srcCompat="@drawable/hole2"
-        tools:layout_editor_absoluteX="251dp"
-        tools:layout_editor_absoluteY="378dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hole6"
+        app:srcCompat="@drawable/hole2" />
 
     <ImageView
         android:id="@+id/hole10"
         android:layout_width="180dp"
         android:layout_height="111dp"
+        android:layout_marginEnd="250dp"
         android:background="#00000000"
-        app:srcCompat="@drawable/hole2"
-        tools:layout_editor_absoluteX="-18dp"
-        tools:layout_editor_absoluteY="489dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hole7"
+        app:srcCompat="@drawable/hole2" />
 
     <ImageView
         android:id="@+id/hole11"
         android:layout_width="180dp"
         android:layout_height="111dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="1dp"
         android:background="#00000000"
-        app:srcCompat="@drawable/hole2"
-        tools:layout_editor_absoluteX="115dp"
-        tools:layout_editor_absoluteY="489dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hole7"
+        app:srcCompat="@drawable/hole2" />
 
     <ImageView
         android:id="@+id/hole12"
         android:layout_width="180dp"
         android:layout_height="111dp"
+        android:layout_marginStart="250dp"
+        android:layout_marginTop="1dp"
         android:background="#00000000"
-        app:srcCompat="@drawable/hole2"
-        tools:layout_editor_absoluteX="251dp"
-        tools:layout_editor_absoluteY="489dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hole9"
+        app:srcCompat="@drawable/hole2" />
 
     <ImageView
         android:id="@+id/mole1"
         android:layout_width="97dp"
-        android:visibility="invisible"
         android:layout_height="81dp"
-        app:srcCompat="@drawable/mole"
-        tools:layout_editor_absoluteX="25dp"
-        tools:layout_editor_absoluteY="142dp" />
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/score"
+        app:srcCompat="@drawable/mole" />
 
     <ImageView
         android:id="@+id/mole2"
         android:layout_width="97dp"
         android:layout_height="81dp"
-        app:srcCompat="@drawable/mole"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="24dp"
         android:visibility="invisible"
-        tools:layout_editor_absoluteX="154dp"
-        tools:layout_editor_absoluteY="142dp" />
+        app:layout_constraintStart_toEndOf="@+id/mole1"
+        app:layout_constraintTop_toBottomOf="@+id/score"
+        app:srcCompat="@drawable/mole" />
 
     <ImageView
         android:id="@+id/mole3"
         android:layout_width="97dp"
         android:layout_height="81dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="24dp"
         android:visibility="invisible"
-        app:srcCompat="@drawable/mole"
-        tools:layout_editor_absoluteX="295dp"
-        tools:layout_editor_absoluteY="142dp" />
+        app:layout_constraintStart_toEndOf="@+id/mole2"
+        app:layout_constraintTop_toBottomOf="@+id/score"
+        app:srcCompat="@drawable/mole" />
 
     <ImageView
         android:id="@+id/mole4"
         android:layout_width="97dp"
         android:layout_height="81dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="30dp"
         android:visibility="invisible"
-        app:srcCompat="@drawable/mole"
-        tools:layout_editor_absoluteX="25dp"
-        tools:layout_editor_absoluteY="250dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mole1"
+        app:srcCompat="@drawable/mole" />
 
     <ImageView
         android:id="@+id/mole5"
         android:layout_width="97dp"
         android:layout_height="81dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="30dp"
         android:visibility="invisible"
-        app:srcCompat="@drawable/mole"
-        tools:layout_editor_absoluteX="154dp"
-        tools:layout_editor_absoluteY="250dp" />
+        app:layout_constraintStart_toEndOf="@+id/mole4"
+        app:layout_constraintTop_toBottomOf="@+id/mole2"
+        app:srcCompat="@drawable/mole" />
 
     <ImageView
         android:id="@+id/mole6"
         android:layout_width="97dp"
         android:layout_height="81dp"
-        app:srcCompat="@drawable/mole"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="30dp"
         android:visibility="invisible"
-        tools:layout_editor_absoluteX="295dp"
-        tools:layout_editor_absoluteY="250dp" />
+        app:layout_constraintStart_toEndOf="@+id/mole5"
+        app:layout_constraintTop_toBottomOf="@+id/mole3"
+        app:srcCompat="@drawable/mole" />
 
     <ImageView
         android:id="@+id/mole7"
         android:layout_width="97dp"
         android:layout_height="81dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="30dp"
         android:visibility="invisible"
-        app:srcCompat="@drawable/mole"
-        tools:layout_editor_absoluteX="25dp"
-        tools:layout_editor_absoluteY="363dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mole4"
+        app:srcCompat="@drawable/mole" />
 
     <ImageView
         android:id="@+id/mole8"
         android:layout_width="97dp"
         android:layout_height="81dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="30dp"
         android:visibility="invisible"
-        app:srcCompat="@drawable/mole"
-        tools:layout_editor_absoluteX="295dp"
-        tools:layout_editor_absoluteY="363dp" />
+        app:layout_constraintStart_toEndOf="@+id/mole7"
+        app:layout_constraintTop_toBottomOf="@+id/mole5"
+        app:srcCompat="@drawable/mole" />
 
     <ImageView
         android:id="@+id/mole9"
         android:layout_width="97dp"
         android:layout_height="81dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="30dp"
         android:visibility="invisible"
-        app:srcCompat="@drawable/mole"
-        tools:layout_editor_absoluteX="154dp"
-        tools:layout_editor_absoluteY="363dp" />
+        app:layout_constraintStart_toEndOf="@+id/mole8"
+        app:layout_constraintTop_toBottomOf="@+id/mole6"
+        app:srcCompat="@drawable/mole" />
 
     <ImageView
         android:id="@+id/mole10"
         android:layout_width="97dp"
         android:layout_height="81dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="30dp"
         android:visibility="invisible"
-        app:srcCompat="@drawable/mole"
-        tools:layout_editor_absoluteX="25dp"
-        tools:layout_editor_absoluteY="472dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mole7"
+        app:srcCompat="@drawable/mole" />
 
     <ImageView
         android:id="@+id/mole11"
         android:layout_width="97dp"
         android:layout_height="81dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="30dp"
         android:visibility="invisible"
-        app:srcCompat="@drawable/mole"
-        tools:layout_editor_absoluteX="157dp"
-        tools:layout_editor_absoluteY="472dp" />
+        app:layout_constraintStart_toEndOf="@+id/mole10"
+        app:layout_constraintTop_toBottomOf="@+id/mole8"
+        app:srcCompat="@drawable/mole" />
 
     <ImageView
         android:id="@+id/mole12"
         android:layout_width="97dp"
         android:layout_height="81dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="30dp"
         android:visibility="invisible"
-        app:srcCompat="@drawable/mole"
-        tools:layout_editor_absoluteX="295dp"
-        tools:layout_editor_absoluteY="472dp" />
-
-    <ImageView
-        android:id="@+id/life3"
-        android:layout_width="32dp"
-        android:layout_height="30dp"
-        app:srcCompat="@drawable/mole"
-        tools:layout_editor_absoluteX="363dp"
-        tools:layout_editor_absoluteY="16dp" />
+        app:layout_constraintStart_toEndOf="@+id/mole11"
+        app:layout_constraintTop_toBottomOf="@+id/mole9"
+        app:srcCompat="@drawable/mole" />
 
     <ImageView
         android:id="@+id/life2"
         android:layout_width="32dp"
         android:layout_height="30dp"
-        app:srcCompat="@drawable/mole"
-        tools:layout_editor_absoluteX="321dp"
-        tools:layout_editor_absoluteY="16dp" />
+        android:layout_marginTop="84dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toStartOf="@+id/life3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/mole" />
+
+    <ImageView
+        android:id="@+id/life3"
+        android:layout_width="32dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="84dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/mole" />
 
     <ImageView
         android:id="@+id/life1"
         android:layout_width="32dp"
         android:layout_height="30dp"
-        app:srcCompat="@drawable/mole"
-        tools:layout_editor_absoluteX="279dp"
-        tools:layout_editor_absoluteY="16dp" />
+        android:layout_marginTop="84dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toStartOf="@+id/life2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/mole" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
