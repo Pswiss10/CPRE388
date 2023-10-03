@@ -31,8 +31,8 @@ public class MoleLogic extends ViewModel {
 
     }
 
-    public int nextRandomMole() {
-        int nextHole = -1;
+    public void nextRandomMole() {
+        int nextHole;
         final int numHoles = 12;
         Random holePicker = new Random();
         nextHole = holePicker.nextInt() % numHoles + 1;
@@ -42,7 +42,7 @@ public class MoleLogic extends ViewModel {
         }
 
         nextStart = System.currentTimeMillis();
-        return nextHole;
+        currentHole = nextHole;
     }
 
     public void checkClick(int holeNum){
@@ -51,7 +51,7 @@ public class MoleLogic extends ViewModel {
         } else {
             loseLife();
         }
-        currentHole = nextRandomMole();
+        previousHole = currentHole;
     }
 
     public int setCurrentMole()
@@ -67,6 +67,7 @@ public class MoleLogic extends ViewModel {
         if (score > highScore) {
             highScore = score;
         }
+        score = 0;
     }
 
     public boolean updateTime() {
@@ -84,6 +85,7 @@ public class MoleLogic extends ViewModel {
 
     public void checkGameOver() {
         if (lives <= 0) {
+            updateHighScore();
             //TODO
         }
     }

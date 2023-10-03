@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         mole1 = findViewById(R.id.mole1);
         mole2 = findViewById(R.id.mole2);
         mole3 = findViewById(R.id.mole3);
@@ -72,85 +73,112 @@ public class MainActivity extends AppCompatActivity {
         };
 
         changeTransparency();
+
+        changeTransparency(game.setCurrentMole());
         mole1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 game.checkClick(1); mole1.setVisibility(View.INVISIBLE);
                 score.setText("Score:" + game.score);
 
+                game.checkClick(1);
+                mole1.setVisibility(View.INVISIBLE);
+                game.nextRandomMole();
+                changeTransparency(game.currentHole);
             }
         });
         mole2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 game.checkClick(2); mole2.setVisibility(View.INVISIBLE);
                 score.setText("Score:" + game.score);
+                game.nextRandomMole();
+                changeTransparency(game.currentHole);
             }
         });
         mole3.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 game.checkClick(3); mole3.setVisibility(View.INVISIBLE);
                 score.setText("Score:" + game.score);
+                game.nextRandomMole();
+                changeTransparency(game.currentHole);
             }
         });
         mole4.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 game.checkClick(4); mole4.setVisibility(View.INVISIBLE);
                 score.setText("Score:" + game.score);
+                game.nextRandomMole();
+                changeTransparency(game.currentHole);
             }
         });
         mole5.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 game.checkClick(5); mole5.setVisibility(View.INVISIBLE);
                 score.setText("Score:" + game.score);
+                game.nextRandomMole();
+                changeTransparency(game.currentHole);
             }
         });
         mole6.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 game.checkClick(6); mole6.setVisibility(View.INVISIBLE);
                 score.setText("Score:" + game.score);
+                game.nextRandomMole();
+                changeTransparency(game.currentHole);
             }
         });
         mole7.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 game.checkClick(7); mole7.setVisibility(View.INVISIBLE);
                 score.setText("Score:" + game.score);
+                game.nextRandomMole();
+                changeTransparency(game.currentHole);
             }
         });
         mole8.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 game.checkClick(8); mole8.setVisibility(View.INVISIBLE);
                 score.setText("Score:" + game.score);
+                game.nextRandomMole();
+                changeTransparency(game.currentHole);
             }
         });
         mole9.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 game.checkClick(9); mole9.setVisibility(View.INVISIBLE);
                 score.setText("Score:" + game.score);
+                game.nextRandomMole();
+                changeTransparency(game.currentHole);
             }
         });
         mole10.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 game.checkClick(10); mole10.setVisibility(View.INVISIBLE);
                 score.setText("Score:" + game.score);
+                game.nextRandomMole();
+                changeTransparency(game.currentHole);
             }
         });
         mole11.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 game.checkClick(11); mole11.setVisibility(View.INVISIBLE);
                 score.setText("Score:" + game.score);
+                game.nextRandomMole();
+                changeTransparency(game.currentHole);
             }
         });
         mole12.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 game.checkClick(12); mole12.setVisibility(View.INVISIBLE);
                 score.setText("Score:" + game.score);
+                game.nextRandomMole();
+                changeTransparency(game.currentHole);
 
             }
         });
     }
 
-    public void changeTransparency()
+    public void changeTransparency(int hole)
     {
-        int hole = game.setCurrentMole();
         if (hole == 1) { mole1.setVisibility(View.VISIBLE); }
         else if (hole == 2) { mole2.setVisibility(View.VISIBLE); }
         else if (hole == 3) { mole3.setVisibility(View.VISIBLE); }
