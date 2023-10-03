@@ -65,7 +65,67 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
+        mole1.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                game.checkClick(1); mole1.setVisibility(View.INVISIBLE);
+            }
+        });
+        mole2.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                game.checkClick(2); mole2.setVisibility(View.INVISIBLE);
+            }
+        });
+        mole3.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                game.checkClick(3); mole3.setVisibility(View.INVISIBLE);
+            }
+        });
+        mole4.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                game.checkClick(4); mole4.setVisibility(View.INVISIBLE);
+            }
+        });
+        mole5.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                game.checkClick(5); mole5.setVisibility(View.INVISIBLE);
+            }
+        });
+        mole6.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                game.checkClick(6); mole6.setVisibility(View.INVISIBLE);
+            }
+        });
+        mole7.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                game.checkClick(7); mole7.setVisibility(View.INVISIBLE);
+            }
+        });
+        mole8.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                game.checkClick(8); mole8.setVisibility(View.INVISIBLE);
+            }
+        });
+        mole9.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                game.checkClick(9); mole9.setVisibility(View.INVISIBLE);
+            }
+        });
+        mole10.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                game.checkClick(10); mole10.setVisibility(View.INVISIBLE);
+            }
+        });
+        mole11.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                game.checkClick(11); mole11.setVisibility(View.INVISIBLE);
+            }
+        });
+        mole12.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                game.checkClick(12); mole12.setVisibility(View.INVISIBLE);
 
+            }
+        });
     }
 
     public void changeTransparency()
