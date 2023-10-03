@@ -48,10 +48,9 @@ public class MoleLogic extends ViewModel {
     public void checkClick(int holeNum){
         if (holeNum == currentHole) {
             score += 10;
-        } else {
-            loseLife();
+            previousHole = currentHole;
         }
-        previousHole = currentHole;
+
     }
 
     public int setCurrentMole()
