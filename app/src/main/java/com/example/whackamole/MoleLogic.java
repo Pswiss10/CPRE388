@@ -1,5 +1,7 @@
 package com.example.whackamole;
 
+import android.widget.ImageView;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -12,6 +14,8 @@ public class MoleLogic extends ViewModel {
     public static int highScore;
     public int lives;
     public long nextStart;
+    public int currentHole;
+
 
 
     public MutableLiveData<Long> totalTime = new MutableLiveData<>();
@@ -23,21 +27,32 @@ public class MoleLogic extends ViewModel {
         score = 0;
         maxTime = 10L;
         lives = 3;
+        currentHole = -1;
+
     }
 
     public int nextRandomMole() {
         int nextHole = -1;
         final int numHoles = 12;
         Random holePicker = new Random();
-        nextHole = holePicker.nextInt() % numHoles;
+        nextHole = holePicker.nextInt() % numHoles + 1;
 
         while (nextHole == previousHole){
-            nextHole = holePicker.nextInt();
+            nextHole = holePicker.nextInt() % numHoles + 1;
         }
 
         nextStart = System.currentTimeMillis();
         return nextHole;
     }
+
+    public int setCurrentMole()
+    {
+        final int numHoles = 12;
+        Random holePicker = new Random();
+        currentHole = holePicker.nextInt() % numHoles + 1;
+        return currentHole;
+    }
+
 
     public void updateHighScore(){
         if (score > highScore) {
