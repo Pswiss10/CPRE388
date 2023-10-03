@@ -10,30 +10,46 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
+    ImageView mole1;
+    ImageView mole2;
+    ImageView mole3;
+    ImageView mole4;
+    ImageView mole5;
+    ImageView mole6;
+    ImageView mole7;
+    ImageView mole8;
+    ImageView mole9;
+    ImageView mole10;
+    ImageView mole11;
+    ImageView mole12;
+    ImageView life1;
+    ImageView life2;
+    ImageView life3;
 
     private MoleLogic game = new MoleLogic();
     private Observer<Long> timeObserver;
 
-    ImageView mole1 = findViewById(R.id.mole1);
-    ImageView mole2 = findViewById(R.id.mole2);
-    ImageView mole3 = findViewById(R.id.mole3);
-    ImageView mole4 = findViewById(R.id.mole4);
-    ImageView mole5 = findViewById(R.id.mole5);
-    ImageView mole6 = findViewById(R.id.mole6);
-    ImageView mole7 = findViewById(R.id.mole7);
-    ImageView mole8 = findViewById(R.id.mole8);
-    ImageView mole9 = findViewById(R.id.mole9);
-    ImageView mole10 = findViewById(R.id.mole10);
-    ImageView mole11 = findViewById(R.id.mole11);
-    ImageView mole12 = findViewById(R.id.mole12);
 
-    ImageView life1 = findViewById(R.id.mole1);
-    ImageView life2 = findViewById(R.id.mole1);
-    ImageView life3 = findViewById(R.id.mole1);
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+         mole1 = findViewById(R.id.mole1);
+         mole2 = findViewById(R.id.mole2);
+         mole3 = findViewById(R.id.mole3);
+         mole4 = findViewById(R.id.mole4);
+         mole5 = findViewById(R.id.mole5);
+         mole6 = findViewById(R.id.mole6);
+         mole7 = findViewById(R.id.mole7);
+         mole8 = findViewById(R.id.mole8);
+         mole9 = findViewById(R.id.mole9);
+         mole10 = findViewById(R.id.mole10);
+         mole11 = findViewById(R.id.mole11);
+         mole12 = findViewById(R.id.mole12);
+
+         life1 = findViewById(R.id.life1);
+         life2 = findViewById(R.id.life2);
+         life3 = findViewById(R.id.life3);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
