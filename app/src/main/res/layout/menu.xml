@@ -14,8 +14,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="124dp"
         android:layout_marginTop="260dp"
+        android:layout_marginEnd="125dp"
         android:text="High Score: "
         android:textSize="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/startButton"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,22 +27,29 @@
         android:id="@+id/startButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="228dp"
+        android:layout_marginStart="163dp"
+        android:layout_marginEnd="160dp"
+        android:layout_marginBottom="272dp"
         android:text="Start!"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/WhackAMole"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="39dp"
+        android:layout_marginTop="130dp"
+        android:layout_marginEnd="39dp"
+        android:layout_marginBottom="64dp"
         android:text="Whack-A-Mole!"
-        android:textSize="50dp"
         android:textColor="@color/hole"
-        tools:layout_editor_absoluteX="39dp"
-        tools:layout_editor_absoluteY="122dp" />
+        android:textSize="50dp"
+        app:layout_constraintBottom_toTopOf="@+id/highscore"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
