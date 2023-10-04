@@ -1,5 +1,6 @@
 package com.example.whackamole;
 
+import android.os.CountDownTimer;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.widget.ImageView;
@@ -21,11 +22,14 @@ public class MoleLogic extends ViewModel {
 
     public int currentHole;
 
-
+    private GameOverListener gameOverListener;
+    private CountDownTimer countDownTimer;
+    private boolean isRunning = false;
     public MutableLiveData<Long> totalTime = new MutableLiveData<>();
     private Runnable timerRunnable;
     private Handler timerHandler = new Handler();
     public long maxTime;
+
 
     public MoleLogic() {
         previousHole = -1;
@@ -48,7 +52,28 @@ public class MoleLogic extends ViewModel {
 
     public void start() {
         nextStart = System.currentTimeMillis();
-        timerHandler.postDelayed(timerRunnable, 10);
+        startCountdownTimer();
+    }
+
+    private void startCountdownTimer() {
+        if (!isRunning) {
+            countDownTimer = new CountDownTimer(maxTime, 1000) {
+                public void onTick(long millisUntilFinished) {
+                    totalTime.postValue(millisUntilFinished);
+                }
+
+                public void onFinish() {
+                    loseLife();
+                    if (checkGameOver()) {
+                        // Game over logic here
+                    } else {
+                        nextRandomMole();
+                        startCountdownTimer();
+                    }
+                }
+            }.start();
+            isRunning = true;
+        }
     }
 
     public void nextRandomMole() {
@@ -69,12 +94,24 @@ public class MoleLogic extends ViewModel {
         if (holeNum == currentHole) {
             score += 10;
             previousHole = currentHole;
+            maxTime *= .95;
+            resetCountdownTimer();
             return true;
         }
-    return false;
+        return false;
     }
 
-    public int setCurrentMole() {
+    private void resetCountdownTimer() {
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+            isRunning = false;
+        }
+        startCountdownTimer();
+
+    }
+
+    public int setCurrentMole()
+    {
         final int numHoles = 12;
         Random holePicker = new Random();
         currentHole = (holePicker.nextInt(12) % numHoles) + 1;
@@ -107,6 +144,9 @@ public class MoleLogic extends ViewModel {
         if (lives <= 0) {
             updateHighScore();
             timerHandler.removeCallbacks(timerRunnable);
+            if (gameOverListener != null) {
+                gameOverListener.onGameOver();
+            }
             return true;
         }
         return false;
@@ -116,6 +156,8 @@ public class MoleLogic extends ViewModel {
         return totalTime;
     }
 
-    public void stop() {
+
+    public void setGameOverListener(GameOverListener listener) {
+        this.gameOverListener = listener;
     }
 }

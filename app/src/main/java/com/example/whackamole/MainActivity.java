@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements GameOverListener{
     ImageView mole1;
     ImageView mole2;
     ImageView mole3;
@@ -81,10 +81,11 @@ public class MainActivity extends AppCompatActivity {
         startButton = findViewById(R.id.startButton);
 
         game = new ViewModelProvider(this).get(MoleLogic.class);
+        game.setGameOverListener(this);
 
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         highScore.setText("High Score: " + sharedpreferences.getInt(MyPREFERENCES, 0));
-        timeObserver = new Observer<Long>() {
+        /**timeObserver = new Observer<Long>() {
             @Override
             public void onChanged(Long aLong) {
                 boolean outOfTime = game.updateTime();
@@ -105,14 +106,15 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             }
-        };
+        };*/
 
-        game.getCurrentDuration().observe(this, timeObserver);
+       // game.getCurrentDuration().observe(this, timeObserver);
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 game.start();
+                changeTransparency(game.setCurrentMole());
                 startButton.setVisibility(View.INVISIBLE);
                 if (newGame) {
                     gameOver.setVisibility(View.INVISIBLE);
@@ -120,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        changeTransparency(game.setCurrentMole());
+
         mole1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 score.setText("Score: " + game.score);
@@ -276,12 +278,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        if(game.checkGameOver())
+/*        if(game.checkGameOver())
         {
             SharedPreferences.Editor editor = sharedpreferences.edit();
             editor.putInt(MyPREFERENCES, game.updateHighScore());
             editor.commit();
-        }
+        }*/
     }
 
     public void changeTransparency(int hole)
@@ -314,5 +316,20 @@ public class MainActivity extends AppCompatActivity {
         else if (hole == 10) { mole10.setVisibility(View.INVISIBLE); }
         else if (hole == 11) { mole11.setVisibility(View.INVISIBLE); }
         else if (hole == 12) { mole12.setVisibility(View.INVISIBLE); }
+    }
+
+    @Override
+    public void onGameOver() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.putInt(MyPREFERENCES, game.updateHighScore());
+                editor.commit();
+                gameOver.setVisibility(View.VISIBLE);
+                startButton.setVisibility(View.VISIBLE);
+                newGame = true;
+            }
+        });
     }
 }
