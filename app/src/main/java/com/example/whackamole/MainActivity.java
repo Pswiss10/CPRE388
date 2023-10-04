@@ -49,6 +49,10 @@ public class MainActivity extends AppCompatActivity implements GameOverListener{
 
     SharedPreferences sharedpreferences;
 
+    /**
+     * generates the view of the game for the user to see
+     * @param savedInstanceState Bundle passed by the system
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -259,41 +263,56 @@ public class MainActivity extends AppCompatActivity implements GameOverListener{
 
     }
 
-    public void changeTransparency(int hole)
+    /**
+     * Turns on the visibility of whatever hole is passed to it and plays a sound
+     * @param mole what mole to make visible
+     */
+    public void changeTransparency(int mole)
     {
-        if (hole == 1) { mole1.setVisibility(View.VISIBLE); jump.start(); }
-        else if (hole == 2) { mole2.setVisibility(View.VISIBLE); jump.start(); }
-        else if (hole == 3) { mole3.setVisibility(View.VISIBLE); jump.start(); }
-        else if (hole == 4) { mole4.setVisibility(View.VISIBLE); jump.start();}
-        else if (hole == 5) { mole5.setVisibility(View.VISIBLE); jump.start();}
-        else if (hole == 6) { mole6.setVisibility(View.VISIBLE); jump.start();}
-        else if (hole == 7) { mole7.setVisibility(View.VISIBLE); jump.start();}
-        else if (hole == 8) { mole8.setVisibility(View.VISIBLE); jump.start();}
-        else if (hole == 9) { mole9.setVisibility(View.VISIBLE); jump.start();}
-        else if (hole == 10) { mole10.setVisibility(View.VISIBLE); jump.start();}
-        else if (hole == 11) { mole11.setVisibility(View.VISIBLE); jump.start();}
-        else if (hole == 12) { mole12.setVisibility(View.VISIBLE); jump.start();}
+        if (mole == 1) { mole1.setVisibility(View.VISIBLE); jump.start(); }
+        else if (mole == 2) { mole2.setVisibility(View.VISIBLE); jump.start(); }
+        else if (mole == 3) { mole3.setVisibility(View.VISIBLE); jump.start(); }
+        else if (mole == 4) { mole4.setVisibility(View.VISIBLE); jump.start();}
+        else if (mole == 5) { mole5.setVisibility(View.VISIBLE); jump.start();}
+        else if (mole == 6) { mole6.setVisibility(View.VISIBLE); jump.start();}
+        else if (mole == 7) { mole7.setVisibility(View.VISIBLE); jump.start();}
+        else if (mole == 8) { mole8.setVisibility(View.VISIBLE); jump.start();}
+        else if (mole == 9) { mole9.setVisibility(View.VISIBLE); jump.start();}
+        else if (mole == 10) { mole10.setVisibility(View.VISIBLE); jump.start();}
+        else if (mole == 11) { mole11.setVisibility(View.VISIBLE); jump.start();}
+        else if (mole == 12) { mole12.setVisibility(View.VISIBLE); jump.start();}
     }
 
-    public void turnOffTransparency(int hole)
+    /**
+     * Turns off the visibility of whatever hole is passed to it and plays a sound
+     * @param mole what mole to make invisible
+     */
+    public void turnOffTransparency(int mole)
     {
-        if (hole == 1) { mole1.setVisibility(View.INVISIBLE); }
-        else if (hole == 2) { mole2.setVisibility(View.INVISIBLE); }
-        else if (hole == 3) { mole3.setVisibility(View.INVISIBLE); }
-        else if (hole == 4) { mole4.setVisibility(View.INVISIBLE); }
-        else if (hole == 5) { mole5.setVisibility(View.INVISIBLE); }
-        else if (hole == 6) { mole6.setVisibility(View.INVISIBLE); }
-        else if (hole == 7) { mole7.setVisibility(View.INVISIBLE); }
-        else if (hole == 8) { mole8.setVisibility(View.INVISIBLE); }
-        else if (hole == 9) { mole9.setVisibility(View.INVISIBLE); }
-        else if (hole == 10) { mole10.setVisibility(View.INVISIBLE); }
-        else if (hole == 11) { mole11.setVisibility(View.INVISIBLE); }
-        else if (hole == 12) { mole12.setVisibility(View.INVISIBLE); }
+        if (mole == 1) { mole1.setVisibility(View.INVISIBLE); }
+        else if (mole == 2) { mole2.setVisibility(View.INVISIBLE); }
+        else if (mole == 3) { mole3.setVisibility(View.INVISIBLE); }
+        else if (mole == 4) { mole4.setVisibility(View.INVISIBLE); }
+        else if (mole == 5) { mole5.setVisibility(View.INVISIBLE); }
+        else if (mole == 6) { mole6.setVisibility(View.INVISIBLE); }
+        else if (mole == 7) { mole7.setVisibility(View.INVISIBLE); }
+        else if (mole == 8) { mole8.setVisibility(View.INVISIBLE); }
+        else if (mole == 9) { mole9.setVisibility(View.INVISIBLE); }
+        else if (mole == 10) { mole10.setVisibility(View.INVISIBLE); }
+        else if (mole == 11) { mole11.setVisibility(View.INVISIBLE); }
+        else if (mole == 12) { mole12.setVisibility(View.INVISIBLE); }
     }
 
+    /**
+     * Methods created by the interface GameOverListener
+     * onGameOver is called when moleLogic's GameOverListener detects the games is over
+     */
     @Override
     public void onGameOver() {
         runOnUiThread(new Runnable() {
+            /**
+             * runs when the game is over
+             */
             @Override
             public void run() {
                 if (game.score > game.highScore) {
@@ -311,6 +330,9 @@ public class MainActivity extends AppCompatActivity implements GameOverListener{
         });
     }
 
+    /**
+     * runs when the gameOverListener in moleLogic detects the user lost a life
+     */
     @Override
     public void onLifeLoss() {
         if (game.lives == 3) {

@@ -12,6 +12,9 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+/**
+ * Class for the start of the gamee as well as when the user looses
+ */
 public class Menu extends AppCompatActivity {
     private MoleLogic game = new MoleLogic();
 
@@ -24,7 +27,10 @@ public class Menu extends AppCompatActivity {
     SharedPreferences sharedpreferences;
 
 
-
+    /**
+     * generates the view of the start menu for the user to see
+     * @param savedInstanceState Bundle passed by the system
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -39,6 +45,10 @@ public class Menu extends AppCompatActivity {
         Intent intent = getIntent();
         score.setText("Score: " + intent.getIntExtra("score", 0));
         startButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Changes the view to the actual game
+             * @param view This Instances View object
+             */
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(Menu.this,MainActivity.class);
