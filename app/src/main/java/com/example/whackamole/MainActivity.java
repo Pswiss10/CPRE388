@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements GameOverListener{
 
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         highScore.setText("High Score: " + sharedpreferences.getInt(MyPREFERENCES, 0));
+        game.highScore = sharedpreferences.getInt(MyPREFERENCES, 0);
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -274,7 +275,7 @@ public class MainActivity extends AppCompatActivity implements GameOverListener{
         else if (hole == 12) { mole12.setVisibility(View.VISIBLE); jump.start();}
     }
 
-/*    public void turnOffTransparency(int hole)
+    public void turnOffTransparency(int hole)
     {
         if (hole == 1) { mole1.setVisibility(View.INVISIBLE); }
         else if (hole == 2) { mole2.setVisibility(View.INVISIBLE); }
@@ -288,21 +289,18 @@ public class MainActivity extends AppCompatActivity implements GameOverListener{
         else if (hole == 10) { mole10.setVisibility(View.INVISIBLE); }
         else if (hole == 11) { mole11.setVisibility(View.INVISIBLE); }
         else if (hole == 12) { mole12.setVisibility(View.INVISIBLE); }
-    }*/
+    }
 
     @Override
     public void onGameOver() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                SharedPreferences.Editor editor = sharedpreferences.edit();
-                editor.putInt(MyPREFERENCES, game.updateHighScore());
-                editor.commit();
-                life1.setVisibility(View.VISIBLE);
-                life2.setVisibility(View.VISIBLE);
-                life3.setVisibility(View.VISIBLE);
-                gameOver.setVisibility(View.VISIBLE);
-                startButton.setVisibility(View.VISIBLE);
+                if (game.score > game.highScore) {
+                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                    editor.putInt(MyPREFERENCES, game.updateHighScore());
+                    editor.commit();
+                }
                 newGame = true;
                 Intent intent=new Intent(MainActivity.this,Menu.class);
                 startActivity(intent);
@@ -327,5 +325,8 @@ public class MainActivity extends AppCompatActivity implements GameOverListener{
             life2.setVisibility(View.INVISIBLE);
             life3.setVisibility(View.VISIBLE);
         }
+        turnOffTransparency(game.currentHole);
+        game.nextRandomMole();
+        changeTransparency(game.currentHole);
     }
 }

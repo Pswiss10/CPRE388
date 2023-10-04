@@ -1,33 +1,25 @@
 package com.example.whackamole;
 
 import android.os.CountDownTimer;
-import android.content.SharedPreferences;
-import android.media.MediaPlayer;
-import android.widget.ImageView;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.Random;
-import android.os.Handler;
-import java.util.logging.LogRecord;
+
 
 public class MoleLogic extends ViewModel {
 
     public int previousHole;
     public int score;
-    public static int highScore;
+    public int highScore;
     public int lives;
-    public long nextStart;
-
     public int currentHole;
-
     private GameOverListener gameOverListener;
     private CountDownTimer countDownTimer;
     private boolean isRunning = false;
     public MutableLiveData<Long> totalTime = new MutableLiveData<>();
     public long maxTime;
-
 
     public MoleLogic() {
         previousHole = -1;
@@ -38,12 +30,7 @@ public class MoleLogic extends ViewModel {
 
     }
 
-//    private long calculateElapsedTime() {
-//        return System.currentTimeMillis() - nextStart;
-//    }
-
     public void start() {
-        nextStart = System.currentTimeMillis();
         startCountdownTimer();
     }
 
@@ -57,8 +44,7 @@ public class MoleLogic extends ViewModel {
                 public void onFinish() {
                     loseLife();
                     if (!checkGameOver()){
-                        nextRandomMole();
-                        startCountdownTimer();
+                        resetCountdownTimer();
                     }
                 }
             }.start();
@@ -76,7 +62,6 @@ public class MoleLogic extends ViewModel {
             nextHole = (holePicker.nextInt(12) % numHoles) + 1;
         }
 
-        nextStart = System.currentTimeMillis();
         currentHole = nextHole;
     }
 
@@ -84,7 +69,7 @@ public class MoleLogic extends ViewModel {
         if (holeNum == currentHole) {
             score += 1;
             previousHole = currentHole;
-            maxTime = (long) ((0.9999 * maxTime) + 2);
+            maxTime = (long) ((0.95 * maxTime) + 2);
             resetCountdownTimer();
             return true;
         }
@@ -118,12 +103,11 @@ public class MoleLogic extends ViewModel {
     public void loseLife() {
         lives--;
         gameOverListener.onLifeLoss();
-        nextStart = System.currentTimeMillis();
     }
 
     public boolean checkGameOver() {
         if (lives <= 0) {
-            updateHighScore();
+           // updateHighScore();
             if (gameOverListener != null) {
                 gameOverListener.onGameOver();
             }
@@ -131,11 +115,6 @@ public class MoleLogic extends ViewModel {
         }
         return false;
     }
-
-    public MutableLiveData<Long> getCurrentDuration() {
-        return totalTime;
-    }
-
 
     public void setGameOverListener(GameOverListener listener) {
         this.gameOverListener = listener;
