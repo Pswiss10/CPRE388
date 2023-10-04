@@ -8,18 +8,23 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.Random;
+import android.os.Handler;
+import java.util.logging.LogRecord;
 
 public class MoleLogic extends ViewModel {
 
-    private int previousHole;
+    public int previousHole;
     public int score;
     public static int highScore;
     public int lives;
     public long nextStart;
+
     public int currentHole;
 
 
     public MutableLiveData<Long> totalTime = new MutableLiveData<>();
+    private Runnable timerRunnable;
+    private Handler timerHandler = new Handler();
     public long maxTime;
 
     public MoleLogic() {
@@ -28,7 +33,22 @@ public class MoleLogic extends ViewModel {
         maxTime = 10000L;
         lives = 3;
         currentHole = -1;
+        timerRunnable = new Runnable() {
+            @Override
+            public void run() {
+                totalTime.postValue(calculateElapsedTime());
+                timerHandler.postDelayed(this, 10);
+            }
+        };
+    }
 
+    private long calculateElapsedTime() {
+        return System.currentTimeMillis() - nextStart;
+    }
+
+    public void start() {
+        nextStart = System.currentTimeMillis();
+        timerHandler.postDelayed(timerRunnable, 10);
     }
 
     public void nextRandomMole() {
@@ -72,6 +92,7 @@ public class MoleLogic extends ViewModel {
     public boolean updateTime() {
         totalTime.setValue(System.currentTimeMillis() - nextStart);
         if (totalTime.getValue() >= maxTime) {
+            maxTime *= .95;
             return true;
         }
         return false;
@@ -79,14 +100,22 @@ public class MoleLogic extends ViewModel {
 
     public void loseLife() {
         lives--;
-        checkGameOver();
+        nextStart = System.currentTimeMillis();
     }
 
     public boolean checkGameOver() {
         if (lives <= 0) {
             updateHighScore();
+            timerHandler.removeCallbacks(timerRunnable);
             return true;
         }
         return false;
+    }
+
+    public MutableLiveData<Long> getCurrentDuration() {
+        return totalTime;
+    }
+
+    public void stop() {
     }
 }
