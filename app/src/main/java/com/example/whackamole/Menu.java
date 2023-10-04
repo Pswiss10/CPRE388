@@ -22,8 +22,15 @@ public class Menu extends AppCompatActivity {
 
     TextView highScore;
     Button startButton;
+
+    /**
+     * creating a string for storing the shared preference
+     */
     public static final String MyPREFERENCES = "MyPrefs" ;
 
+    /**
+     * instantiating sharedpreferences object for storing high score
+     */
     SharedPreferences sharedpreferences;
 
 
