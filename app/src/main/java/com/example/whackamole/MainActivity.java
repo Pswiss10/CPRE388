@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
          jump = MediaPlayer.create(MainActivity.this, R.raw.jump);
-         bonk = MediaPlayer.create(MainActivity.this, R.raw.bonk);
+         bonk = MediaPlayer.create(MainActivity.this, R.raw.clang);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -129,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
                 {
                     bonk.start();
                 }
-                mole1.setVisibility(View.INVISIBLE);
                 mole1.setVisibility(View.INVISIBLE);
                 game.nextRandomMole();
                 changeTransparency(game.currentHole);
@@ -287,7 +286,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void changeTransparency(int hole)
     {
-        if (hole == 1) { mole1.setVisibility(View.VISIBLE); }
+        if (hole == 1) { mole1.setVisibility(View.VISIBLE); jump.start(); }
         else if (hole == 2) { mole2.setVisibility(View.VISIBLE); jump.start(); }
         else if (hole == 3) { mole3.setVisibility(View.VISIBLE); jump.start(); }
         else if (hole == 4) { mole4.setVisibility(View.VISIBLE); jump.start();}
