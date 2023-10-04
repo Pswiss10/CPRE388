@@ -14,7 +14,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
+/**
+ * Main activity for the app.
+ */
 public class MainActivity extends AppCompatActivity implements GameOverListener{
     ImageView mole1;
     ImageView mole2;
@@ -40,18 +42,32 @@ public class MainActivity extends AppCompatActivity implements GameOverListener{
     Button startButton;
 
     private boolean newGame = false;
-
+    /**
+     * Instantiating a MoleLogic object
+     */
     private MoleLogic game;
-    private Observer<Long> timeObserver;
 
+    /**
+     * creating a string for storing the shared preference
+     */
     public static final String MyPREFERENCES = "MyPrefs" ;
 
 
+    /**
+     * instantiating sharedpreferences object for storing high score
+     */
     SharedPreferences sharedpreferences;
 
+    /**
+     * Creates the layout that corresponds with the activity
+     * @param savedInstanceState An instance of the UI to be reloaded
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        /**
+         * MediaPLayer objects for sound effects
+         */
          jump = MediaPlayer.create(MainActivity.this, R.raw.jump);
          bonk = MediaPlayer.create(MainActivity.this, R.raw.clang);
 
@@ -89,6 +105,10 @@ public class MainActivity extends AppCompatActivity implements GameOverListener{
         game.highScore = sharedpreferences.getInt(MyPREFERENCES, 0);
 
         startButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Method that detects if the start button is clicked
+             * @param view The view object
+             */
             @Override
             public void onClick(View view) {
                 game.start();
@@ -99,9 +119,11 @@ public class MainActivity extends AppCompatActivity implements GameOverListener{
                 }
             }
         });
-
-
         mole1.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Method that detects if the first mole is clicked
+             * @param v The view object
+             */
             public void onClick(View v) {
 
                 game.checkClick(1);
@@ -115,7 +137,12 @@ public class MainActivity extends AppCompatActivity implements GameOverListener{
                 changeTransparency(game.currentHole);
             }
         });
+
         mole2.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Method that detects if the second mole is clicked
+             * @param v The view object
+             */
             public void onClick(View v) {
 
                 if(game.checkClick(2) == true)
@@ -129,6 +156,10 @@ public class MainActivity extends AppCompatActivity implements GameOverListener{
             }
         });
         mole3.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Method that detects if the third mole is clicked
+             * @param v The view object
+             */
             public void onClick(View v) {
 
                 if(game.checkClick(3) == true)
@@ -142,6 +173,10 @@ public class MainActivity extends AppCompatActivity implements GameOverListener{
             }
         });
         mole4.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Method that detects if the fourth mole is clicked
+             * @param v The view object
+             */
             public void onClick(View v) {
 
                 if(game.checkClick(4) == true)
@@ -154,7 +189,12 @@ public class MainActivity extends AppCompatActivity implements GameOverListener{
                 changeTransparency(game.currentHole);
             }
         });
+
         mole5.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Method that detects if the fifth mole is clicked
+             * @param v The view object
+             */
             public void onClick(View v) {
 
                 if(game.checkClick(5) == true)
@@ -168,6 +208,10 @@ public class MainActivity extends AppCompatActivity implements GameOverListener{
             }
         });
         mole6.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Method that detects if the sixth mole is clicked
+             * @param v The view object
+             */
             public void onClick(View v) {
 
                 if(game.checkClick(6) == true)
@@ -181,6 +225,10 @@ public class MainActivity extends AppCompatActivity implements GameOverListener{
             }
         });
         mole7.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Method that detects if the seventh mole is clicked
+             * @param v The view object
+             */
             public void onClick(View v) {
 
                 if(game.checkClick(7) == true)
@@ -194,6 +242,10 @@ public class MainActivity extends AppCompatActivity implements GameOverListener{
             }
         });
         mole8.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Method that detects if the eighth mole is clicked
+             * @param v The view object
+             */
             public void onClick(View v) {
 
                 if(game.checkClick(8) == true)
@@ -207,6 +259,10 @@ public class MainActivity extends AppCompatActivity implements GameOverListener{
             }
         });
         mole9.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Method that detects if the ninth mole is clicked
+             * @param v The view object
+             */
             public void onClick(View v) {
 
                 if(game.checkClick(9) == true)
@@ -220,6 +276,10 @@ public class MainActivity extends AppCompatActivity implements GameOverListener{
             }
         });
         mole10.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Method that detects if the tenth mole is clicked
+             * @param v The view object
+             */
             public void onClick(View v) {
                 if(game.checkClick(10) == true)
                 {
@@ -232,6 +292,10 @@ public class MainActivity extends AppCompatActivity implements GameOverListener{
             }
         });
         mole11.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Method that detects if the eleventh mole is clicked
+             * @param v The view object
+             */
             public void onClick(View v) {
                 if(game.checkClick(11) == true)
                 {
@@ -244,6 +308,10 @@ public class MainActivity extends AppCompatActivity implements GameOverListener{
             }
         });
         mole12.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Method that detects if the twelfth mole is clicked
+             * @param v The view object
+             */
             public void onClick(View v) {
                 if(game.checkClick(12) == true)
                 {
