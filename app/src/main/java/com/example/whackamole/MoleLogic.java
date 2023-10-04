@@ -1,5 +1,7 @@
 package com.example.whackamole;
 
+import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.widget.ImageView;
 
 import androidx.lifecycle.MutableLiveData;
@@ -17,10 +19,8 @@ public class MoleLogic extends ViewModel {
     public int currentHole;
 
 
-
     public MutableLiveData<Long> totalTime = new MutableLiveData<>();
     public long maxTime;
-
 
     public MoleLogic() {
         previousHole = -1;
@@ -37,7 +37,7 @@ public class MoleLogic extends ViewModel {
         Random holePicker = new Random();
         nextHole = (holePicker.nextInt(12) % numHoles) + 1;
 
-        while (nextHole == previousHole){
+        while (nextHole == previousHole) {
             nextHole = (holePicker.nextInt(12) % numHoles) + 1;
         }
 
@@ -45,16 +45,16 @@ public class MoleLogic extends ViewModel {
         currentHole = nextHole;
     }
 
-    public void checkClick(int holeNum){
+    public boolean checkClick(int holeNum) {
         if (holeNum == currentHole) {
             score += 10;
             previousHole = currentHole;
+            return true;
         }
-
+    return false;
     }
 
-    public int setCurrentMole()
-    {
+    public int setCurrentMole() {
         final int numHoles = 12;
         Random holePicker = new Random();
         currentHole = (holePicker.nextInt(12) % numHoles) + 1;
@@ -62,11 +62,11 @@ public class MoleLogic extends ViewModel {
     }
 
 
-    public void updateHighScore(){
+    public int updateHighScore() {
         if (score > highScore) {
             highScore = score;
         }
-        score = 0;
+        return highScore;
     }
 
     public boolean updateTime() {
@@ -82,10 +82,11 @@ public class MoleLogic extends ViewModel {
         checkGameOver();
     }
 
-    public void checkGameOver() {
+    public boolean checkGameOver() {
         if (lives <= 0) {
             updateHighScore();
-            //TODO
+            return true;
         }
+        return false;
     }
 }

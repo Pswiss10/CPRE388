@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -27,17 +30,25 @@ public class MainActivity extends AppCompatActivity {
     ImageView life2;
     ImageView life3;
 
+    MediaPlayer jump;
+    MediaPlayer bonk;
     TextView score;
     TextView highScore;
 
     private MoleLogic game = new MoleLogic();
     private Observer<Long> timeObserver;
 
+    public static final String MyPREFERENCES = "MyPrefs" ;
 
 
+
+    SharedPreferences sharedpreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+         jump = MediaPlayer.create(MainActivity.this, R.raw.jump);
+         bonk = MediaPlayer.create(MainActivity.this, R.raw.bonk);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -62,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
         highScore = findViewById(R.id.highscore);
         game = new ViewModelProvider(this).get(MoleLogic.class);
 
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        highScore.setText("High Score: " + sharedpreferences.getInt(MyPREFERENCES, 0));
         timeObserver = new Observer<Long>() {
             @Override
             public void onChanged(Long aLong) {
@@ -75,10 +88,13 @@ public class MainActivity extends AppCompatActivity {
         changeTransparency(game.setCurrentMole());
         mole1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                game.checkClick(1); mole1.setVisibility(View.INVISIBLE);
                 score.setText("Score: " + game.score);
-
                 game.checkClick(1);
+                if(game.checkClick(1) == true)
+                {
+                    bonk.start();
+                }
+                mole1.setVisibility(View.INVISIBLE);
                 mole1.setVisibility(View.INVISIBLE);
                 game.nextRandomMole();
                 changeTransparency(game.currentHole);
@@ -86,7 +102,12 @@ public class MainActivity extends AppCompatActivity {
         });
         mole2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                game.checkClick(2); mole2.setVisibility(View.INVISIBLE);
+
+                if(game.checkClick(2) == true)
+                {
+                    bonk.start();
+                }
+                mole2.setVisibility(View.INVISIBLE);
                 score.setText("Score: " + game.score);
                 game.nextRandomMole();
                 changeTransparency(game.currentHole);
@@ -94,7 +115,12 @@ public class MainActivity extends AppCompatActivity {
         });
         mole3.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                game.checkClick(3); mole3.setVisibility(View.INVISIBLE);
+
+                if(game.checkClick(3) == true)
+                {
+                    bonk.start();
+                }
+                mole3.setVisibility(View.INVISIBLE);
                 score.setText("Score: " + game.score);
                 game.nextRandomMole();
                 changeTransparency(game.currentHole);
@@ -102,7 +128,12 @@ public class MainActivity extends AppCompatActivity {
         });
         mole4.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                game.checkClick(4); mole4.setVisibility(View.INVISIBLE);
+
+                if(game.checkClick(4) == true)
+                {
+                    bonk.start();
+                }
+                mole4.setVisibility(View.INVISIBLE);
                 score.setText("Score: " + game.score);
                 game.nextRandomMole();
                 changeTransparency(game.currentHole);
@@ -110,7 +141,12 @@ public class MainActivity extends AppCompatActivity {
         });
         mole5.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                game.checkClick(5); mole5.setVisibility(View.INVISIBLE);
+
+                if(game.checkClick(5) == true)
+                {
+                    bonk.start();
+                }
+                mole5.setVisibility(View.INVISIBLE);
                 score.setText("Score: " + game.score);
                 game.nextRandomMole();
                 changeTransparency(game.currentHole);
@@ -118,7 +154,12 @@ public class MainActivity extends AppCompatActivity {
         });
         mole6.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                game.checkClick(6); mole6.setVisibility(View.INVISIBLE);
+
+                if(game.checkClick(6) == true)
+                {
+                    bonk.start();
+                }
+                mole6.setVisibility(View.INVISIBLE);
                 score.setText("Score: " + game.score);
                 game.nextRandomMole();
                 changeTransparency(game.currentHole);
@@ -126,7 +167,12 @@ public class MainActivity extends AppCompatActivity {
         });
         mole7.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                game.checkClick(7); mole7.setVisibility(View.INVISIBLE);
+
+                if(game.checkClick(7) == true)
+                {
+                    bonk.start();
+                }
+                mole7.setVisibility(View.INVISIBLE);
                 score.setText("Score: " + game.score);
                 game.nextRandomMole();
                 changeTransparency(game.currentHole);
@@ -134,7 +180,12 @@ public class MainActivity extends AppCompatActivity {
         });
         mole8.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                game.checkClick(8); mole8.setVisibility(View.INVISIBLE);
+
+                if(game.checkClick(8) == true)
+                {
+                    bonk.start();
+                }
+                mole8.setVisibility(View.INVISIBLE);
                 score.setText("Score: " + game.score);
                 game.nextRandomMole();
                 changeTransparency(game.currentHole);
@@ -142,7 +193,12 @@ public class MainActivity extends AppCompatActivity {
         });
         mole9.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                game.checkClick(9); mole9.setVisibility(View.INVISIBLE);
+
+                if(game.checkClick(9) == true)
+                {
+                    bonk.start();
+                }
+                mole9.setVisibility(View.INVISIBLE);
                 score.setText("Score: " + game.score);
                 game.nextRandomMole();
                 changeTransparency(game.currentHole);
@@ -150,7 +206,11 @@ public class MainActivity extends AppCompatActivity {
         });
         mole10.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                game.checkClick(10); mole10.setVisibility(View.INVISIBLE);
+                if(game.checkClick(10) == true)
+                {
+                    bonk.start();
+                }
+                mole10.setVisibility(View.INVISIBLE);
                 score.setText("Score: " + game.score);
                 game.nextRandomMole();
                 changeTransparency(game.currentHole);
@@ -158,7 +218,11 @@ public class MainActivity extends AppCompatActivity {
         });
         mole11.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                game.checkClick(11); mole11.setVisibility(View.INVISIBLE);
+                if(game.checkClick(11) == true)
+                {
+                    bonk.start();
+                }
+                mole11.setVisibility(View.INVISIBLE);
                 score.setText("Score: " + game.score);
                 game.nextRandomMole();
                 changeTransparency(game.currentHole);
@@ -166,29 +230,40 @@ public class MainActivity extends AppCompatActivity {
         });
         mole12.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                game.checkClick(12); mole12.setVisibility(View.INVISIBLE);
+                if(game.checkClick(12) == true)
+                {
+                    bonk.start();
+                }
+                mole12.setVisibility(View.INVISIBLE);
                 score.setText("Score: " + game.score);
                 game.nextRandomMole();
                 changeTransparency(game.currentHole);
 
             }
         });
+
+        if(game.checkGameOver())
+        {
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putInt(MyPREFERENCES, game.updateHighScore());
+            editor.commit();
+        }
     }
 
     public void changeTransparency(int hole)
     {
         if (hole == 1) { mole1.setVisibility(View.VISIBLE); }
-        else if (hole == 2) { mole2.setVisibility(View.VISIBLE); }
-        else if (hole == 3) { mole3.setVisibility(View.VISIBLE); }
-        else if (hole == 4) { mole4.setVisibility(View.VISIBLE); }
-        else if (hole == 5) { mole5.setVisibility(View.VISIBLE); }
-        else if (hole == 6) { mole6.setVisibility(View.VISIBLE); }
-        else if (hole == 7) { mole7.setVisibility(View.VISIBLE); }
-        else if (hole == 8) { mole8.setVisibility(View.VISIBLE); }
-        else if (hole == 9) { mole9.setVisibility(View.VISIBLE); }
-        else if (hole == 10) { mole10.setVisibility(View.VISIBLE); }
-        else if (hole == 11) { mole11.setVisibility(View.VISIBLE); }
-        else if (hole == 12) { mole12.setVisibility(View.VISIBLE); }
+        else if (hole == 2) { mole2.setVisibility(View.VISIBLE); jump.start(); }
+        else if (hole == 3) { mole3.setVisibility(View.VISIBLE); jump.start(); }
+        else if (hole == 4) { mole4.setVisibility(View.VISIBLE); jump.start();}
+        else if (hole == 5) { mole5.setVisibility(View.VISIBLE); jump.start();}
+        else if (hole == 6) { mole6.setVisibility(View.VISIBLE); jump.start();}
+        else if (hole == 7) { mole7.setVisibility(View.VISIBLE); jump.start();}
+        else if (hole == 8) { mole8.setVisibility(View.VISIBLE); jump.start();}
+        else if (hole == 9) { mole9.setVisibility(View.VISIBLE); jump.start();}
+        else if (hole == 10) { mole10.setVisibility(View.VISIBLE); jump.start();}
+        else if (hole == 11) { mole11.setVisibility(View.VISIBLE); jump.start();}
+        else if (hole == 12) { mole12.setVisibility(View.VISIBLE); jump.start();}
     }
 
 }
