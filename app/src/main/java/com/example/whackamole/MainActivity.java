@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements GameOverListener{
     public static final String MyPREFERENCES = "MyPrefs" ;
 
 
-
     SharedPreferences sharedpreferences;
 
     @Override
@@ -304,6 +303,7 @@ public class MainActivity extends AppCompatActivity implements GameOverListener{
                 }
                 newGame = true;
                 Intent intent=new Intent(MainActivity.this,Menu.class);
+                intent.putExtra("score", game.score);
                 startActivity(intent);
             }
 

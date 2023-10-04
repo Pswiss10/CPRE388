@@ -15,10 +15,14 @@ import androidx.lifecycle.ViewModelProvider;
 public class Menu extends AppCompatActivity {
     private MoleLogic game = new MoleLogic();
 
+    TextView score;
+
     TextView highScore;
     Button startButton;
     public static final String MyPREFERENCES = "MyPrefs" ;
+
     SharedPreferences sharedpreferences;
+
 
 
     @Override
@@ -27,12 +31,13 @@ public class Menu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu);
 
-
+        score = findViewById(R.id.score);
         highScore = findViewById(R.id.highscore);
         startButton = findViewById(R.id.startButton);
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         highScore.setText("High Score: " + sharedpreferences.getInt(MyPREFERENCES, 0));
-
+        Intent intent = getIntent();
+        score.setText("Score: " + intent.getIntExtra("score", 0));
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
