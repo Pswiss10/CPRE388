@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements GameOverListener{
 
     private boolean newGame = false;
 
-    private MoleLogic game = new MoleLogic();
+    private MoleLogic game;
     private Observer<Long> timeObserver;
 
     public static final String MyPREFERENCES = "MyPrefs" ;
@@ -85,30 +85,6 @@ public class MainActivity extends AppCompatActivity implements GameOverListener{
 
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         highScore.setText("High Score: " + sharedpreferences.getInt(MyPREFERENCES, 0));
-        /**timeObserver = new Observer<Long>() {
-            @Override
-            public void onChanged(Long aLong) {
-                boolean outOfTime = game.updateTime();
-                if (outOfTime) {
-                    game.loseLife();
-                    if (game.checkGameOver()) {
-                        game.stop();
-                        gameOver.setVisibility(View.VISIBLE);
-                        startButton.setVisibility(View.VISIBLE);
-                        newGame = true;
-                    }
-
-                    turnOffTransparency(game.currentHole);
-                    game.previousHole = game.currentHole;
-
-                    game.nextRandomMole();
-                    changeTransparency(game.currentHole);
-
-                }
-            }
-        };*/
-
-       // game.getCurrentDuration().observe(this, timeObserver);
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,12 +101,13 @@ public class MainActivity extends AppCompatActivity implements GameOverListener{
 
         mole1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                score.setText("Score: " + game.score);
+
                 game.checkClick(1);
                 if(game.checkClick(1) == true)
                 {
                     bonk.start();
                 }
+                score.setText("Score: " + game.score);
                 mole1.setVisibility(View.INVISIBLE);
                 game.nextRandomMole();
                 changeTransparency(game.currentHole);
@@ -278,12 +255,6 @@ public class MainActivity extends AppCompatActivity implements GameOverListener{
             }
         });
 
-/*        if(game.checkGameOver())
-        {
-            SharedPreferences.Editor editor = sharedpreferences.edit();
-            editor.putInt(MyPREFERENCES, game.updateHighScore());
-            editor.commit();
-        }*/
     }
 
     public void changeTransparency(int hole)
@@ -302,7 +273,7 @@ public class MainActivity extends AppCompatActivity implements GameOverListener{
         else if (hole == 12) { mole12.setVisibility(View.VISIBLE); jump.start();}
     }
 
-    public void turnOffTransparency(int hole)
+/*    public void turnOffTransparency(int hole)
     {
         if (hole == 1) { mole1.setVisibility(View.INVISIBLE); }
         else if (hole == 2) { mole2.setVisibility(View.INVISIBLE); }
@@ -316,7 +287,7 @@ public class MainActivity extends AppCompatActivity implements GameOverListener{
         else if (hole == 10) { mole10.setVisibility(View.INVISIBLE); }
         else if (hole == 11) { mole11.setVisibility(View.INVISIBLE); }
         else if (hole == 12) { mole12.setVisibility(View.INVISIBLE); }
-    }
+    }*/
 
     @Override
     public void onGameOver() {
@@ -326,10 +297,32 @@ public class MainActivity extends AppCompatActivity implements GameOverListener{
                 SharedPreferences.Editor editor = sharedpreferences.edit();
                 editor.putInt(MyPREFERENCES, game.updateHighScore());
                 editor.commit();
+                life1.setVisibility(View.VISIBLE);
+                life2.setVisibility(View.VISIBLE);
+                life3.setVisibility(View.VISIBLE);
                 gameOver.setVisibility(View.VISIBLE);
                 startButton.setVisibility(View.VISIBLE);
                 newGame = true;
             }
+
+
         });
+    }
+
+    @Override
+    public void onLifeLoss() {
+        if (game.lives == 3) {
+            life1.setVisibility(View.VISIBLE);
+            life2.setVisibility(View.VISIBLE);
+            life3.setVisibility(View.VISIBLE);
+        } else if (game.lives == 2) {
+            life1.setVisibility(View.INVISIBLE);
+            life2.setVisibility(View.VISIBLE);
+            life3.setVisibility(View.VISIBLE);
+        } else if (game.lives == 1) {
+            life1.setVisibility(View.INVISIBLE);
+            life2.setVisibility(View.INVISIBLE);
+            life3.setVisibility(View.VISIBLE);
+        }
     }
 }

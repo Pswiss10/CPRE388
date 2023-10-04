@@ -26,8 +26,6 @@ public class MoleLogic extends ViewModel {
     private CountDownTimer countDownTimer;
     private boolean isRunning = false;
     public MutableLiveData<Long> totalTime = new MutableLiveData<>();
-    private Runnable timerRunnable;
-    private Handler timerHandler = new Handler();
     public long maxTime;
 
 
@@ -37,18 +35,12 @@ public class MoleLogic extends ViewModel {
         maxTime = 10000L;
         lives = 3;
         currentHole = -1;
-        timerRunnable = new Runnable() {
-            @Override
-            public void run() {
-                totalTime.postValue(calculateElapsedTime());
-                timerHandler.postDelayed(this, 10);
-            }
-        };
+
     }
 
-    private long calculateElapsedTime() {
-        return System.currentTimeMillis() - nextStart;
-    }
+//    private long calculateElapsedTime() {
+//        return System.currentTimeMillis() - nextStart;
+//    }
 
     public void start() {
         nextStart = System.currentTimeMillis();
@@ -64,9 +56,7 @@ public class MoleLogic extends ViewModel {
 
                 public void onFinish() {
                     loseLife();
-                    if (checkGameOver()) {
-                        // Game over logic here
-                    } else {
+                    if (!checkGameOver()){
                         nextRandomMole();
                         startCountdownTimer();
                     }
@@ -92,9 +82,9 @@ public class MoleLogic extends ViewModel {
 
     public boolean checkClick(int holeNum) {
         if (holeNum == currentHole) {
-            score += 10;
+            score += 1;
             previousHole = currentHole;
-            maxTime *= .95;
+            maxTime = (long) ((0.9999 * maxTime) + 2);
             resetCountdownTimer();
             return true;
         }
@@ -107,7 +97,6 @@ public class MoleLogic extends ViewModel {
             isRunning = false;
         }
         startCountdownTimer();
-
     }
 
     public int setCurrentMole()
@@ -126,24 +115,15 @@ public class MoleLogic extends ViewModel {
         return highScore;
     }
 
-    public boolean updateTime() {
-        totalTime.setValue(System.currentTimeMillis() - nextStart);
-        if (totalTime.getValue() >= maxTime) {
-            maxTime *= .95;
-            return true;
-        }
-        return false;
-    }
-
     public void loseLife() {
         lives--;
+        gameOverListener.onLifeLoss();
         nextStart = System.currentTimeMillis();
     }
 
     public boolean checkGameOver() {
         if (lives <= 0) {
             updateHighScore();
-            timerHandler.removeCallbacks(timerRunnable);
             if (gameOverListener != null) {
                 gameOverListener.onGameOver();
             }

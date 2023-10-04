@@ -290,6 +290,16 @@
         app:srcCompat="@drawable/mole" />
 
     <ImageView
+        android:id="@+id/life1"
+        android:layout_width="32dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="84dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toStartOf="@+id/life2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/mole" />
+
+    <ImageView
         android:id="@+id/life2"
         android:layout_width="32dp"
         android:layout_height="30dp"
@@ -306,16 +316,6 @@
         android:layout_marginTop="84dp"
         android:layout_marginEnd="32dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/mole" />
-
-    <ImageView
-        android:id="@+id/life1"
-        android:layout_width="32dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="84dp"
-        android:layout_marginEnd="20dp"
-        app:layout_constraintEnd_toStartOf="@+id/life2"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/mole" />
 
