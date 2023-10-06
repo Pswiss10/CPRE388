@@ -13,34 +13,31 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 /**
- * Class for the start of the gamee as well as when the user looses
+ * This class represents the start menu of the game and the screen displayed when the user loses.
  */
 public class Menu extends AppCompatActivity {
     private MoleLogic game = new MoleLogic();
 
     TextView score;
-
     TextView highScore;
     Button startButton;
 
     /**
-     * creating a string for storing the shared preference
+     * The name for storing shared preferences.
      */
-    public static final String MyPREFERENCES = "MyPrefs" ;
+    public static final String MyPREFERENCES = "MyPrefs";
 
     /**
-     * instantiating sharedpreferences object for storing high score
+     * The SharedPreferences object for storing the high score.
      */
     SharedPreferences sharedpreferences;
 
-
     /**
-     * generates the view of the start menu for the user to see
-     * @param savedInstanceState Bundle passed by the system
+     * Called when the activity is first created.
+     * @param savedInstanceState The saved state of the activity.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu);
 
@@ -48,20 +45,26 @@ public class Menu extends AppCompatActivity {
         highScore = findViewById(R.id.highscore);
         startButton = findViewById(R.id.startButton);
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+
+        // Set the high score from shared preferences
         highScore.setText("High Score: " + sharedpreferences.getInt(MyPREFERENCES, 0));
+
+        // Get the score passed from another activity and display it
         Intent intent = getIntent();
         score.setText("Score: " + intent.getIntExtra("score", 0));
+
+        // Set an onClickListener for the startButton
         startButton.setOnClickListener(new View.OnClickListener() {
             /**
-             * Changes the view to the actual game
-             * @param view This Instances View object
+             * Called when the startButton is clicked. Changes the view to the actual game.
+             *
+             * @param view The View object that was clicked.
              */
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(Menu.this,MainActivity.class);
+                Intent intent = new Intent(Menu.this, MainActivity.class);
                 startActivity(intent);
             }
         });
-
     }
 }

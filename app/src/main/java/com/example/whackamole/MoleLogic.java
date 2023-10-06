@@ -34,7 +34,7 @@ public class MoleLogic extends ViewModel {
 
 
     /**
-     * basic Contructor for the MoleLogic class to initilize variables
+     * basic constructor for the MoleLogic class to initialize variables
      */
     public MoleLogic() {
         previousHole = -1;
@@ -53,7 +53,7 @@ public class MoleLogic extends ViewModel {
     }
 
     /**
-     * Method is the controller for the coundownTimer, contains onTick() and onFinish()
+     * Method is the controller for the countdownTimer, contains onTick() and onFinish()
      */
     private void startCountdownTimer() {
         if (!isRunning) {
@@ -173,7 +173,7 @@ public class MoleLogic extends ViewModel {
 
     /**
      * sets the listener to talk to the main activity file
-     * @param listener The listerner to set
+     * @param listener The listener to set
      */
     public void setGameOverListener(GameOverListener listener) {
         this.gameOverListener = listener;

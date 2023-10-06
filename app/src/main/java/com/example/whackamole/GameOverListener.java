@@ -1,16 +1,16 @@
 package com.example.whackamole;
 
 /**
- * interface for Listener objects used in MoleLogic class
+ * An interface for listener objects used in the MoleLogic class to handle game events.
  */
 public interface GameOverListener {
     /**
-     * Method for when the game is over
+     * Called when the game is over.
      */
     void onGameOver();
 
     /**
-     * Method for when a live is lost by the user
+     * Called when a life is lost by the user during the game.
      */
     void onLifeLoss();
 }
