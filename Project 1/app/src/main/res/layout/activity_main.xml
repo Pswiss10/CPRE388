@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grass"
+    tools:context=".MainActivity">
+
+
+    <TextView
+        android:id="@+id/highscore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:text="High Score: "
+        android:textSize="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="12dp"
+        android:text="Score: "
+        android:textSize="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/highscore" />
+
+    <ImageView
+        android:id="@+id/hole1"
+        android:layout_width="180dp"
+        android:layout_height="111dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="250dp"
+        android:background="#00000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/score"
+        app:srcCompat="@drawable/hole2" />
+
+    <ImageView
+        android:id="@+id/hole2"
+        android:layout_width="180dp"
+        android:layout_height="111dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="40dp"
+        android:background="#00000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/score"
+        app:srcCompat="@drawable/hole2" />
+
+    <ImageView
+        android:id="@+id/hole3"
+        android:layout_width="180dp"
+        android:layout_height="111dp"
+        android:layout_marginStart="250dp"
+        android:layout_marginTop="40dp"
+        android:background="#00000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/score"
+        app:srcCompat="@drawable/hole2" />
+
+    <ImageView
+        android:id="@+id/hole4"
+        android:layout_width="180dp"
+        android:layout_height="111dp"
+        android:layout_marginEnd="250dp"
+        android:background="#00000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hole1"
+        app:srcCompat="@drawable/hole2" />
+
+    <ImageView
+        android:id="@+id/hole5"
+        android:layout_width="180dp"
+        android:layout_height="111dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="1dp"
+        android:background="#00000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hole2"
+        app:srcCompat="@drawable/hole2" />
+
+    <ImageView
+        android:id="@+id/hole6"
+        android:layout_width="180dp"
+        android:layout_height="111dp"
+        android:layout_marginStart="250dp"
+        android:background="#00000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hole2"
+        app:srcCompat="@drawable/hole2" />
+
+    <ImageView
+        android:id="@+id/hole7"
+        android:layout_width="180dp"
+        android:layout_height="111dp"
+        android:layout_marginEnd="250dp"
+        android:background="#00000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hole4"
+        app:srcCompat="@drawable/hole2" />
+
+    <ImageView
+        android:id="@+id/hole8"
+        android:layout_width="180dp"
+        android:layout_height="111dp"
+        android:layout_marginStart="120dp"
+        android:background="#00000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hole5"
+        app:srcCompat="@drawable/hole2" />
+
+    <ImageView
+        android:id="@+id/hole9"
+        android:layout_width="180dp"
+        android:layout_height="111dp"
+        android:layout_marginStart="250dp"
+        android:layout_marginTop="1dp"
+        android:background="#00000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hole6"
+        app:srcCompat="@drawable/hole2" />
+
+    <ImageView
+        android:id="@+id/hole10"
+        android:layout_width="180dp"
+        android:layout_height="111dp"
+        android:layout_marginEnd="250dp"
+        android:background="#00000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hole7"
+        app:srcCompat="@drawable/hole2" />
+
+    <ImageView
+        android:id="@+id/hole11"
+        android:layout_width="180dp"
+        android:layout_height="111dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="1dp"
+        android:background="#00000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hole7"
+        app:srcCompat="@drawable/hole2" />
+
+    <ImageView
+        android:id="@+id/hole12"
+        android:layout_width="180dp"
+        android:layout_height="111dp"
+        android:layout_marginStart="250dp"
+        android:layout_marginTop="1dp"
+        android:background="#00000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hole9"
+        app:srcCompat="@drawable/hole2" />
+
+    <ImageView
+        android:id="@+id/mole1"
+        android:layout_width="97dp"
+        android:layout_height="81dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/score"
+        app:srcCompat="@drawable/mole" />
+
+    <ImageView
+        android:id="@+id/mole2"
+        android:layout_width="97dp"
+        android:layout_height="81dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="24dp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toEndOf="@+id/mole1"
+        app:layout_constraintTop_toBottomOf="@+id/score"
+        app:srcCompat="@drawable/mole" />
+
+    <ImageView
+        android:id="@+id/mole3"
+        android:layout_width="97dp"
+        android:layout_height="81dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="24dp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toEndOf="@+id/mole2"
+        app:layout_constraintTop_toBottomOf="@+id/score"
+        app:srcCompat="@drawable/mole" />
+
+    <ImageView
+        android:id="@+id/mole4"
+        android:layout_width="97dp"
+        android:layout_height="81dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="30dp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mole1"
+        app:srcCompat="@drawable/mole" />
+
+    <ImageView
+        android:id="@+id/mole5"
+        android:layout_width="97dp"
+        android:layout_height="81dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="30dp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toEndOf="@+id/mole4"
+        app:layout_constraintTop_toBottomOf="@+id/mole2"
+        app:srcCompat="@drawable/mole" />
+
+    <ImageView
+        android:id="@+id/mole6"
+        android:layout_width="97dp"
+        android:layout_height="81dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="30dp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toEndOf="@+id/mole5"
+        app:layout_constraintTop_toBottomOf="@+id/mole3"
+        app:srcCompat="@drawable/mole" />
+
+    <ImageView
+        android:id="@+id/mole7"
+        android:layout_width="97dp"
+        android:layout_height="81dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="30dp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mole4"
+        app:srcCompat="@drawable/mole" />
+
+    <ImageView
+        android:id="@+id/mole8"
+        android:layout_width="97dp"
+        android:layout_height="81dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="30dp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toEndOf="@+id/mole7"
+        app:layout_constraintTop_toBottomOf="@+id/mole5"
+        app:srcCompat="@drawable/mole" />
+
+    <ImageView
+        android:id="@+id/mole9"
+        android:layout_width="97dp"
+        android:layout_height="81dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="30dp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toEndOf="@+id/mole8"
+        app:layout_constraintTop_toBottomOf="@+id/mole6"
+        app:srcCompat="@drawable/mole" />
+
+    <ImageView
+        android:id="@+id/mole10"
+        android:layout_width="97dp"
+        android:layout_height="81dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="30dp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mole7"
+        app:srcCompat="@drawable/mole" />
+
+    <ImageView
+        android:id="@+id/mole11"
+        android:layout_width="97dp"
+        android:layout_height="81dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="30dp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toEndOf="@+id/mole10"
+        app:layout_constraintTop_toBottomOf="@+id/mole8"
+        app:srcCompat="@drawable/mole" />
+
+    <ImageView
+        android:id="@+id/mole12"
+        android:layout_width="97dp"
+        android:layout_height="81dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="30dp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toEndOf="@+id/mole11"
+        app:layout_constraintTop_toBottomOf="@+id/mole9"
+        app:srcCompat="@drawable/mole" />
+
+    <ImageView
+        android:id="@+id/life1"
+        android:layout_width="32dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="84dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toStartOf="@+id/life2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/mole" />
+
+    <ImageView
+        android:id="@+id/life2"
+        android:layout_width="32dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="84dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toStartOf="@+id/life3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/mole" />
+
+    <ImageView
+        android:id="@+id/life3"
+        android:layout_width="32dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="84dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/mole" />
+
+    <Button
+        android:id="@+id/startButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:text="Start!"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/gameOverTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Game Over!"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/startButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hole11"
+        app:layout_constraintVertical_bias="1.0" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
