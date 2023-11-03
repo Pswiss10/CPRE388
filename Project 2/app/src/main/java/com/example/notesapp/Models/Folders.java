@@ -1,4 +1,4 @@
-package com.example.notesapp;
+package com.example.notesapp.Models;
 
 import java.util.ArrayList;
 
