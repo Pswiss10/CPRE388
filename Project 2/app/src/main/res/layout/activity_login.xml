@@ -11,8 +11,12 @@
         android:layout_height="wrap_content"
         android:text="NotesApp"
         android:textSize="40sp"
-        tools:layout_editor_absoluteX="116dp"
-        tools:layout_editor_absoluteY="92dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.187" />
 
     <TextView
         android:id="@+id/loginTextView"
@@ -20,8 +24,12 @@
         android:layout_height="wrap_content"
         android:text="Login to Your Account"
         android:textSize="18sp"
-        tools:layout_editor_absoluteX="117dp"
-        tools:layout_editor_absoluteY="244dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.347" />
 
     <EditText
         android:id="@+id/editTextTextEmailAddress"
@@ -30,8 +38,12 @@
         android:ems="10"
         android:hint="Enter Email Address"
         android:inputType="textEmailAddress"
-        tools:layout_editor_absoluteX="55dp"
-        tools:layout_editor_absoluteY="281dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.412" />
 
     <EditText
         android:id="@+id/editTextTextPassword"
@@ -40,8 +52,10 @@
         android:ems="10"
         android:hint="Enter Password"
         android:inputType="textPassword"
-        tools:layout_editor_absoluteX="55dp"
-        tools:layout_editor_absoluteY="367dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/loginButton"
@@ -49,8 +63,12 @@
         android:layout_height="45dp"
         android:text="Login"
         app:cornerRadius="3dp"
-        tools:layout_editor_absoluteX="103dp"
-        tools:layout_editor_absoluteY="450dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.645" />
 
     <Button
         android:id="@+id/createAccountButton"
@@ -58,7 +76,11 @@
         android:layout_height="45dp"
         android:text="Create An Account"
         app:cornerRadius="3dp"
-        tools:layout_editor_absoluteX="103dp"
-        tools:layout_editor_absoluteY="658dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.954" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
