@@ -59,6 +59,7 @@ tools:context=".Activities.MainActivity">
         android:orientation="horizontal">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_notebooks"
             android:layout_width="match_parent"
             android:layout_height="654dp" />
     </LinearLayout>
