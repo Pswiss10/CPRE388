@@ -1,4 +1,4 @@
-package com.example.notesapp.Activites;
+package com.example.notesapp.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 

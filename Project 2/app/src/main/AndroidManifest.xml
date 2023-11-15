@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activites.MainActivity">
+            android:name=".Activities.MainActivity">
         </activity>
         <activity
             android:name=".Firebase.CreateAccount">
