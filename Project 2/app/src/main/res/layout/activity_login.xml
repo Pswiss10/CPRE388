@@ -71,7 +71,7 @@
         app:layout_constraintVertical_bias="0.645" />
 
     <Button
-        android:id="@+id/createAccountButton"
+        android:id="@+id/createButton"
         android:layout_width="204dp"
         android:layout_height="45dp"
         android:text="Create An Account"
