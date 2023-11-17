@@ -27,6 +27,12 @@
         <activity
             android:name=".Firebase.CreateAccount">
         </activity>
+        <activity
+            android:name=".Activities.NoteViewer"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.NoteEditor"
+            android:exported="false" />
     </application>
 
 </manifest>
