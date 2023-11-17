@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.notesapp.Activities.MainActivity;
 import com.example.notesapp.R;
 import com.example.notesapp.util.FirebaseUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -79,7 +80,8 @@ public class Login extends AppCompatActivity {
                                 Log.d("Login", "signInWithEmail:success");
                                 Toast.makeText(Login.this, "Authentication successful.",
                                         Toast.LENGTH_SHORT).show();
-                                // TODO: Redirect to the next activity or perform other actions
+                                Intent intent = new Intent(Login.this, MainActivity.class);
+                                startActivity(intent);
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.w("Login", "signInWithEmail:failure", task.getException());
