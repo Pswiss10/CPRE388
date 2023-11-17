@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.notesapp.R;
 
@@ -21,6 +22,13 @@ public class NoteViewer extends AppCompatActivity {
 
         noteTextView = findViewById(R.id.noteTextViewViewer);
         editNoteButton = findViewById(R.id.editNoteButton);
+
+        if (getIntent().hasExtra("newNoteText")){
+            Bundle receivedBundle = getIntent().getExtras();
+            noteTextView.setText(receivedBundle.getCharSequence("newNoteText").toString());
+        } else {
+            Toast.makeText(getApplicationContext(), "There was no note passed to the activity", Toast.LENGTH_LONG).show();
+        }
 
         editNoteButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -2,7 +2,9 @@ package com.example.notesapp.Models;
 
 import android.widget.TextView;
 
-public class Notes {
+import java.io.Serializable;
+
+public class Notes implements Serializable   {
 
     private int ID;
     private int parentID;
