@@ -1,14 +1,20 @@
 package com.example.notesapp.Activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.notesapp.R;
 
@@ -79,5 +85,28 @@ public class MainActivity extends AppCompatActivity {
 
         NotebooksRecycler.setLayoutManager(new LinearLayoutManager(this));
         NotebooksRecycler.setAdapter(mAdapter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item){
+        int itemId = item.getItemId();
+
+        if (itemId == R.id.createNoteButton) {
+            Intent intent = new Intent(MainActivity.this, NoteViewer.class);
+            Bundle bundle = new Bundle();
+            bundle.putCharSequence("newNoteText", "New Note");
+            intent.putExtras(bundle);
+            startActivity(intent);
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
     }
 }
