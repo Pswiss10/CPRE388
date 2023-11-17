@@ -13,13 +13,7 @@
         android:theme="@style/Theme.NotesApp"
         tools:targetApi="31">
         <activity
-            android:name=".Activities.NoteViewer"
-            android:exported="false" />
-        <activity
-            android:name=".Activities.NoteEditor"
-            android:exported="false" />
-        <activity
-            android:name=".Activities.MainActivity"
+            android:name=".Firebase.Login"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,8 +21,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Firebase.Login" />
-        <activity android:name=".Firebase.CreateAccount" />
+        <activity
+            android:name=".Activities.MainActivity">
+        </activity>
+        <activity
+            android:name=".Firebase.CreateAccount">
+        </activity>
     </application>
 
 </manifest>
