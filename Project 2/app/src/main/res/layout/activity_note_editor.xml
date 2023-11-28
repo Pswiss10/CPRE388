@@ -4,40 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.NoteEditor"
-    >
+    tools:context=".Activities.NoteEditor">
 
     <EditText
         android:id="@+id/noteEditText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:hint="Tap to Edit Text..."
         android:inputType="textMultiLine"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/noteTextViewEditor" />
 
     <TextView
         android:id="@+id/noteTextViewEditor"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:text="hello"
         android:textSize="16sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/noteEditText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/updateNoteButton"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/updateNoteButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
         android:text="Update Note"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/noteEditText"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="213dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
