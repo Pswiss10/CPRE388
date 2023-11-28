@@ -4,34 +4,24 @@ import android.widget.TextView;
 
 import java.io.Serializable;
 
-public class Notes implements Serializable   {
-
-    private int ID;
-    private int parentID;
-    private TextView content;
-
+public class Notes implements Serializable {
     private String name;
-    private String photo;
+    private String color;
 
-
-    public Notes(TextView preset, int id, int parentId){
-        content = preset;
-        ID = id;
-        parentID = parentId;
+    // Constructors, getters, and setters
+    public Notes() {
+        // Default constructor required for Firestore
     }
 
-    public void highlightText(String text) {
-
-    }
-
-    public Notes() {}
-
-    public Notes(String name, String photo, int ID) {
+    // Assuming you have another constructor for creating Notes instances
+    public Notes(String name, String color) {
         this.name = name;
-        this.photo = photo;
-        this.ID = ID;
+        this.color = color;
     }
 
+    // Other methods as needed
+
+    // Getter and setter for name
     public String getName() {
         return name;
     }
@@ -40,19 +30,12 @@ public class Notes implements Serializable   {
         this.name = name;
     }
 
-    public String getPhoto() { return photo;}
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
+    // Getter and setter for color
+    public String getColor() {
+        return color;
     }
 
-    public int getID() { return ID;}
-
-    public void setID(String ID) {
-        this.photo = ID;
+    public void setColor(String color) {
+        this.color = color;
     }
-
-
-
-
 }

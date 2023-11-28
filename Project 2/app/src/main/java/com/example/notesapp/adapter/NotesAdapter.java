@@ -15,7 +15,9 @@
  */
 package com.example.notesapp.adapter;
 
+import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,21 +25,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.bumptech.glide.Glide;
+import com.example.notesapp.Activities.MainActivity;
 import com.example.notesapp.Models.Notes;
 import com.example.notesapp.R;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 
+import androidx.core.content.ContextCompat;
+
+
 public class NotesAdapter extends FirestoreAdapter<NotesAdapter.ViewHolder> {
+    private Context context;
 
     public interface OnNoteSelectedListener {
-
         void onNoteSelected(DocumentSnapshot note);
-
     }
 
     private OnNoteSelectedListener mListener;
@@ -59,7 +65,8 @@ public class NotesAdapter extends FirestoreAdapter<NotesAdapter.ViewHolder> {
         holder.bind(getSnapshot(position), mListener);
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
+        Drawable c;
 
         ImageView imageView;
         TextView nameView;
@@ -76,13 +83,39 @@ public class NotesAdapter extends FirestoreAdapter<NotesAdapter.ViewHolder> {
             Notes notes = snapshot.toObject(Notes.class);
             Resources resources = itemView.getResources();
 
-            // Load image
+            if (notes.getColor().equals("red")) {
+                c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.red_notebook);
+            }
+            if (notes.getColor().equals("orange")) {
+                c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.orange_notebook);
+            }
+            if (notes.getColor().equals("black")) {
+                c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.black_notebook);
+            }
+            if (notes.getColor().equals("blue")) {
+                c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.blue_notebook);
+            }
+            if (notes.getColor().equals("green")) {
+                c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.green_notebook);
+            }
+            if (notes.getColor().equals("grey")) {
+                c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.grey_notebook);
+            }
+            if (notes.getColor().equals("pink")) {
+                c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.pink_notebook);
+            }
+            if (notes.getColor().equals("purple")) {
+                c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.purple_notebook);
+            }
+            if (notes.getColor().equals("yellow")) {
+                c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.yellow_notebook);
+            }
+
             Glide.with(imageView.getContext())
-                    .load(notes.getPhoto())
+                    .load(c)
                     .into(imageView);
 
-            nameView.setText(notes.getName());
-
+            nameView.setText(notes.getName());  // Use the name from the Notes object
 
             // Click listener
             itemView.setOnClickListener(new View.OnClickListener() {

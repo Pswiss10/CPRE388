@@ -16,16 +16,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.notesapp.Models.Notes;
 import com.example.notesapp.R;
 
 import com.example.notesapp.adapter.NotesAdapter;
 import com.example.notesapp.util.FirebaseUtil;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -34,13 +43,14 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private ViewGroup mEmptyView;
 
-
     private RecyclerView NotebooksRecycler;
 
     private FirebaseFirestore mFirestore;
     private NotesAdapter mAdapter;
-    private Query mQuery;
+
+    Query notebooksCollection;
     private NotesAdapter.OnNoteSelectedListener listener;
+    String userId = "9Dp7bLK5N0PNLsHHbPUzBNEeF883"; // Replace with the actual user ID
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -52,18 +62,19 @@ public class MainActivity extends AppCompatActivity {
         FirebaseFirestore.setLoggingEnabled(true);
         mFirestore = FirebaseUtil.getFirestore();
 
-        mQuery = mFirestore.collection("users");
+        notebooksCollection = mFirestore.collection("users").document(userId)
+                .collection("notebooks");
         initRecyclerView();
 
     }
 
 
     private void initRecyclerView() {
-        if (mQuery == null) {
+        if (notebooksCollection == null) {
             Log.w(TAG, "No query, not initializing RecyclerView");
         }
 
-        mAdapter = new NotesAdapter(mQuery, listener) {
+        mAdapter = new NotesAdapter(notebooksCollection, listener) {
 
             @Override
             protected void onDataChanged() {
@@ -85,6 +96,24 @@ public class MainActivity extends AppCompatActivity {
 
         NotebooksRecycler.setLayoutManager(new LinearLayoutManager(this));
         NotebooksRecycler.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // Start listening for Firestore updates
+        if (mAdapter != null) {
+            mAdapter.startListening();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAdapter != null) {
+            mAdapter.stopListening();
+        }
     }
 
     @Override
