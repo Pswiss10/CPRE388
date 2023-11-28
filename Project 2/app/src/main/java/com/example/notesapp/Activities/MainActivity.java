@@ -142,23 +142,4 @@ public class MainActivity extends AppCompatActivity {
             return super.onOptionsItemSelected(item);
         }
     }
-    private void showPopupMenu(android.view.View view) {
-        PopupMenu popupMenu = new PopupMenu(this, view);
-        popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
-
-        popupMenu.setOnMenuItemClickListener(item -> {
-            // Handle popup menu item clicks here
-            if (item.getItemId() == R.id.popup_option_1) {
-
-                return true;
-            }
-            if (item.getItemId() == R.id.popup_option_2) {
-                return true;
-            }
-            return true;
-
-        });
-
-        popupMenu.show();
-    }
 }
