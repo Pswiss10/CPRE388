@@ -3,6 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/editNoteButton"
+        android:icon="@drawable/baseline_edit_24"
+        android:title="Complete Note"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/mainMenuOptionsButton"
         android:title="Main Menu" />
 </menu>

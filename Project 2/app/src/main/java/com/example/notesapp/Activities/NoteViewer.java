@@ -21,7 +21,6 @@ import com.google.firebase.auth.FirebaseUser;
 public class NoteViewer extends AppCompatActivity {
 
     private TextView noteTextView;
-    private Button editNoteButton;
     private String documentID;
 
 
@@ -31,7 +30,6 @@ public class NoteViewer extends AppCompatActivity {
         setContentView(R.layout.activity_note_viewer);
 
         noteTextView = findViewById(R.id.noteTextViewViewer);
-        editNoteButton = findViewById(R.id.editNoteButton);
         noteTextView.setMovementMethod(new ScrollingMovementMethod());
         Bundle receivedBundle = getIntent().getExtras();
 
@@ -46,17 +44,6 @@ public class NoteViewer extends AppCompatActivity {
             documentID = receivedBundle.getString("documentID");
         }
 
-        editNoteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(NoteViewer.this, NoteEditor.class);
-                Bundle options = new Bundle();
-                options.putCharSequence("NoteTextValue", noteTextView.getText());
-                options.putString("documentID", documentID);
-                intent.putExtras(options);
-                startActivity(intent);
-            }
-        });
     }
 
     @Override
@@ -70,7 +57,16 @@ public class NoteViewer extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         int itemId = item.getItemId();
 
-        if (itemId == R.id.mainMenuOptionsButton) {
+        if (itemId == R.id.editNoteButton){
+            Intent intent = new Intent(NoteViewer.this, NoteEditor.class);
+            Bundle options = new Bundle();
+            options.putCharSequence("NoteTextValue", noteTextView.getText());
+            options.putString("documentID", documentID);
+            intent.putExtras(options);
+            startActivity(intent);
+            return true;
+        }
+        else if (itemId == R.id.mainMenuOptionsButton) {
             Intent intent = new Intent(NoteViewer.this, MainActivity.class);
             Bundle bundle = new Bundle();
             bundle.putCharSequence("UpdatedNote", noteTextView.getText());
