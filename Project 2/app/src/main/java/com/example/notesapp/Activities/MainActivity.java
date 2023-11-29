@@ -16,11 +16,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.notesapp.Firebase.FirebaseHelper;
 import com.example.notesapp.R;
 
 import com.example.notesapp.adapter.NotesAdapter;
 import com.example.notesapp.util.FirebaseUtil;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -42,11 +45,12 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private ViewGroup mEmptyView;
 
-    private static FirebaseUser currUser;
+    private FirebaseUser currUser;
     private RecyclerView NotebooksRecycler;
 
     private FirebaseFirestore mFirestore;
     private NotesAdapter mAdapter;
+    private String userID;
 
     Query notebooksCollection;
     private NotesAdapter.OnNoteSelectedListener listener;
@@ -60,8 +64,8 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseFirestore.setLoggingEnabled(true);
         mFirestore = FirebaseUtil.getFirestore();
-
-        notebooksCollection = mFirestore.collection("users").document(userId)
+        userID = FirebaseHelper.getInstance().getCurrentUserId();
+        notebooksCollection = mFirestore.collection("users").document(userID)
                 .collection("notebooks");
         initRecyclerView();
 

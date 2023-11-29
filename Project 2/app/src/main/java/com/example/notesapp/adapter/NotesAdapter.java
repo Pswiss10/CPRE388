@@ -18,6 +18,7 @@ package com.example.notesapp.adapter;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,52 +82,70 @@ public class NotesAdapter extends FirestoreAdapter<NotesAdapter.ViewHolder> {
                          final OnNoteSelectedListener listener) {
 
             Notes notes = snapshot.toObject(Notes.class);
-            Resources resources = itemView.getResources();
+            if (notes != null) {
+                // Add logging to check the values
+                Log.d("NotesAdapter", "Name: " + notes.getName() + ", Color: " + notes.getColor());
 
-            if (notes.getColor().equals("red")) {
-                c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.red_notebook);
-            }
-            if (notes.getColor().equals("orange")) {
-                c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.orange_notebook);
-            }
-            if (notes.getColor().equals("black")) {
-                c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.black_notebook);
-            }
-            if (notes.getColor().equals("blue")) {
-                c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.blue_notebook);
-            }
-            if (notes.getColor().equals("green")) {
-                c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.green_notebook);
-            }
-            if (notes.getColor().equals("grey")) {
-                c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.grey_notebook);
-            }
-            if (notes.getColor().equals("pink")) {
-                c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.pink_notebook);
-            }
-            if (notes.getColor().equals("purple")) {
-                c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.purple_notebook);
-            }
-            if (notes.getColor().equals("yellow")) {
-                c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.yellow_notebook);
-            }
+                Resources resources = itemView.getResources();
 
-            Glide.with(imageView.getContext())
-                    .load(c)
-                    .into(imageView);
-
-            nameView.setText(notes.getName());  // Use the name from the Notes object
-
-            // Click listener
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (listener != null) {
-                        listener.onNoteSelected(snapshot);
+                if (notes.getColor() != null) {
+                    switch (notes.getColor()) {
+                        case "red":
+                            c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.red_notebook);
+                            break;
+                        case "orange":
+                            c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.orange_notebook);
+                            break;
+                        case "black":
+                            c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.black_notebook);
+                            break;
+                        case "blue":
+                            c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.blue_notebook);
+                            break;
+                        case "green":
+                            c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.green_notebook);
+                            break;
+                        case "grey":
+                            c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.grey_notebook);
+                            break;
+                        case "pink":
+                            c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.pink_notebook);
+                            break;
+                        case "purple":
+                            c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.purple_notebook);
+                            break;
+                        case "yellow":
+                            c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.yellow_notebook);
+                            break;
+                        // Add cases for other colors
+                        default:
+                            // Handle the case where the color is not recognized
+                            break;
                     }
-                }
-            });
-        }
+                    Glide.with(imageView.getContext())
+                            .load(c)
+                            .into(imageView);
 
+                    nameView.setText(notes.getName());  // Use the name from the Notes object
+
+                    // Click listener
+                    itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (listener != null) {
+                                listener.onNoteSelected(snapshot);
+
+                            }
+                        }
+                    });
+                } else {
+                    // Log a warning if the color is null
+                    Log.w("NotesAdapter", "Color is null for note with name: " + notes.getName());
+                }
+            } else {
+                // Log a warning if the Notes object is null
+                Log.w("NotesAdapter", "Notes object is null");
+            }
+        }
     }
 }
