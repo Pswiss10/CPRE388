@@ -1,22 +1,30 @@
 package com.example.notesapp.Activities;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.notesapp.Firebase.FirebaseHelper;
+import com.example.notesapp.Enums.FileType;
+import com.example.notesapp.Firebase.CreateAccount;
 import com.example.notesapp.R;
 
 import com.example.notesapp.adapter.NotesAdapter;
@@ -44,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int LIMIT = 50;
     private static final String TAG = "MainActivity";
     private ViewGroup mEmptyView;
+    String enteredText = "";
 
     private FirebaseUser currUser;
     private RecyclerView NotebooksRecycler;
@@ -133,38 +142,110 @@ public class MainActivity extends AppCompatActivity {
         int itemId = item.getItemId();
 
         if (itemId == R.id.createNoteButton) {
-            Intent intent = new Intent(MainActivity.this, NoteEditor.class);
-            Bundle bundle = new Bundle();
-            CollectionReference usersCollection = mFirestore.collection("users");
-
-            CollectionReference noteBooksCollection = usersCollection.document(FirebaseHelper.getInstance().getCurrentUserId()).collection("notebooks");
-
-            Map<String, Object> dataToAdd = new HashMap<>();
-            dataToAdd.put("color", "black");
-            dataToAdd.put("content", "Blank Note");
-            dataToAdd.put("name", "New Note");
-            // Add other fields as needed
-
-            // Add data to the user's subcollection
-            noteBooksCollection.add(dataToAdd)
-                    .addOnSuccessListener(documentReference -> {
-                        // Document added successfully
-                        String subDocumentId = documentReference.getId();
-                        bundle.putString("documentID", subDocumentId);
-                        bundle.putCharSequence("NoteTextValue", "Blank Note");
-                        intent.putExtras(bundle);
-                        startActivity(intent);
-                        Log.d("Firestore", "Document added to userData with ID: " + subDocumentId);
-                    })
-                    .addOnFailureListener(e -> {
-                        // Handle errors
-                        Log.e("Firestore", "Error adding document to userData", e);
-                    });
-
-
+            createNewNote();
             return true;
-        } else {
-            return super.onOptionsItemSelected(item);
+        } else if(itemId == R.id.createFolderButton) {
+            String name = createNewFolder();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
+
+    /**
+     *
+     * @return true if a new folder is created, false if a new folder is not created
+     */
+    public String createNewFolder() {
+        return newPopup(FileType.FOLDER);
+    }
+
+    /**
+     *
+     * @return true if a new note is created, false if a new note is not created
+     */
+    public String createNewNote() {
+        return newPopup(FileType.NOTE);
+    }
+
+    public String newPopup(FileType fileType) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.activity_popup, null);
+        final EditText editText = dialogView.findViewById(R.id.editText);
+        TextView header = dialogView.findViewById(R.id.editTextHeader);
+
+        if(fileType == FileType.NOTE) {
+            header.setText("Enter New Note Name:");
+        } else if (fileType == FileType.FOLDER) {
+            header.setText("Enter New Folder Name:");
+        }
+
+        builder.setView(dialogView)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+                        // Handle the OK button click
+                        enteredText = editText.getText().toString();
+
+                        if(!(enteredText.length() > 0)) {
+                            Toast.makeText(MainActivity.this, "Name length must be greater than 0 characters",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            String type = "";
+                            if(fileType == FileType.NOTE) {
+                                type = "Note";
+                                toNewNote(enteredText);
+                            } else if (fileType == FileType.FOLDER) {
+                                type = "Folder";
+                            }
+
+                            Toast.makeText(MainActivity.this, "New " + type + " created",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        //Process the entered text
+                        dialogInterface.dismiss();  // Dismiss the dialog if needed
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+                        // Handle the Cancel button click
+                        dialogInterface.dismiss();  // Dismiss the dialog
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        return enteredText;
+    }
+
+    public void toNewNote(String name) {
+        Intent intent = new Intent(MainActivity.this, NoteEditor.class);
+        Bundle bundle = new Bundle();
+        CollectionReference usersCollection = mFirestore.collection("users");
+        CollectionReference noteBooksCollection = usersCollection.document(FirebaseHelper.getInstance().getCurrentUserId()).collection("notebooks");
+        Map<String, Object> dataToAdd = new HashMap<>();
+        dataToAdd.put("color", "black");
+        dataToAdd.put("content", "Blank Note");
+        dataToAdd.put("name", name);
+        // Add other fields as needed
+
+        // Add data to the user's subcollection
+        noteBooksCollection.add(dataToAdd)
+                .addOnSuccessListener(documentReference -> {
+                    // Document added successfully
+                    String subDocumentId = documentReference.getId();
+                    bundle.putString("documentID", subDocumentId);
+                    bundle.putCharSequence("NoteTextValue", "Blank Note");
+                    bundle.putString("noteName", name);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                    Log.d("Firestore", "Document added to userData with ID: " + subDocumentId);
+                })
+                .addOnFailureListener(e -> {
+                    // Handle errors
+                    Log.e("Firestore", "Error adding document to userData", e);
+                });
+    }
+
 }
