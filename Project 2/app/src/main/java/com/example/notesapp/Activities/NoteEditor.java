@@ -33,6 +33,7 @@ public class NoteEditor extends AppCompatActivity {
     private EditText noteEditText;
     private Button updateNoteButton;
     private String documentID;
+    private String newNoteName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +53,9 @@ public class NoteEditor extends AppCompatActivity {
         if (getIntent().hasExtra("documentID")){
             documentID = receivedBundle.getString("documentID");
         }
-
+        if(getIntent().hasExtra("noteName")) {
+            newNoteName = receivedBundle.getCharSequence("noteName").toString();
+        }
 
         noteEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -100,7 +103,7 @@ public class NoteEditor extends AppCompatActivity {
 
             Map<String, Object> dataToUpdate = new HashMap<>();
             dataToUpdate.put("content", noteTextView.getText().toString());
-            dataToUpdate.put("name", "new name 2");
+            dataToUpdate.put("name", newNoteName);
             dataToUpdate.put("color", "blue");
 
             updateNote.update(dataToUpdate)
