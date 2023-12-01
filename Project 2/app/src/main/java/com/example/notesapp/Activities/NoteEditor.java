@@ -110,8 +110,6 @@ public class NoteEditor extends AppCompatActivity {
 
             Map<String, Object> dataToUpdate = new HashMap<>();
             dataToUpdate.put("content", noteTextView.getText().toString());
-            dataToUpdate.put("name", newNoteName);
-            dataToUpdate.put("color", "blue");
 
             updateNote.update(dataToUpdate)
                     .addOnSuccessListener(aVoid -> Log.d("Firestore", "Document successfully updated"))

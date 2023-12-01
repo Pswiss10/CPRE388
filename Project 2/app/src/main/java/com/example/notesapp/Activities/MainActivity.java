@@ -41,7 +41,9 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import java.util.HashMap;
@@ -62,8 +64,10 @@ public class MainActivity extends AppCompatActivity implements
     private FirebaseFirestore mFirestore;
     private NotesAdapter mAdapter;
     private String userID;
-
-    Query notebooksCollection;
+    Query currCollection;
+    String collectionPathString = "notebooks";
+    ArrayList<String> collectionPathsArray;
+    private int selectedOption = -1;
     private NotesAdapter.OnNoteSelectedListener listener;
 
     @SuppressLint("MissingInflatedId")
@@ -76,21 +80,38 @@ public class MainActivity extends AppCompatActivity implements
         FirebaseFirestore.setLoggingEnabled(true);
         mFirestore = FirebaseUtil.getFirestore();
         userID = FirebaseHelper.getInstance().getCurrentUserId();
-        notebooksCollection = mFirestore.collection("users").document(userID)
-                .collection("notebooks");
+        collectionPathsArray = createNewCollectionPath();
+        updateCollectionPathString(collectionPathsArray); // set path initially as root collection
+
+        Bundle receivedBundle = getIntent().getExtras();
+        // TODO: if the bundle indicates we have moved to a new folder, update the collectionPath
+        if (getIntent().hasExtra("type") && receivedBundle.getCharSequence("type").toString().equals("folder")){
+            updateCollectionPathString(receivedBundle.getStringArrayList("path"));
+        }
+        currCollection = mFirestore.collection("users").document(userID)
+                .collection(collectionPathString);
+
         initRecyclerView();
 
         currUser = FirebaseAuth.getInstance().getCurrentUser();
+    }
 
+    public void updateCollectionPathString(ArrayList<String> collectionPathList) {
+        StringBuilder pathBuilder = new StringBuilder();
+        for (String collection : collectionPathList) {
+            pathBuilder.append(collection).append("/");
+        }
+        pathBuilder.deleteCharAt(pathBuilder.length() - 1); // Remove the trailing '/'
+        collectionPathString = pathBuilder.toString();
     }
 
 
     private void initRecyclerView() {
-        if (notebooksCollection == null) {
+        if (currCollection == null) {
             Log.w(TAG, "No query, not initializing RecyclerView");
         }
 
-        mAdapter = new NotesAdapter(notebooksCollection, this) {
+        mAdapter = new NotesAdapter(currCollection, this) {
 
             @Override
             protected void onDataChanged() {
@@ -110,6 +131,11 @@ public class MainActivity extends AppCompatActivity implements
             }
         };
 
+        /**
+         * TODO: When populating the viewer, check the isHidden attribute
+         * If isHidden = true, hide it, since it is the "fake" document
+         * that we must create in order to create a subcollection
+         */
         NotebooksRecycler.setLayoutManager(new LinearLayoutManager(this));
         NotebooksRecycler.setAdapter(mAdapter);
     }
@@ -136,6 +162,12 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
+        MenuItem changeFolderColorButton = menu.findItem(R.id.changeFolderColorButton);
+        if(collectionPathString.equals("notebooks")) {
+            changeFolderColorButton.setVisible(false);
+        } else {
+            changeFolderColorButton.setVisible(true);
+        }
         return true;
     }
 
@@ -144,32 +176,25 @@ public class MainActivity extends AppCompatActivity implements
         int itemId = item.getItemId();
 
         if (itemId == R.id.createNoteButton) {
-            createNewNote();
+            newNamePopup(FileType.NOTE);
             return true;
         } else if(itemId == R.id.createFolderButton) {
-            String name = createNewFolder();
+            newNamePopup(FileType.FOLDER);
+            return true;
+        } else if(itemId == R.id.changeFolderColorButton) {
+            changeFolderColor();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     /**
-     *
-     * @return true if a new folder is created, false if a new folder is not created
+     * When a user selects a menu item, a popup will appear asking for
+     * the name of the new item
+     * @param fileType, NOTE or FOLDER
+     * @return
      */
-    public String createNewFolder() {
-        return newPopup(FileType.FOLDER);
-    }
-
-    /**
-     *
-     * @return true if a new note is created, false if a new note is not created
-     */
-    public String createNewNote() {
-        return newPopup(FileType.NOTE);
-    }
-
-    public String newPopup(FileType fileType) {
+    public String newNamePopup(FileType fileType) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.activity_popup, null);
@@ -193,16 +218,7 @@ public class MainActivity extends AppCompatActivity implements
                             Toast.makeText(MainActivity.this, "Name length must be greater than 0 characters",
                                     Toast.LENGTH_SHORT).show();
                         } else {
-                            String type = "";
-                            if(fileType == FileType.NOTE) {
-                                type = "Note";
-                                toNewNote(enteredText);
-                            } else if (fileType == FileType.FOLDER) {
-                                type = "Folder";
-                            }
-
-                            Toast.makeText(MainActivity.this, "New " + type + " created",
-                                    Toast.LENGTH_SHORT).show();
+                            newColorPopup(enteredText, fileType);
                         }
                         //Process the entered text
                         dialogInterface.dismiss();  // Dismiss the dialog if needed
@@ -221,26 +237,68 @@ public class MainActivity extends AppCompatActivity implements
         return enteredText;
     }
 
-    public void toNewNote(String name) {
+    public void newColorPopup(String name, FileType fileType) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+
+        builder.setTitle("Select a Color:");
+        final String[] options = {"Red", "Blue", "Green", "Grey", "Black", "Orange", "Pink", "Yellow", "Purple"};
+
+        builder.setSingleChoiceItems(options, selectedOption, (dialog, which) -> {
+            // Handle radio button selection
+            selectedOption = which;
+        });
+
+        // Set OK button
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            // Handle OK button click
+            if (selectedOption != -1 && selectedOption != options.length - 1) {
+                String selectedValue = options[selectedOption];
+                Toast.makeText(this, "Selected Option: " + selectedValue, Toast.LENGTH_SHORT).show();
+                if(fileType == FileType.NOTE) {
+                    createNewNote(enteredText, selectedValue.toLowerCase());
+                } else if (fileType == FileType.FOLDER) {
+                    createNewFolder(enteredText, selectedValue.toLowerCase());
+                }
+            } else {
+                Toast.makeText(this, "No option selected or 'None' selected", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Set Cancel button
+        builder.setNegativeButton("Cancel", (dialog, which) -> {
+            // Handle Cancel button click
+            dialog.dismiss(); // Dismiss the dialog
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    public void createNewNote(String name, String color) {
         Intent intent = new Intent(MainActivity.this, NoteEditor.class);
         Bundle bundle = new Bundle();
         CollectionReference usersCollection = mFirestore.collection("users");
-        CollectionReference noteBooksCollection = usersCollection.document(FirebaseHelper.getInstance().getCurrentUserId()).collection("notebooks");
+        CollectionReference currCollectionRef = usersCollection.document(FirebaseHelper.getInstance().getCurrentUserId()).collection(collectionPathString);
+
+        // Data to Add to document
         Map<String, Object> dataToAdd = new HashMap<>();
-        dataToAdd.put("color", "black");
-        dataToAdd.put("content", "Blank Note");
+        dataToAdd.put("color", color);
         dataToAdd.put("name", name);
         ////TODO set font and color into dataToAdd and set them
-        // Add other fields as needed
+        dataToAdd.put("type", "note");
 
+        // Add other fields as needed
         // Add data to the user's subcollection
-        noteBooksCollection.add(dataToAdd)
+        currCollectionRef.add(dataToAdd)
                 .addOnSuccessListener(documentReference -> {
                     // Document added successfully
                     String subDocumentId = documentReference.getId();
                     bundle.putString("documentID", subDocumentId);
                     bundle.putCharSequence("NoteTextValue", "Blank Note");
                     bundle.putString("noteName", name);
+                    bundle.putString("type", "folder");
                     intent.putExtras(bundle);
                     startActivity(intent);
                     Log.d("Firestore", "Document added to userData with ID: " + subDocumentId);
@@ -249,6 +307,119 @@ public class MainActivity extends AppCompatActivity implements
                     // Handle errors
                     Log.e("Firestore", "Error adding document to userData", e);
                 });
+    }
+
+    // Note: The user will stay in the current directory after creating a folder
+    public void createNewFolder(String name, String color) {
+        Intent intent = new Intent(MainActivity.this, MainActivity.class);
+        Bundle bundle = new Bundle();
+        CollectionReference usersCollection = mFirestore.collection("users");
+        CollectionReference currCollectionRef = usersCollection.document(FirebaseHelper.getInstance().getCurrentUserId()).collection(collectionPathString);
+
+        // Data to Add to document
+        Map<String, Object> dataToAdd = new HashMap<>();
+        dataToAdd.put("color", color);
+        dataToAdd.put("name", name);
+        dataToAdd.put("type", "folder");
+        // Add other fields as needed
+
+        // Add data to the user's subcollection
+        currCollectionRef.add(dataToAdd)
+                .addOnSuccessListener(documentReference -> {
+                    // Document added successfully, create subcollection
+                    String subDocumentId = documentReference.getId();
+                    DocumentReference newDocumentRef = currCollectionRef.document(subDocumentId);
+                    CollectionReference subCollectionRef = newDocumentRef.collection("notes");
+                    Map<String, Object> subCollectionData = new HashMap<>();
+                    subCollectionData.put("isHidden", "true");
+
+                    subCollectionRef.add(subCollectionData)
+                            .addOnSuccessListener(subDocumentReference -> {
+                                // Subdocument added successfully (Note: corrected term, it's subCollectionReference)
+
+                                Log.d("Firestore", "Subdocument added to subcollection with ID: " + subDocumentReference.getId());
+                            })
+                            .addOnFailureListener(e -> {
+                                // Handle errors
+                                Log.e("Firestore", "Error adding subdocument to subcollection", e);
+                            });
+                    Log.d("Firestore", "Folder added");
+                })
+                .addOnFailureListener(e -> {
+                    // Handle errors
+                    Log.e("Firestore", "Error adding document to userData", e);
+                });
+    }
+
+    /**
+     * Create a new collection path array list that stores all the collection paths
+     * that a user has iterated through
+     * This method is only called on the first onCreate of MainActivity
+     * @return
+     */
+    public ArrayList<String> createNewCollectionPath() {
+        ArrayList<String> newList = new ArrayList<>();
+        newList.add("notebooks");
+        return newList;
+    }
+
+    /**
+     * Add a new collection path if the user is moving to a new folder
+     * @param list
+     * @param collectionId
+     * @return
+     */
+    public ArrayList<String> addToCollectionPathArray(ArrayList<String> list, String collectionId) {
+        ArrayList<String> newList = list;
+        newList.add(collectionId);
+        return newList;
+    }
+
+    public void changeFolderColor() {
+        //TODO: GET SELECTED COLOR FROM ALERT DIALOG
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select a Color:");
+        final String[] options = {"Red", "Blue", "Green", "Grey", "Black", "Orange", "Pink", "Yellow", "Purple"};
+
+        builder.setSingleChoiceItems(options, selectedOption, (dialog, which) -> {
+            // Handle radio button selection
+            selectedOption = which;
+        });
+
+        CollectionReference usersCollection = mFirestore.collection("users");
+        CollectionReference currCollectionRef = usersCollection.document(FirebaseHelper.getInstance().getCurrentUserId()).collection(collectionPathString);
+
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            if (selectedOption != -1 && selectedOption != options.length - 1) {
+                String selectedValue = options[selectedOption];
+                Toast.makeText(this, "Selected Option: " + selectedValue, Toast.LENGTH_SHORT).show();
+
+                Map<String, Object> dataToAdd = new HashMap<>();
+                dataToAdd.put("color", selectedValue.toLowerCase());
+
+                // Add data to the user's subcollection
+                currCollectionRef.add(dataToAdd)
+                        .addOnSuccessListener(documentReference -> {
+                            // Document added successfully
+                            Log.d("Color", "Folder color changed");
+                        })
+                        .addOnFailureListener(e -> {
+                            // Handle errors
+                            Log.e("Color", "Error when changing folder color");
+                        });
+            } else {
+                Toast.makeText(this, "No option selected or 'None' selected", Toast.LENGTH_SHORT).show();
+            }
+        });
+        // Set Cancel button
+        builder.setNegativeButton("Cancel", (dialog, which) -> {
+            // Handle Cancel button click
+            dialog.dismiss(); // Dismiss the dialog
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     @Override
