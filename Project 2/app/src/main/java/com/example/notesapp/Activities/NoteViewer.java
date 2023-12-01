@@ -44,6 +44,8 @@ public class NoteViewer extends AppCompatActivity {
             documentID = receivedBundle.getString("documentID");
         }
 
+        ////TODO get font and color from database and set them
+
     }
 
     @Override

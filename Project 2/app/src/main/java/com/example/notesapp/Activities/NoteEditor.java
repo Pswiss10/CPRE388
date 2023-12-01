@@ -1,13 +1,16 @@
 package com.example.notesapp.Activities;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,9 +18,11 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.notesapp.Enums.FileType;
 import com.example.notesapp.Firebase.FirebaseHelper;
 import com.example.notesapp.R;
 import com.google.firebase.firestore.CollectionReference;
@@ -56,6 +61,8 @@ public class NoteEditor extends AppCompatActivity {
         if(getIntent().hasExtra("noteName")) {
             newNoteName = receivedBundle.getCharSequence("noteName").toString();
         }
+
+        //TODO get font and color from database and set them
 
         noteEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -116,7 +123,7 @@ public class NoteEditor extends AppCompatActivity {
             startActivity(intent);
             return true;
         } else if (itemId == R.id.customizeStyleMenuOption) {
-            Toast.makeText(getApplicationContext(), "Customize Button clicked", Toast.LENGTH_LONG).show();
+            newPopup();
             return true;
         } else {
             return super.onOptionsItemSelected(item);
@@ -136,5 +143,45 @@ public class NoteEditor extends AppCompatActivity {
         if (imm != null) {
             imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
+    }
+
+    public void newPopup() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+
+        View dialogView = inflater.inflate(R.layout.edit_note_styling_popup, null);
+        final TextView colorTextView = dialogView.findViewById(R.id.colorTextView);
+        final TextView fontTextView = dialogView.findViewById(R.id.fontTextView);
+        Spinner colorSpinner = dialogView.findViewById(R.id.colorSpinner);
+        Spinner fontSpinner = dialogView.findViewById(R.id.fontSpinner);
+        final TextView header = dialogView.findViewById(R.id.noteStyleHeader);
+
+        //TODO set font and color to the spinners
+
+        builder.setView(dialogView)
+                .setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+                        //TODO Set new text font
+
+                        //TODO Set new color of font
+
+                        //TODO push new font and color to backend
+
+
+                        //Process the entered text
+                        dialogInterface.dismiss();  // Dismiss the dialog if needed
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+                        // Handle the Cancel button click
+                        dialogInterface.dismiss();  // Dismiss the dialog
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

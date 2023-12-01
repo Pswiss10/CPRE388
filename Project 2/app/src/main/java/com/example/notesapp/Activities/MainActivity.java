@@ -228,6 +228,7 @@ public class MainActivity extends AppCompatActivity {
         dataToAdd.put("color", "black");
         dataToAdd.put("content", "Blank Note");
         dataToAdd.put("name", name);
+        ////TODO set font and color into dataToAdd and set them
         // Add other fields as needed
 
         // Add data to the user's subcollection
