@@ -33,6 +33,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -47,7 +48,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements
+        NotesAdapter.OnNoteSelectedListener {
 
     private static final int LIMIT = 50;
     private static final String TAG = "MainActivity";
@@ -88,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
             Log.w(TAG, "No query, not initializing RecyclerView");
         }
 
-        mAdapter = new NotesAdapter(notebooksCollection, listener) {
+        mAdapter = new NotesAdapter(notebooksCollection, this) {
 
             @Override
             protected void onDataChanged() {
@@ -246,6 +248,17 @@ public class MainActivity extends AppCompatActivity {
                     // Handle errors
                     Log.e("Firestore", "Error adding document to userData", e);
                 });
+    }
+
+    @Override
+    public void onNoteSelected(DocumentSnapshot note) {
+        Intent intent = new Intent(this, NoteViewer.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("documentID", note.getId());
+        bundle.putCharSequence("NoteTextValue", note.get("content", String.class));
+        bundle.putString("noteName", note.get("name", String.class));
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
 }
