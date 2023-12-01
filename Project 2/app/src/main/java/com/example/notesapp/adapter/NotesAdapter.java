@@ -16,8 +16,10 @@
 package com.example.notesapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +34,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.notesapp.Activities.MainActivity;
+import com.example.notesapp.Activities.NoteEditor;
+import com.example.notesapp.Activities.NoteViewer;
 import com.example.notesapp.Models.Notes;
 import com.example.notesapp.R;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -134,7 +138,6 @@ public class NotesAdapter extends FirestoreAdapter<NotesAdapter.ViewHolder> {
                         public void onClick(View view) {
                             if (listener != null) {
                                 listener.onNoteSelected(snapshot);
-
                             }
                         }
                     });

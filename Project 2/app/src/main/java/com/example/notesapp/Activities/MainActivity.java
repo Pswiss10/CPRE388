@@ -50,7 +50,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements
+        NotesAdapter.OnNoteSelectedListener {
 
     private static final int LIMIT = 50;
     private static final String TAG = "MainActivity";
@@ -91,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
                 .collection(collectionPathString);
 
         initRecyclerView();
+
         currUser = FirebaseAuth.getInstance().getCurrentUser();
     }
 
@@ -103,12 +105,13 @@ public class MainActivity extends AppCompatActivity {
         collectionPathString = pathBuilder.toString();
     }
 
+
     private void initRecyclerView() {
         if (currCollection == null) {
             Log.w(TAG, "No query, not initializing RecyclerView");
         }
 
-        mAdapter = new NotesAdapter(currCollection, listener) {
+        mAdapter = new NotesAdapter(currCollection, this) {
 
             @Override
             protected void onDataChanged() {
@@ -210,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int which) {
                         // Handle the OK button click
                         enteredText = editText.getText().toString();
+
                         if(!(enteredText.length() > 0)) {
                             Toast.makeText(MainActivity.this, "Name length must be greater than 0 characters",
                                     Toast.LENGTH_SHORT).show();
@@ -415,6 +419,17 @@ public class MainActivity extends AppCompatActivity {
         // Create and show the AlertDialog
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    @Override
+    public void onNoteSelected(DocumentSnapshot note) {
+        Intent intent = new Intent(this, NoteViewer.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("documentID", note.getId());
+        bundle.putCharSequence("NoteTextValue", note.get("content", String.class));
+        bundle.putString("noteName", note.get("name", String.class));
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
 }
