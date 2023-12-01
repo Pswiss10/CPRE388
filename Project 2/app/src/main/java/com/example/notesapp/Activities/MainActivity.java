@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         updateCollectionPathString(collectionPathsArray); // set path initially as root collection
 
         Bundle receivedBundle = getIntent().getExtras();
-        // if the bundle indicates we have moved to a new folder, update the collectionPath
+        // TODO: if the bundle indicates we have moved to a new folder, update the collectionPath
         if (getIntent().hasExtra("type") && receivedBundle.getCharSequence("type").toString().equals("folder")){
             updateCollectionPathString(receivedBundle.getStringArrayList("path"));
         }
