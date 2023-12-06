@@ -1,28 +1,41 @@
 package com.example.notesapp.Activities;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ArrayAdapter;
 
+import com.example.notesapp.Enums.FileType;
 import com.example.notesapp.Firebase.FirebaseHelper;
 import com.example.notesapp.R;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +46,10 @@ public class NoteEditor extends AppCompatActivity {
     private EditText noteEditText;
     private Button updateNoteButton;
     private String documentID;
-    private String newNoteName = "";
+    private String newNoteName = "New Note";
+    private String textColor = "Black";
+    private String font = "noto sans";
+    private String noteName = "New Note";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +72,20 @@ public class NoteEditor extends AppCompatActivity {
         if(getIntent().hasExtra("noteName")) {
             newNoteName = receivedBundle.getCharSequence("noteName").toString();
         }
+
+        if(getIntent().hasExtra("Text Color")) {
+            textColor = receivedBundle.getString("Text Color");
+        }
+
+        if(getIntent().hasExtra("Font")) {
+            font = receivedBundle.getString("Font");
+        }
+
+        if(getIntent().hasExtra("noteName")) {
+            noteName = receivedBundle.getString("noteName");
+        }
+
+        updateLookOfTextView();
 
         noteEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -103,6 +133,9 @@ public class NoteEditor extends AppCompatActivity {
 
             Map<String, Object> dataToUpdate = new HashMap<>();
             dataToUpdate.put("content", noteTextView.getText().toString());
+            dataToUpdate.put("Text Color", textColor);
+            dataToUpdate.put("Font", font);
+            dataToUpdate.put("name", noteName);
 
             updateNote.update(dataToUpdate)
                     .addOnSuccessListener(aVoid -> Log.d("Firestore", "Document successfully updated"))
@@ -110,11 +143,14 @@ public class NoteEditor extends AppCompatActivity {
 
             bundle.putCharSequence("NoteTextValue", noteTextView.getText());
             bundle.putString("documentID", documentID);
+            bundle.putString("Font", font);
+            bundle.putString("Text Color", textColor);
+            bundle.putString("noteName", noteName);
             intent.putExtras(bundle);
             startActivity(intent);
             return true;
         } else if (itemId == R.id.customizeStyleMenuOption) {
-            Toast.makeText(getApplicationContext(), "Customize Button clicked", Toast.LENGTH_LONG).show();
+            newPopup();
             return true;
         } else {
             return super.onOptionsItemSelected(item);
@@ -134,5 +170,99 @@ public class NoteEditor extends AppCompatActivity {
         if (imm != null) {
             imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
+    }
+
+    public void newPopup() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+
+        View dialogView = inflater.inflate(R.layout.edit_note_styling_popup, null);
+        final TextView colorTextView = dialogView.findViewById(R.id.colorTextView);
+        final TextView fontTextView = dialogView.findViewById(R.id.fontTextView);
+        Spinner colorSpinner = dialogView.findViewById(R.id.colorSpinner);
+        Spinner fontSpinner = dialogView.findViewById(R.id.fontSpinner);
+        final TextView header = dialogView.findViewById(R.id.noteStyleHeader);
+        EditText nameEditText = dialogView.findViewById(R.id.nameEditText);
+
+        ArrayAdapter<CharSequence> colorAdapter = ArrayAdapter.createFromResource(this, R.array.Text_colors, android.R.layout.simple_spinner_item);
+        colorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        colorSpinner.setAdapter(colorAdapter);
+
+        colorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                textColor = adapterView.getItemAtPosition(i).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                textColor = "Black";
+            }
+        });
+
+        ArrayAdapter<CharSequence> fontAdapter = ArrayAdapter.createFromResource(this, R.array.Fonts, android.R.layout.simple_spinner_item);
+        fontAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        fontSpinner.setAdapter(fontAdapter);
+
+        fontSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                font = adapterView.getItemAtPosition(i).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                font = "noto sans";
+            }
+        });
+
+        nameEditText.setText(noteName);
+
+        builder.setView(dialogView)
+                .setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+
+                        noteName = nameEditText.getText().toString();
+
+                        updateLookOfTextView();
+
+                        dialogInterface.dismiss();  // Dismiss the dialog if needed
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+                        // Handle the Cancel button click
+                        dialogInterface.dismiss();  // Dismiss the dialog
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void updateLookOfTextView(){
+        int fontId;
+        switch (font){
+            case "arimo":
+                fontId = R.font.arimo;
+                break;
+            case "basic":
+                fontId = R.font.basic;
+                break;
+            case "capriola":
+                fontId = R.font.capriola;
+                break;
+            case "merienda":
+                fontId = R.font.merienda;
+                break;
+            default:
+                fontId = R.font.noto_sans;
+                break;
+        }
+        Typeface newTypeFace = ResourcesCompat.getFont(this, fontId);
+        noteTextView.setTypeface(newTypeFace);
+        noteTextView.setTextColor(Color.parseColor(textColor));
     }
 }

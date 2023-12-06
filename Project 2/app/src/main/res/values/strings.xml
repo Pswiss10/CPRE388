@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">Great Notes</string>
+    <string-array name="Text_colors">
+        <item>Black</item>
+        <item>Blue</item>
+        <item>Red</item>
+        <item>Green</item>
+        <item>Gray</item>
+        <item>Yellow</item>
+        <item>Brown</item>
+        <item>Pink</item>
+        <item>Orange</item>
+        <item>Purple</item>
+    </string-array>
+    <string-array name="Fonts">
+        <item>arimo</item>
+        <item>basic</item>
+        <item>capriola</item>
+        <item>merienda</item>
+        <item>noto sans</item>
+        <!-- Add more font file names as needed -->
+    </string-array>
+
 </resources>

@@ -2,8 +2,11 @@ package com.example.notesapp.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
@@ -22,6 +25,12 @@ public class NoteViewer extends AppCompatActivity {
 
     private TextView noteTextView;
     private String documentID;
+
+    private String textColor = "Black";
+    private String font = "noto sans";
+
+    private String noteName = "New Note";
+
 
 
     @Override
@@ -44,6 +53,21 @@ public class NoteViewer extends AppCompatActivity {
             documentID = receivedBundle.getString("documentID");
         }
 
+        if(getIntent().hasExtra("Text Color")) {
+            textColor = receivedBundle.getString("Text Color");
+        }
+
+        if(getIntent().hasExtra("Font")) {
+            font = receivedBundle.getString("Font");
+        }
+
+        if(getIntent().hasExtra("noteName")) {
+            noteName = receivedBundle.getString("noteName");
+        }
+
+        updateLookOfTextView();
+
+
     }
 
     @Override
@@ -62,6 +86,9 @@ public class NoteViewer extends AppCompatActivity {
             Bundle options = new Bundle();
             options.putCharSequence("NoteTextValue", noteTextView.getText());
             options.putString("documentID", documentID);
+            options.putString("Font", font);
+            options.putString("Text Color", textColor);
+            options.putString("noteName", noteName);
             intent.putExtras(options);
             startActivity(intent);
             return true;
@@ -77,5 +104,29 @@ public class NoteViewer extends AppCompatActivity {
         } else {
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void updateLookOfTextView(){
+        int fontId;
+        switch (font){
+            case "arimo":
+                fontId = R.font.arimo;
+                break;
+            case "basic":
+                fontId = R.font.basic;
+                break;
+            case "capriola":
+                fontId = R.font.capriola;
+                break;
+            case "merienda":
+                fontId = R.font.merienda;
+                break;
+            default:
+                fontId = R.font.noto_sans;
+                break;
+        }
+        Typeface newTypeFace = ResourcesCompat.getFont(this, fontId);
+        noteTextView.setTypeface(newTypeFace);
+        noteTextView.setTextColor(Color.parseColor(textColor));
     }
 }
