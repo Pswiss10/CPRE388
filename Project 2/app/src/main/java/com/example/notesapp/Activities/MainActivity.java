@@ -64,6 +64,9 @@ public class MainActivity extends AppCompatActivity implements
     private FirebaseFirestore mFirestore;
     private NotesAdapter mAdapter;
     private String userID;
+
+    private String textColor = "Black";
+    private String font = "noto sans";
     Query currCollection;
     String collectionPathString = "notebooks";
     ArrayList<String> collectionPathsArray;
@@ -286,7 +289,8 @@ public class MainActivity extends AppCompatActivity implements
         Map<String, Object> dataToAdd = new HashMap<>();
         dataToAdd.put("color", color);
         dataToAdd.put("name", name);
-        ////TODO set font and color into dataToAdd and set them
+        dataToAdd.put("Text Color", "Black");
+        dataToAdd.put("Font", "noto sans");
         dataToAdd.put("type", "note");
 
         // Add other fields as needed
@@ -299,6 +303,8 @@ public class MainActivity extends AppCompatActivity implements
                     bundle.putCharSequence("NoteTextValue", "Blank Note");
                     bundle.putString("noteName", name);
                     bundle.putString("type", "folder");
+                    bundle.putString("Font", "noto sans");
+                    bundle.putString("Text Color", "Black");
                     intent.putExtras(bundle);
                     startActivity(intent);
                     Log.d("Firestore", "Document added to userData with ID: " + subDocumentId);
@@ -429,6 +435,8 @@ public class MainActivity extends AppCompatActivity implements
         bundle.putString("documentID", note.getId());
         bundle.putCharSequence("NoteTextValue", note.get("content", String.class));
         bundle.putString("noteName", note.get("name", String.class));
+        bundle.putString("Font", note.get("Font", String.class));
+        bundle.putString("Text Color", note.get("Text Color", String.class));
         intent.putExtras(bundle);
         startActivity(intent);
     }
