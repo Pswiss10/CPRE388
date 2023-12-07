@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/selectableItemBackground"
     android:orientation="vertical"
     android:padding="8dp"
     tools:context=".Activities.MainActivity">
@@ -13,7 +12,6 @@
         android:id="@+id/notebook_item_image"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:background="#757575"
         android:scaleType="centerCrop"
         android:src="@drawable/black_notebook" />
 
@@ -22,14 +20,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/notebook_item_image"
-        android:layout_marginBottom="4dp"
         android:layout_marginLeft="8dp"
-        android:textSize="30dp"
-        android:fontFamily="sans-serif-smallcaps"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="4dp"
         android:layout_toRightOf="@+id/notebook_item_image"
         android:ellipsize="end"
+        android:fontFamily="sans-serif-smallcaps"
         android:maxLines="1"
+        android:textSize="30dp"
         tools:text="Foo's Notebook" />
 
 

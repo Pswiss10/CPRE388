@@ -51,7 +51,7 @@ import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity implements
-        NotesAdapter.OnNoteSelectedListener {
+        NotesAdapter.OnNoteSelectedListener  {
 
     private static final int LIMIT = 50;
     private static final String TAG = "MainActivity";
@@ -80,14 +80,16 @@ public class MainActivity extends AppCompatActivity implements
         FirebaseFirestore.setLoggingEnabled(true);
         mFirestore = FirebaseUtil.getFirestore();
         userID = FirebaseHelper.getInstance().getCurrentUserId();
-        collectionPathsArray = createNewCollectionPath();
-        updateCollectionPathString(collectionPathsArray); // set path initially as root collection
 
         Bundle receivedBundle = getIntent().getExtras();
         // TODO: if the bundle indicates we have moved to a new folder, update the collectionPath
         if (getIntent().hasExtra("type") && receivedBundle.getCharSequence("type").toString().equals("folder")){
             updateCollectionPathString(receivedBundle.getStringArrayList("path"));
+        } else {
+            collectionPathsArray = createNewCollectionPath();
+            updateCollectionPathString(collectionPathsArray); // set path initially as root collection
         }
+
         currCollection = mFirestore.collection("users").document(userID)
                 .collection(collectionPathString);
 
@@ -287,6 +289,7 @@ public class MainActivity extends AppCompatActivity implements
         dataToAdd.put("color", color);
         dataToAdd.put("name", name);
         dataToAdd.put("type", "note");
+        dataToAdd.put("isHidden", false);
 
         // Add other fields as needed
         // Add data to the user's subcollection
@@ -297,7 +300,7 @@ public class MainActivity extends AppCompatActivity implements
                     bundle.putString("documentID", subDocumentId);
                     bundle.putCharSequence("NoteTextValue", "Blank Note");
                     bundle.putString("noteName", name);
-                    bundle.putString("type", "folder");
+                    bundle.putString("type", "note");
                     intent.putExtras(bundle);
                     startActivity(intent);
                     Log.d("Firestore", "Document added to userData with ID: " + subDocumentId);
@@ -320,6 +323,7 @@ public class MainActivity extends AppCompatActivity implements
         dataToAdd.put("color", color);
         dataToAdd.put("name", name);
         dataToAdd.put("type", "folder");
+        dataToAdd.put("isHidden", false);
         // Add other fields as needed
 
         // Add data to the user's subcollection
@@ -328,14 +332,14 @@ public class MainActivity extends AppCompatActivity implements
                     // Document added successfully, create subcollection
                     String subDocumentId = documentReference.getId();
                     DocumentReference newDocumentRef = currCollectionRef.document(subDocumentId);
+                    addToCollectionPathArray(collectionPathsArray, subDocumentId);
                     CollectionReference subCollectionRef = newDocumentRef.collection("notes");
                     Map<String, Object> subCollectionData = new HashMap<>();
-                    subCollectionData.put("isHidden", "true");
+                    subCollectionData.put("isHidden", true);
 
                     subCollectionRef.add(subCollectionData)
                             .addOnSuccessListener(subDocumentReference -> {
-                                // Subdocument added successfully (Note: corrected term, it's subCollectionReference)
-
+                                // Subdocument added successfully (Note: corrected term, it's subCollectionReference
                                 Log.d("Firestore", "Subdocument added to subcollection with ID: " + subDocumentReference.getId());
                             })
                             .addOnFailureListener(e -> {
@@ -375,7 +379,6 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public void changeFolderColor() {
-        //TODO: GET SELECTED COLOR FROM ALERT DIALOG
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Select a Color:");
         final String[] options = {"Red", "Blue", "Green", "Grey", "Black", "Orange", "Pink", "Yellow", "Purple"};
@@ -428,6 +431,18 @@ public class MainActivity extends AppCompatActivity implements
         bundle.putString("documentID", note.getId());
         bundle.putCharSequence("NoteTextValue", note.get("content", String.class));
         bundle.putString("noteName", note.get("name", String.class));
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onFolderSelected(DocumentSnapshot note) {
+        Intent intent = new Intent(this, MainActivity.class);
+        Bundle bundle = new Bundle();
+        ArrayList<String> path = addToCollectionPathArray(collectionPathsArray, note.getId());
+        path = addToCollectionPathArray(collectionPathsArray, "notes");
+        bundle.putStringArrayList("path", path);
+        bundle.putString("type", "folder");
         intent.putExtras(bundle);
         startActivity(intent);
     }
