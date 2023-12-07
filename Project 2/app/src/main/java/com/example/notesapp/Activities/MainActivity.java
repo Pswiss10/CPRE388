@@ -305,6 +305,7 @@ public class MainActivity extends AppCompatActivity implements
                     bundle.putString("type", "folder");
                     bundle.putString("Font", "noto sans");
                     bundle.putString("Text Color", "Black");
+                    bundle.putString("notebookColor", color);
                     intent.putExtras(bundle);
                     startActivity(intent);
                     Log.d("Firestore", "Document added to userData with ID: " + subDocumentId);
@@ -437,6 +438,7 @@ public class MainActivity extends AppCompatActivity implements
         bundle.putString("noteName", note.get("name", String.class));
         bundle.putString("Font", note.get("Font", String.class));
         bundle.putString("Text Color", note.get("Text Color", String.class));
+        bundle.putString("notebookColor", note.get("color", String.class));
         intent.putExtras(bundle);
         startActivity(intent);
     }
