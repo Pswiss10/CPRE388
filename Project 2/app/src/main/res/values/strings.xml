@@ -20,5 +20,12 @@
         <item>noto sans</item>
         <!-- Add more font file names as needed -->
     </string-array>
+    <string-array name="app_Colors">
+        <item>Black</item>
+        <item>Blue</item>
+        <item>Red</item>
+        <item>Green</item>
+        <item>Teal</item>
+    </string-array>
 
 </resources>

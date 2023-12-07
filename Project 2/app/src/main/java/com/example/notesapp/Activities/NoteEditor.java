@@ -50,6 +50,7 @@ public class NoteEditor extends AppCompatActivity {
     private String textColor = "Black";
     private String font = "noto sans";
     private String noteName = "New Note";
+    private String notebookColor = "blue";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +84,9 @@ public class NoteEditor extends AppCompatActivity {
 
         if(getIntent().hasExtra("noteName")) {
             noteName = receivedBundle.getString("noteName");
+        }
+        if(getIntent().hasExtra("notebookColor")) {
+            notebookColor = receivedBundle.getString("notebookColor");
         }
 
         updateLookOfTextView();
@@ -136,6 +140,7 @@ public class NoteEditor extends AppCompatActivity {
             dataToUpdate.put("Text Color", textColor);
             dataToUpdate.put("Font", font);
             dataToUpdate.put("name", noteName);
+            dataToUpdate.put("color", notebookColor.toLowerCase());
 
             updateNote.update(dataToUpdate)
                     .addOnSuccessListener(aVoid -> Log.d("Firestore", "Document successfully updated"))
@@ -146,6 +151,7 @@ public class NoteEditor extends AppCompatActivity {
             bundle.putString("Font", font);
             bundle.putString("Text Color", textColor);
             bundle.putString("noteName", noteName);
+            bundle.putString("notebookColor", notebookColor);
             intent.putExtras(bundle);
             startActivity(intent);
             return true;
@@ -184,6 +190,9 @@ public class NoteEditor extends AppCompatActivity {
         final TextView header = dialogView.findViewById(R.id.noteStyleHeader);
         EditText nameEditText = dialogView.findViewById(R.id.nameEditText);
 
+        final TextView noteBookTextView = dialogView.findViewById(R.id.notebookColorTextView);
+        Spinner notebookSpinner = dialogView.findViewById(R.id.notebookColorSpinner);
+
         ArrayAdapter<CharSequence> colorAdapter = ArrayAdapter.createFromResource(this, R.array.Text_colors, android.R.layout.simple_spinner_item);
         colorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         colorSpinner.setAdapter(colorAdapter);
@@ -213,6 +222,22 @@ public class NoteEditor extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
                 font = "noto sans";
+            }
+        });
+
+        ArrayAdapter<CharSequence> notebookColorAdapter = ArrayAdapter.createFromResource(this, R.array.Text_colors, android.R.layout.simple_spinner_item);
+        notebookColorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        notebookSpinner.setAdapter(notebookColorAdapter);
+
+        notebookSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                notebookColor = adapterView.getItemAtPosition(i).toString().toLowerCase();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                notebookColor = "blue";
             }
         });
 
