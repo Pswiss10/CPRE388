@@ -10,4 +10,7 @@
     <item
         android:id="@+id/mainMenuOptionsButton"
         android:title="Main Menu" />
+    <item
+        android:id="@+id/deleteNoteOptionsButton"
+        android:title="Delete Note" />
 </menu>

@@ -11,6 +11,10 @@
         android:id="@+id/createFolderButton"
         android:title="Create Folder"
         android:icon="@drawable/baseline_add_24" />
+    <item
+        android:id="@+id/changeAppColorButton"
+        android:title="Change App Color"
+        android:icon="@drawable/baseline_add_24" />
 
     <item
         android:id="@+id/changeFolderColorButton"

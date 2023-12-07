@@ -17,8 +17,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.PopupMenu;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,11 +67,15 @@ public class MainActivity extends AppCompatActivity implements
     private FirebaseFirestore mFirestore;
     private NotesAdapter mAdapter;
     private String userID;
+
+    private String textColor = "Black";
+    private String font = "noto sans";
     Query currCollection;
     String collectionPathString = "notebooks";
     ArrayList<String> collectionPathsArray;
     private int selectedOption = -1;
     private NotesAdapter.OnNoteSelectedListener listener;
+    private String newAppColor = "";
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -80,14 +87,13 @@ public class MainActivity extends AppCompatActivity implements
         FirebaseFirestore.setLoggingEnabled(true);
         mFirestore = FirebaseUtil.getFirestore();
         userID = FirebaseHelper.getInstance().getCurrentUserId();
+        collectionPathsArray = createNewCollectionPath();
+        updateCollectionPathString(collectionPathsArray); // set path initially as root collection
 
         Bundle receivedBundle = getIntent().getExtras();
         // TODO: if the bundle indicates we have moved to a new folder, update the collectionPath
         if (getIntent().hasExtra("type") && receivedBundle.getCharSequence("type").toString().equals("folder")){
             updateCollectionPathString(receivedBundle.getStringArrayList("path"));
-        } else {
-            collectionPathsArray = createNewCollectionPath();
-            updateCollectionPathString(collectionPathsArray); // set path initially as root collection
         }
 
         currCollection = mFirestore.collection("users").document(userID)
@@ -186,9 +192,13 @@ public class MainActivity extends AppCompatActivity implements
         } else if(itemId == R.id.changeFolderColorButton) {
             changeFolderColor();
             return true;
+        } else if (itemId == R.id.changeAppColorButton) {
+            changeAppColor();
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 
     /**
      * When a user selects a menu item, a popup will appear asking for
@@ -288,6 +298,8 @@ public class MainActivity extends AppCompatActivity implements
         Map<String, Object> dataToAdd = new HashMap<>();
         dataToAdd.put("color", color);
         dataToAdd.put("name", name);
+        dataToAdd.put("Text Color", "Black");
+        dataToAdd.put("Font", "noto sans");
         dataToAdd.put("type", "note");
         dataToAdd.put("isHidden", false);
 
@@ -300,6 +312,9 @@ public class MainActivity extends AppCompatActivity implements
                     bundle.putString("documentID", subDocumentId);
                     bundle.putCharSequence("NoteTextValue", "Blank Note");
                     bundle.putString("noteName", name);
+                    bundle.putString("Font", "noto sans");
+                    bundle.putString("Text Color", "Black");
+                    bundle.putString("notebookColor", color);
                     bundle.putString("type", "note");
                     intent.putExtras(bundle);
                     startActivity(intent);
@@ -431,6 +446,9 @@ public class MainActivity extends AppCompatActivity implements
         bundle.putString("documentID", note.getId());
         bundle.putCharSequence("NoteTextValue", note.get("content", String.class));
         bundle.putString("noteName", note.get("name", String.class));
+        bundle.putString("Font", note.get("Font", String.class));
+        bundle.putString("Text Color", note.get("Text Color", String.class));
+        bundle.putString("notebookColor", note.get("color", String.class));
         intent.putExtras(bundle);
         startActivity(intent);
     }
@@ -445,6 +463,82 @@ public class MainActivity extends AppCompatActivity implements
         bundle.putString("type", "folder");
         intent.putExtras(bundle);
         startActivity(intent);
+    }
+
+    private void changeAppColor() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+
+        View dialogView = inflater.inflate(R.layout.main_menu_popup, null);
+
+
+        final TextView appColorTextView = dialogView.findViewById(R.id.appColorTextView);
+        Spinner appColorSpinner = dialogView.findViewById(R.id.appColorSpinner);
+
+        ArrayAdapter<CharSequence> appColorAdapter = ArrayAdapter.createFromResource(this, R.array.app_Colors, android.R.layout.simple_spinner_item);
+        appColorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        appColorSpinner.setAdapter(appColorAdapter);
+
+        appColorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                newAppColor = adapterView.getItemAtPosition(i).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        builder.setView(dialogView)
+                .setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+
+                        changeColorWithPrefrences(newAppColor);
+
+                        dialogInterface.dismiss();  // Dismiss the dialog if needed
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+                        // Handle the Cancel button click
+                        dialogInterface.dismiss();  // Dismiss the dialog
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+    }
+
+    private void changeColorWithPrefrences(String color) {
+        //TODO change the app color within this method and save it to system preferences
+        switch (color){
+            case "Black":
+                //TODO
+
+                break;
+            case "Blue":
+                //TODO
+
+                break;
+            case "Green":
+                //TODO
+
+                break;
+            case "Red":
+                //TODO
+
+                break;
+            default:
+                //Teal is default color
+
+                break;
+        }
+
+
     }
 
 }
