@@ -13,7 +13,7 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/black_notebook" />
+        android:src="@drawable/grey_background" />
 
     <TextView
         android:id="@+id/notebook_item_name"

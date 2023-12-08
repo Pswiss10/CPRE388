@@ -171,10 +171,16 @@ public class MainActivity extends AppCompatActivity implements
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
         MenuItem changeFolderColorButton = menu.findItem(R.id.changeFolderColorButton);
+        MenuItem createNewFolderButton = menu.findItem(R.id.createFolderButton);
+        MenuItem backToMainMenuButton = menu.findItem(R.id.backToMainButton);
         if(collectionPathString.equals("notebooks")) {
             changeFolderColorButton.setVisible(false);
+            createNewFolderButton.setVisible(true);
+            backToMainMenuButton.setVisible(false);
         } else {
             changeFolderColorButton.setVisible(true);
+            createNewFolderButton.setVisible(false);
+            backToMainMenuButton.setVisible(true);
         }
         return true;
     }
@@ -194,6 +200,10 @@ public class MainActivity extends AppCompatActivity implements
             return true;
         } else if (itemId == R.id.changeAppColorButton) {
             changeAppColor();
+            return true;
+        } else if (itemId == R.id.backToMainButton) {
+            onBackToMenuSelected();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -394,6 +404,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public void changeFolderColor() {
+        //TODO: THIS NEEDS TO BE FIXED
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Select a Color:");
         final String[] options = {"Red", "Blue", "Green", "Grey", "Black", "Orange", "Pink", "Yellow", "Purple"};
@@ -461,6 +472,14 @@ public class MainActivity extends AppCompatActivity implements
         path = addToCollectionPathArray(collectionPathsArray, "notes");
         bundle.putStringArrayList("path", path);
         bundle.putString("type", "folder");
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
+    public void onBackToMenuSelected() {
+        Intent intent = new Intent(this, MainActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("toHome", true);
         intent.putExtras(bundle);
         startActivity(intent);
     }

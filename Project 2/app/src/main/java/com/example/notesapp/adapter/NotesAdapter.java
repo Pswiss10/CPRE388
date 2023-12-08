@@ -88,7 +88,7 @@ public class NotesAdapter extends FirestoreAdapter<NotesAdapter.ViewHolder> {
                          final OnNoteSelectedListener listener) {
 
             Notes notes = snapshot.toObject(Notes.class);
-            if (notes != null) {
+            if (notes != null || !notes.getIsHidden()) {
                 // Add logging to check the values
                 Log.d("NotesAdapter", "Name: " + notes.getName() + ", Color: " + notes.getColor());
                 String type = notes.getType();
@@ -96,55 +96,55 @@ public class NotesAdapter extends FirestoreAdapter<NotesAdapter.ViewHolder> {
                 if (notes.getColor() != null) {
                     switch (notes.getColor()) {
                         case "red":
-                            if(type.equals("folder"))
+                            if (type.equals("folder"))
                                 c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.red_folder);
                             else
                                 c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.red_notebook);
                             break;
                         case "orange":
-                            if(type.equals("folder"))
+                            if (type.equals("folder"))
                                 c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.orange_folder);
                             else
-                                    c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.orange_notebook);
+                                c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.orange_notebook);
                             break;
                         case "black":
-                            if(type.equals("folder"))
+                            if (type.equals("folder"))
                                 c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.black_folder);
                             else
                                 c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.black_notebook);
                             break;
                         case "blue":
-                            if(type.equals("folder"))
+                            if (type.equals("folder"))
                                 c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.blue_folder);
                             else
                                 c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.blue_notebook);
                             break;
                         case "green":
-                            if(type.equals("folder"))
+                            if (type.equals("folder"))
                                 c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.green_folder);
                             else
                                 c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.green_notebook);
                             break;
                         case "grey":
-                            if(type.equals("folder"))
+                            if (type.equals("folder"))
                                 c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.grey_folder);
                             else
                                 c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.grey_notebook);
                             break;
                         case "pink":
-                            if(type.equals("folder"))
+                            if (type.equals("folder"))
                                 c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.pink_folder);
                             else
                                 c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.pink_notebook);
                             break;
                         case "purple":
-                            if(type.equals("folder"))
+                            if (type.equals("folder"))
                                 c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.purple_folder);
                             else
                                 c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.purple_notebook);
                             break;
                         case "yellow":
-                            if(type.equals("folder"))
+                            if (type.equals("folder"))
                                 c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.yellow_folder);
                             else
                                 c = ContextCompat.getDrawable(itemView.getContext(), R.drawable.yellow_notebook);
@@ -154,23 +154,29 @@ public class NotesAdapter extends FirestoreAdapter<NotesAdapter.ViewHolder> {
                             // Handle the case where the color is not recognized
                             break;
                     }
-                        Glide.with(imageView.getContext())
-                                .load(c)
-                                .into(imageView);
 
-                        nameView.setText(notes.getName());  // Use the name from the Notes object
+                    Glide.with(imageView.getContext())
+                            .load(c)
+                            .into(imageView);
 
+                    nameView.setText(notes.getName());  // Use the name from the Notes object
+
+                    //TODO: FOR SOME REASON, THE ICON IS SHOWING FOR IS HIDDEN NOTE
                     if (notes.getIsHidden()) {
                         // If the note is hidden, do not show it in the RecyclerView
                         itemView.setVisibility(View.GONE);
-                        itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+                        ViewGroup.LayoutParams params = itemView.getLayoutParams();
+                        params.height = 0;
+                        params.width = 0;
+                        itemView.setLayoutParams(params);
                         return;
                     } else {
                         // If the note is not hidden, make sure the itemView is visible
                         itemView.setVisibility(View.VISIBLE);
-                        itemView.setLayoutParams(new RecyclerView.LayoutParams(
-                                ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.WRAP_CONTENT));
+                        ViewGroup.LayoutParams params = itemView.getLayoutParams();
+                        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                        params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                        itemView.setLayoutParams(params);
                     }
 
                     // Click listener
