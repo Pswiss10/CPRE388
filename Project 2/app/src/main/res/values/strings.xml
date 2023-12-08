@@ -28,4 +28,22 @@
         <item>Teal</item>
     </string-array>
 
+    <string name="sortAlphabetically">Sort Alphabetically</string>
+    <string name="sortLastModifiedDate">Sort By Date Last Modified</string>
+    <string name="sortCreatedDate">Sort By Date Created</string>
+
+    <!-- Ways you can sort items -->
+    <string-array name="sort_by">
+        <item>@string/sortAlphabetically</item>
+        <item>@string/sortLastModifiedDate</item>
+        <item>@string/sortCreatedDate</item>
+    </string-array>
+
+    <!-- Choice for Type -->
+    <string-array name="type">
+        <item>All Items</item>
+        <item>Notes</item>
+        <item>Folders</item>
+    </string-array>
+
 </resources>

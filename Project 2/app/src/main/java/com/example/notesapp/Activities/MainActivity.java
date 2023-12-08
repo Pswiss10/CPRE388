@@ -3,6 +3,8 @@ package com.example.notesapp.Activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,6 +12,7 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,9 +28,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.notesapp.FilterDialogFragment;
+import com.example.notesapp.Filters;
 import com.example.notesapp.Firebase.FirebaseHelper;
 import com.example.notesapp.Enums.FileType;
 import com.example.notesapp.Firebase.CreateAccount;
+import com.example.notesapp.MainActivityViewModel;
 import com.example.notesapp.R;
 
 import com.example.notesapp.adapter.NotesAdapter;
@@ -54,7 +60,9 @@ import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity implements
-        NotesAdapter.OnNoteSelectedListener  {
+        View.OnClickListener,
+        NotesAdapter.OnNoteSelectedListener,
+        FilterDialogFragment.FilterListener {
 
     private static final int LIMIT = 50;
     private static final String TAG = "MainActivity";
@@ -76,6 +84,10 @@ public class MainActivity extends AppCompatActivity implements
     private int selectedOption = -1;
     private NotesAdapter.OnNoteSelectedListener listener;
     private String newAppColor = "";
+    private FilterDialogFragment mFilterDialog;
+    private TextView mCurrentSearchView;
+    private TextView mCurrentSortByView;
+    private MainActivityViewModel mViewModel;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -83,6 +95,8 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         NotebooksRecycler = findViewById(R.id.recycler_notebooks);
+        mCurrentSearchView = findViewById(R.id.text_current_search);
+        mCurrentSortByView = findViewById(R.id.text_current_sort_by);
 
         FirebaseFirestore.setLoggingEnabled(true);
         mFirestore = FirebaseUtil.getFirestore();
@@ -99,9 +113,14 @@ public class MainActivity extends AppCompatActivity implements
         currCollection = mFirestore.collection("users").document(userID)
                 .collection(collectionPathString);
 
+        View filterBar = findViewById(R.id.filter_bar);
+        filterBar.setOnClickListener(this);
+        mFilterDialog = new FilterDialogFragment();
         initRecyclerView();
-
         currUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        // View model
+        mViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
     }
 
     public void updateCollectionPathString(ArrayList<String> collectionPathList) {
@@ -164,6 +183,52 @@ public class MainActivity extends AppCompatActivity implements
         if (mAdapter != null) {
             mAdapter.stopListening();
         }
+    }
+
+    @Override
+    public void onFilter(Filters filters) {
+        Query query = mFirestore.collection("notebooks"); //get all items
+
+        // TODO: Filter by category (equality filter)
+        if(filters.hasType()) {
+            query = query.whereEqualTo("category", filters.getType());
+        }
+        // TODO: Sort by specified order (orderBy with direction)
+        if(filters.hasSortBy()) {
+            query = query.orderBy(filters.getSortBy());
+        }
+
+        // Limit items
+        query = query.limit(LIMIT);
+        // Update the query
+        currCollection = query;
+        mAdapter.setQuery(query);
+
+        // Set header
+        mCurrentSearchView.setText(Html.fromHtml(filters.getSearchDescription(this)));
+        mCurrentSortByView.setText(filters.getOrderDescription(this));
+
+        // Save filters
+        mViewModel.setFilters(filters);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.filter_bar) {
+            onFilterClicked();
+        } else if (v.getId() == R.id.button_clear_filter) {
+            onClearFilterClicked();
+        }
+    }
+
+    public void onFilterClicked() {
+        // Show the dialog containing filter options
+        mFilterDialog.show(getSupportFragmentManager(), FilterDialogFragment.TAG);
+    }
+
+    public void onClearFilterClicked() {
+        mFilterDialog.resetFilters();
+        onFilter(Filters.getDefault());
     }
 
     @Override
@@ -338,8 +403,6 @@ public class MainActivity extends AppCompatActivity implements
 
     // Note: The user will stay in the current directory after creating a folder
     public void createNewFolder(String name, String color) {
-        Intent intent = new Intent(MainActivity.this, MainActivity.class);
-        Bundle bundle = new Bundle();
         CollectionReference usersCollection = mFirestore.collection("users");
         CollectionReference currCollectionRef = usersCollection.document(FirebaseHelper.getInstance().getCurrentUserId()).collection(collectionPathString);
 

@@ -5,6 +5,11 @@ import android.widget.TextView;
 import java.io.Serializable;
 
 public class Notes implements Serializable {
+
+    public static final String FIELD_ALPHABETICAL = "alphabetical";
+    public static final String FIELD_CREATED = "created";
+    public static final String FIELD_LAST_OPENED = "lastOpened";
+
     private String name;
     private String color;
     private String type;
