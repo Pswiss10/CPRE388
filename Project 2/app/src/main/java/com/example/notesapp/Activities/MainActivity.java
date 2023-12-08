@@ -54,7 +54,7 @@ import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity implements
-        NotesAdapter.OnNoteSelectedListener {
+        NotesAdapter.OnNoteSelectedListener  {
 
     private static final int LIMIT = 50;
     private static final String TAG = "MainActivity";
@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements
         if (getIntent().hasExtra("type") && receivedBundle.getCharSequence("type").toString().equals("folder")){
             updateCollectionPathString(receivedBundle.getStringArrayList("path"));
         }
+
         currCollection = mFirestore.collection("users").document(userID)
                 .collection(collectionPathString);
 
@@ -170,10 +171,16 @@ public class MainActivity extends AppCompatActivity implements
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
         MenuItem changeFolderColorButton = menu.findItem(R.id.changeFolderColorButton);
+        MenuItem createNewFolderButton = menu.findItem(R.id.createFolderButton);
+        MenuItem backToMainMenuButton = menu.findItem(R.id.backToMainButton);
         if(collectionPathString.equals("notebooks")) {
             changeFolderColorButton.setVisible(false);
+            createNewFolderButton.setVisible(true);
+            backToMainMenuButton.setVisible(false);
         } else {
             changeFolderColorButton.setVisible(true);
+            createNewFolderButton.setVisible(false);
+            backToMainMenuButton.setVisible(true);
         }
         return true;
     }
@@ -193,6 +200,10 @@ public class MainActivity extends AppCompatActivity implements
             return true;
         } else if (itemId == R.id.changeAppColorButton) {
             changeAppColor();
+            return true;
+        } else if (itemId == R.id.backToMainButton) {
+            onBackToMenuSelected();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -300,6 +311,7 @@ public class MainActivity extends AppCompatActivity implements
         dataToAdd.put("Text Color", "Black");
         dataToAdd.put("Font", "noto sans");
         dataToAdd.put("type", "note");
+        dataToAdd.put("isHidden", false);
 
         // Add other fields as needed
         // Add data to the user's subcollection
@@ -310,10 +322,10 @@ public class MainActivity extends AppCompatActivity implements
                     bundle.putString("documentID", subDocumentId);
                     bundle.putCharSequence("NoteTextValue", "Blank Note");
                     bundle.putString("noteName", name);
-                    bundle.putString("type", "folder");
                     bundle.putString("Font", "noto sans");
                     bundle.putString("Text Color", "Black");
                     bundle.putString("notebookColor", color);
+                    bundle.putString("type", "note");
                     intent.putExtras(bundle);
                     startActivity(intent);
                     Log.d("Firestore", "Document added to userData with ID: " + subDocumentId);
@@ -336,6 +348,7 @@ public class MainActivity extends AppCompatActivity implements
         dataToAdd.put("color", color);
         dataToAdd.put("name", name);
         dataToAdd.put("type", "folder");
+        dataToAdd.put("isHidden", false);
         // Add other fields as needed
 
         // Add data to the user's subcollection
@@ -344,14 +357,14 @@ public class MainActivity extends AppCompatActivity implements
                     // Document added successfully, create subcollection
                     String subDocumentId = documentReference.getId();
                     DocumentReference newDocumentRef = currCollectionRef.document(subDocumentId);
+                    addToCollectionPathArray(collectionPathsArray, subDocumentId);
                     CollectionReference subCollectionRef = newDocumentRef.collection("notes");
                     Map<String, Object> subCollectionData = new HashMap<>();
-                    subCollectionData.put("isHidden", "true");
+                    subCollectionData.put("isHidden", true);
 
                     subCollectionRef.add(subCollectionData)
                             .addOnSuccessListener(subDocumentReference -> {
-                                // Subdocument added successfully (Note: corrected term, it's subCollectionReference)
-
+                                // Subdocument added successfully (Note: corrected term, it's subCollectionReference
                                 Log.d("Firestore", "Subdocument added to subcollection with ID: " + subDocumentReference.getId());
                             })
                             .addOnFailureListener(e -> {
@@ -391,7 +404,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public void changeFolderColor() {
-        //TODO: GET SELECTED COLOR FROM ALERT DIALOG
+        //TODO: THIS NEEDS TO BE FIXED
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Select a Color:");
         final String[] options = {"Red", "Blue", "Green", "Grey", "Black", "Orange", "Pink", "Yellow", "Purple"};
@@ -447,6 +460,26 @@ public class MainActivity extends AppCompatActivity implements
         bundle.putString("Font", note.get("Font", String.class));
         bundle.putString("Text Color", note.get("Text Color", String.class));
         bundle.putString("notebookColor", note.get("color", String.class));
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onFolderSelected(DocumentSnapshot note) {
+        Intent intent = new Intent(this, MainActivity.class);
+        Bundle bundle = new Bundle();
+        ArrayList<String> path = addToCollectionPathArray(collectionPathsArray, note.getId());
+        path = addToCollectionPathArray(collectionPathsArray, "notes");
+        bundle.putStringArrayList("path", path);
+        bundle.putString("type", "folder");
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
+    public void onBackToMenuSelected() {
+        Intent intent = new Intent(this, MainActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("toHome", true);
         intent.putExtras(bundle);
         startActivity(intent);
     }

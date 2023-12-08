@@ -7,6 +7,8 @@ import java.io.Serializable;
 public class Notes implements Serializable {
     private String name;
     private String color;
+    private String type;
+    private boolean isHidden;
 
     // Constructors, getters, and setters
     public Notes() {
@@ -14,9 +16,11 @@ public class Notes implements Serializable {
     }
 
     // Assuming you have another constructor for creating Notes instances
-    public Notes(String name, String color) {
+    public Notes(String name, String color, String type, boolean isHidden) {
         this.name = name;
         this.color = color;
+        this.type = type;
+        this.isHidden = isHidden;
     }
 
     // Other methods as needed
@@ -38,4 +42,11 @@ public class Notes implements Serializable {
     public void setColor(String color) {
         this.color = color;
     }
+
+    public String getType() { return type; }
+    public void setType(String type) { this.type = type; }
+
+    public boolean getIsHidden() { return isHidden; }
+
+    public void setIsHidden(boolean isHidden) { this.isHidden = isHidden; }
 }
