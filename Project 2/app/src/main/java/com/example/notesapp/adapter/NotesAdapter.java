@@ -161,7 +161,7 @@ public class NotesAdapter extends FirestoreAdapter<NotesAdapter.ViewHolder> {
 
                     nameView.setText(notes.getName());  // Use the name from the Notes object
 
-                    //TODO: FOR SOME REASON, THE ICON IS SHOWING FOR IS HIDDEN NOTE
+                    //TODO: FOR SOME REASON, THERE IS SPACE AT THE TOP
                     if (notes.getIsHidden()) {
                         // If the note is hidden, do not show it in the RecyclerView
                         itemView.setVisibility(View.GONE);

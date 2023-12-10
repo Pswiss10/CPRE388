@@ -468,7 +468,10 @@ public class MainActivity extends AppCompatActivity implements
     public void onFolderSelected(DocumentSnapshot note) {
         Intent intent = new Intent(this, MainActivity.class);
         Bundle bundle = new Bundle();
-        ArrayList<String> path = addToCollectionPathArray(collectionPathsArray, note.getId());
+        ArrayList<String> path;
+        if(collectionPathsArray.size() == 1) {
+           path = addToCollectionPathArray(collectionPathsArray, note.getId());
+        }
         path = addToCollectionPathArray(collectionPathsArray, "notes");
         bundle.putStringArrayList("path", path);
         bundle.putString("type", "folder");
