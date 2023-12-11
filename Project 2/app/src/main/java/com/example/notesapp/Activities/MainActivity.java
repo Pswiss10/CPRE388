@@ -187,11 +187,11 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onFilter(Filters filters) {
-        Query query = mFirestore.collection("notebooks"); //get all items
+        Query query = mFirestore.collection("notebooks");
 
         // TODO: Filter by category (equality filter)
         if(filters.hasType()) {
-            query = query.whereEqualTo("category", filters.getType());
+            query = query.whereEqualTo("type", filters.getType().toLowerCase());
         }
         // TODO: Sort by specified order (orderBy with direction)
         if(filters.hasSortBy()) {

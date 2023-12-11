@@ -88,8 +88,8 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
     @Nullable
     private String getSelectedType() {
         String selected = (String) mCategorySpinner.getSelectedItem();
-        String notes = "Notes";
-        String folders = "Folders";
+        String notes = "Note";
+        String folders = "Folder";
         if (selected.equals(notes) || selected.equals(folders)) {
             return selected;
         } else {

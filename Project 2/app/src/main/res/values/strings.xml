@@ -42,8 +42,8 @@
     <!-- Choice for Type -->
     <string-array name="type">
         <item>All Items</item>
-        <item>Notes</item>
-        <item>Folders</item>
+        <item>Note</item>
+        <item>Folder</item>
     </string-array>
 
 </resources>
