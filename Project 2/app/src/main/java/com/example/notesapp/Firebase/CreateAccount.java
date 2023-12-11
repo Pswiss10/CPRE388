@@ -21,6 +21,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+/**
+ * Class that handles the user creating an account
+ */
 public class CreateAccount extends AppCompatActivity {
     Button createAccountButton;
     private FirebaseFirestore mFirestore;
@@ -31,6 +34,11 @@ public class CreateAccount extends AppCompatActivity {
     private EditText firstNameEditText;
     private EditText lastNameEditText;
 
+    /**
+     * onCreate for loading the Create Account activity
+     * Contains user input boxes as well as a submit button in the activity layout
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,16 +65,10 @@ public class CreateAccount extends AppCompatActivity {
         });
     }
 
-
     /**
-     * TODO : IMPLEMENT USER INPUT VALIDATION FOR CREATE ACCOUNT
-     * Return true if user meets validation criteria:
-     * (Determine if we need to spend time on this, its a fast fix)
+     * Allow user to create an account based on user input in text boxes
+     * Credentials must be successfully authenticated to create a new account
      */
-    public boolean validateUserInput() {
-        return true;
-    }
-
     private void createAccount() {
         final String email = emailEditText.getText().toString();
         final String password = passwordEditText.getText().toString();
@@ -99,6 +101,14 @@ public class CreateAccount extends AppCompatActivity {
                 });
     }
 
+    /**
+     * This method stores user data in the database, "users" collection
+     * Note: does not contain password information
+     * @param userId
+     * @param firstName
+     * @param lastName
+     * @param email
+     */
     private void storeUserDataInFirestore(String userId, String firstName, String lastName, String email) {
         // Access Firestore instance
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -113,6 +123,10 @@ public class CreateAccount extends AppCompatActivity {
                 .addOnFailureListener(e -> Log.e("CreateAccount", "Error storing user information", e));
     }
 
+    /**
+     * This method creates a new intent to move to the login page
+     * The user must login with their new credentials after creating an account
+     */
     public void toLoginPage() {
         // Redirect to the login activity or perform other actions
         Intent intent = new Intent(CreateAccount.this, Login.class);

@@ -38,8 +38,12 @@ public class NoteViewer extends AppCompatActivity {
 
     private String notebookColor = "blue";
 
-
-
+    /**
+     * onCreate for the NoteViewer activity on launch
+     * Populates using the activity view layout
+     * Reads the bundle sent from the previous intent
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,10 +84,14 @@ public class NoteViewer extends AppCompatActivity {
         }
 
         updateLookOfTextView();
-
-
     }
 
+    /**
+     * Populate the options menu with the correct options
+     * as given by the note_viewer_menu menu
+     * @param menu the menu to be populated with items.
+     * @return true if successful
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater = getMenuInflater();
@@ -91,6 +99,16 @@ public class NoteViewer extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Handle the options selected in the NoteViewer Menu
+     *
+     * Edit Note
+     * Go to Main Menu
+     * Delete Note
+     *
+     * @param item that has been selected in the menu
+     * @return true if successful
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         int itemId = item.getItemId();
@@ -142,6 +160,13 @@ public class NoteViewer extends AppCompatActivity {
         }
     }
 
+    /**
+     * Handles the look of the note depending on the user preferences
+     * These preferences are sent in using the values passed in from
+     * the bundle in the intent
+     *
+     * Update the font and text color
+     */
     private void updateLookOfTextView(){
         int fontId;
         switch (font){
