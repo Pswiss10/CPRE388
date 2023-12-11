@@ -22,6 +22,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+/**
+ * Class to handle user login
+ */
 public class Login extends AppCompatActivity {
     Button createAccountButton;
     Button loginButton;
@@ -31,6 +34,11 @@ public class Login extends AppCompatActivity {
     EditText emailEditText;
     EditText passwordEditText;
 
+    /**
+     * onCreate called when the activity is first created
+     * Allow user to create an account or login using two different buttons
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +75,10 @@ public class Login extends AppCompatActivity {
 
     }
 
+    /**
+     * Allow a user to login and move to the Main Activity page
+     * Email and password must be authenticated and correct before moving forward
+     */
     public void loginUser() {
         String email = emailEditText.getText().toString();
         String password = passwordEditText.getText().toString();
