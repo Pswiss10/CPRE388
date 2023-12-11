@@ -58,26 +58,24 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * Class that handles the MainActivity of the application
+ * Handles navigation through folders
+ * Displays the Recycler View
+ * Allows users to click through menu options
+ */
 public class MainActivity extends AppCompatActivity implements
         View.OnClickListener,
         NotesAdapter.OnNoteSelectedListener,
         FilterDialogFragment.FilterListener {
 
-    private static final int LIMIT = 50;
     private static final String TAG = "MainActivity";
-    private ViewGroup mEmptyView;
     String enteredText = "";
-
     private FirebaseUser currUser;
     private RecyclerView NotebooksRecycler;
-
     private FirebaseFirestore mFirestore;
     private NotesAdapter mAdapter;
     private String userID;
-
-    private String textColor = "Black";
-    private String font = "noto sans";
     Query currCollection;
     String collectionPathString = "notebooks";
     ArrayList<String> collectionPathsArray;
@@ -89,6 +87,12 @@ public class MainActivity extends AppCompatActivity implements
     private TextView mCurrentSortByView;
     private MainActivityViewModel mViewModel;
 
+    /**
+     * onCreate for the Main Activity class
+     * Populates components and handles logic for the
+     * launching of this activity
+     * @param savedInstanceState
+     */
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements
         updateCollectionPathString(collectionPathsArray); // set path initially as root collection
 
         Bundle receivedBundle = getIntent().getExtras();
-        // TODO: if the bundle indicates we have moved to a new folder, update the collectionPath
         if (getIntent().hasExtra("type") && receivedBundle.getCharSequence("type").toString().equals("folder")){
             updateCollectionPathString(receivedBundle.getStringArrayList("path"));
         }
@@ -123,6 +126,13 @@ public class MainActivity extends AppCompatActivity implements
         mViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
     }
 
+    /**
+     * Update collectionPathString to represent all the paths listed
+     * in the array given by collectionPathList
+     *
+     * {notebooks, 1, notes} returns notebooks/1/notes
+     * @param collectionPathList
+     */
     public void updateCollectionPathString(ArrayList<String> collectionPathList) {
         StringBuilder pathBuilder = new StringBuilder();
         for (String collection : collectionPathList) {
@@ -132,7 +142,9 @@ public class MainActivity extends AppCompatActivity implements
         collectionPathString = pathBuilder.toString();
     }
 
-
+    /**
+     * Initialize the recycler view that stores the notes and folders
+     */
     private void initRecyclerView() {
         if (currCollection == null) {
             Log.w(TAG, "No query, not initializing RecyclerView");
@@ -140,43 +152,38 @@ public class MainActivity extends AppCompatActivity implements
 
         mAdapter = new NotesAdapter(currCollection, this) {
 
+            /**
+             * When data is changed, show or hide the content
+             * depending on the contents of the query
+             */
             @Override
             protected void onDataChanged() {
-                // Show/hide content if the query returns empty.
                 if (getItemCount() == 0) {
                     NotebooksRecycler.setVisibility(View.GONE);
                 } else {
                     NotebooksRecycler.setVisibility(View.VISIBLE);
                 }
             }
-
-            @Override
-            protected void onError(FirebaseFirestoreException e) {
-                // Show a snackbar on errors
-                Snackbar.make(findViewById(android.R.id.content),
-                        "Error: check logs for info.", Snackbar.LENGTH_LONG).show();
-            }
         };
 
-        /**
-         * TODO: When populating the viewer, check the isHidden attribute
-         * If isHidden = true, hide it, since it is the "fake" document
-         * that we must create in order to create a subcollection
-         */
         NotebooksRecycler.setLayoutManager(new LinearLayoutManager(this));
         NotebooksRecycler.setAdapter(mAdapter);
     }
 
+    /**
+     * Call mAdapter.startListening() to start listening for Firestore updates
+     */
     @Override
     public void onStart() {
         super.onStart();
-
-        // Start listening for Firestore updates
         if (mAdapter != null) {
             mAdapter.startListening();
         }
     }
 
+    /**
+     * Cause mAdapter to stop listening for Firestore updates
+     */
     @Override
     public void onStop() {
         super.onStop();
@@ -199,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         // Limit items
-        query = query.limit(LIMIT);
+        query = query.limit(50);
         // Update the query
         currCollection = query;
         mAdapter.setQuery(query);
@@ -231,6 +238,23 @@ public class MainActivity extends AppCompatActivity implements
         onFilter(Filters.getDefault());
     }
 
+    /**
+     * Populate the options menu in the header depending on the directory of the user
+     *
+     * If the user is in home, they may:
+     * Create a new note
+     * Create a new folder
+     * Change application color
+     *
+     * If the user is in a subfolder, they may:
+     * Go back to the main directory
+     * Create a new note
+     * Change application color
+     * Change current folder color
+     *
+     * @param menu
+     * @return true if successful
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater = getMenuInflater();
@@ -250,6 +274,19 @@ public class MainActivity extends AppCompatActivity implements
         return true;
     }
 
+    /**
+     * When a menu option is selected,
+     *
+     * Menu Options:
+     * Create new note
+     * Create new folder
+     * Change current folder color
+     * Change application color
+     * Go back to main
+     *
+     * @param item
+     * @return true if successful
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         int itemId = item.getItemId();
@@ -279,7 +316,7 @@ public class MainActivity extends AppCompatActivity implements
      * When a user selects a menu item, a popup will appear asking for
      * the name of the new item
      * @param fileType, NOTE or FOLDER
-     * @return
+     * @return name entered by user
      */
     public String newNamePopup(FileType fileType) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -324,9 +361,18 @@ public class MainActivity extends AppCompatActivity implements
         return enteredText;
     }
 
+    /**
+     * After user has provided a name for their new item,
+     * they will be prompted to select an icon color
+     *
+     * Options: {"Red", "Blue", "Green", "Grey", "Black",
+     * "Orange", "Pink", "Yellow", "Purple"}
+     *
+     * @param name of the item as entered by user
+     * @param fileType of the item selected by user
+     */
     public void newColorPopup(String name, FileType fileType) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = getLayoutInflater();
 
         builder.setTitle("Select a Color:");
         final String[] options = {"Red", "Blue", "Green", "Grey", "Black", "Orange", "Pink", "Yellow", "Purple"};
@@ -343,26 +389,30 @@ public class MainActivity extends AppCompatActivity implements
                 String selectedValue = options[selectedOption];
                 Toast.makeText(this, "Selected Option: " + selectedValue, Toast.LENGTH_SHORT).show();
                 if(fileType == FileType.NOTE) {
-                    createNewNote(enteredText, selectedValue.toLowerCase());
+                    createNewNote(name, selectedValue.toLowerCase());
                 } else if (fileType == FileType.FOLDER) {
-                    createNewFolder(enteredText, selectedValue.toLowerCase());
+                    createNewFolder(name, selectedValue.toLowerCase());
                 }
             } else {
                 Toast.makeText(this, "No option selected or 'None' selected", Toast.LENGTH_SHORT).show();
             }
         });
 
-        // Set Cancel button
         builder.setNegativeButton("Cancel", (dialog, which) -> {
-            // Handle Cancel button click
-            dialog.dismiss(); // Dismiss the dialog
+            dialog.dismiss();
         });
 
-        // Create and show the AlertDialog
         AlertDialog dialog = builder.create();
         dialog.show();
     }
 
+    /**
+     * Create a new note
+     * Add a new document to the current collection and move to the NoteEditor,
+     * send a bundle to the new intent with document information
+     * @param name of the item
+     * @param color of the item
+     */
     public void createNewNote(String name, String color) {
         Intent intent = new Intent(MainActivity.this, NoteEditor.class);
         Bundle bundle = new Bundle();
@@ -401,7 +451,15 @@ public class MainActivity extends AppCompatActivity implements
                 });
     }
 
-    // Note: The user will stay in the current directory after creating a folder
+    /**
+     * Create a new folder for the user
+     * Note 1: This method does not create a new intent, it just adds the folder
+     * to the recycler view
+     * Note 2: Creating a subcollection requires the creation of a document. In our case,
+     * we don't need this document. this is why it is true for isHidden
+     * @param name of the item
+     * @param color of the item
+     */
     public void createNewFolder(String name, String color) {
         CollectionReference usersCollection = mFirestore.collection("users");
         CollectionReference currCollectionRef = usersCollection.document(FirebaseHelper.getInstance().getCurrentUserId()).collection(collectionPathString);
@@ -443,10 +501,27 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     /**
+     * Get the document ID of the folder from the collectionPathString
+     * @param collectionPathString
+     * @return string of the document iD
+     */
+    public String getFolderID(String collectionPathString) {
+        String newPath = "";
+        String[] pathSegments = collectionPathString.split("/");
+
+        if (pathSegments.length == 3) {
+            return pathSegments[1];
+        } else {
+            Log.e(TAG, "Invalid path format");
+        }
+        return newPath;
+    }
+
+    /**
      * Create a new collection path array list that stores all the collection paths
      * that a user has iterated through
      * This method is only called on the first onCreate of MainActivity
-     * @return
+     * @return array list containing "notebooks"
      */
     public ArrayList<String> createNewCollectionPath() {
         ArrayList<String> newList = new ArrayList<>();
@@ -456,9 +531,9 @@ public class MainActivity extends AppCompatActivity implements
 
     /**
      * Add a new collection path if the user is moving to a new folder
-     * @param list
-     * @param collectionId
-     * @return
+     * @param list of current paths
+     * @param collectionId current collectionId to be added to the path
+     * @return ArrayList of paths that lead to current user location
      */
     public ArrayList<String> addToCollectionPathArray(ArrayList<String> list, String collectionId) {
         ArrayList<String> newList = list;
@@ -466,8 +541,12 @@ public class MainActivity extends AppCompatActivity implements
         return newList;
     }
 
+    /**
+     * Allow user to select a new folder color using an alert dialog that allows them to select a color
+     * Note: this will not take the user back to the main folder, but the change can be observed
+     * when the user goes back to the main page
+     */
     public void changeFolderColor() {
-        //TODO: THIS NEEDS TO BE FIXED
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Select a Color:");
         final String[] options = {"Red", "Blue", "Green", "Grey", "Black", "Orange", "Pink", "Yellow", "Purple"};
@@ -478,25 +557,27 @@ public class MainActivity extends AppCompatActivity implements
         });
 
         CollectionReference usersCollection = mFirestore.collection("users");
-        CollectionReference currCollectionRef = usersCollection.document(FirebaseHelper.getInstance().getCurrentUserId()).collection(collectionPathString);
+        CollectionReference currCollectionRef = usersCollection.document(FirebaseHelper.getInstance().getCurrentUserId()).collection("notebooks");
 
+        String docID = getFolderID(collectionPathString);
         builder.setPositiveButton("OK", (dialog, which) -> {
             if (selectedOption != -1 && selectedOption != options.length - 1) {
                 String selectedValue = options[selectedOption];
                 Toast.makeText(this, "Selected Option: " + selectedValue, Toast.LENGTH_SHORT).show();
 
-                Map<String, Object> dataToAdd = new HashMap<>();
-                dataToAdd.put("color", selectedValue.toLowerCase());
+                Map<String, Object> updates = new HashMap<>();
+                updates.put("color", selectedValue.toLowerCase());
 
                 // Add data to the user's subcollection
-                currCollectionRef.add(dataToAdd)
+                currCollectionRef.document(docID)
+                        .update(updates)
                         .addOnSuccessListener(documentReference -> {
                             // Document added successfully
                             Log.d("Color", "Folder color changed");
                         })
                         .addOnFailureListener(e -> {
                             // Handle errors
-                            Log.e("Color", "Error when changing folder color");
+                            Log.e("Color", "Error when changing folder color", e);
                         });
             } else {
                 Toast.makeText(this, "No option selected or 'None' selected", Toast.LENGTH_SHORT).show();
@@ -513,6 +594,11 @@ public class MainActivity extends AppCompatActivity implements
         dialog.show();
     }
 
+    /**
+     * When a note is selected in the recycler view,
+     * Move to the NoteViewer class for that given note
+     * @param note to move to
+     */
     @Override
     public void onNoteSelected(DocumentSnapshot note) {
         Intent intent = new Intent(this, NoteViewer.class);
@@ -527,11 +613,19 @@ public class MainActivity extends AppCompatActivity implements
         startActivity(intent);
     }
 
+    /**
+     * When a folder is selected in the recycler viewer,
+     * Move to that subcollection and recreate the MainActivity class
+     * @param folder that has been selected
+     */
     @Override
-    public void onFolderSelected(DocumentSnapshot note) {
+    public void onFolderSelected(DocumentSnapshot folder) {
         Intent intent = new Intent(this, MainActivity.class);
         Bundle bundle = new Bundle();
-        ArrayList<String> path = addToCollectionPathArray(collectionPathsArray, note.getId());
+        ArrayList<String> path;
+        if(collectionPathsArray.size() == 1) {
+           path = addToCollectionPathArray(collectionPathsArray, folder.getId());
+        }
         path = addToCollectionPathArray(collectionPathsArray, "notes");
         bundle.putStringArrayList("path", path);
         bundle.putString("type", "folder");
@@ -539,6 +633,11 @@ public class MainActivity extends AppCompatActivity implements
         startActivity(intent);
     }
 
+    /**
+     * When main menu is selected, rerender Main Activity class
+     * Create bundle that contains toHome to be true
+     * Note: this will cause onCreate to update the path correctly
+     */
     public void onBackToMenuSelected() {
         Intent intent = new Intent(this, MainActivity.class);
         Bundle bundle = new Bundle();
@@ -547,6 +646,9 @@ public class MainActivity extends AppCompatActivity implements
         startActivity(intent);
     }
 
+    /**
+     * Allow the user to select a new application color from an Alert Dialog
+     */
     private void changeAppColor() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
@@ -595,6 +697,10 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
+    /**
+     * Change the color (theme) of the application based on the color the user selects
+     * @param color that has been selected
+     */
     private void changeColorWithPrefrences(String color) {
         //TODO change the app color within this method and save it to system preferences
         switch (color){
@@ -619,8 +725,5 @@ public class MainActivity extends AppCompatActivity implements
 
                 break;
         }
-
-
     }
-
 }

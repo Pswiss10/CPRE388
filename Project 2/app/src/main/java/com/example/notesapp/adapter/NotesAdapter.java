@@ -44,10 +44,17 @@ import com.google.firebase.firestore.Query;
 
 import androidx.core.content.ContextCompat;
 
-
+/**
+ * Adapter class for displaying notes and folders in a RecyclerView.
+ * This adapter extends FirestoreAdapter for handling Firestore queries.
+ */
 public class NotesAdapter extends FirestoreAdapter<NotesAdapter.ViewHolder> {
     private Context context;
 
+    /**
+     * Interface to handle item click events in the RecyclerView.
+     * Contains handlers for both note and folder selected
+     */
     public interface OnNoteSelectedListener {
         void onNoteSelected(DocumentSnapshot note);
         void onFolderSelected(DocumentSnapshot note);
@@ -55,11 +62,24 @@ public class NotesAdapter extends FirestoreAdapter<NotesAdapter.ViewHolder> {
 
     private OnNoteSelectedListener mListener;
 
+    /**
+     * Constructor for NotesAdapter.
+     *
+     * @param query query to fetch data.
+     * @param listener Listener for onClick events
+     */
     public NotesAdapter(Query query, OnNoteSelectedListener listener) {
         super(query);
         mListener = listener;
     }
 
+    /**
+     * Called when RecyclerView needs a new ViewHolder.
+     *
+     * @param parent   The ViewGroup of the new View to be added
+     * @param viewType The type of the new View
+     * @return A new ViewHolder that holds a View
+     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -67,23 +87,44 @@ public class NotesAdapter extends FirestoreAdapter<NotesAdapter.ViewHolder> {
         return new ViewHolder(inflater.inflate(R.layout.item_notebook, parent, false));
     }
 
+    /**
+     * Called by RecyclerView to display the data at the specified position.
+     *
+     * @param holder   The ViewHolder that should be updated
+     * @param position The position of the item within the adapter's data set
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bind(getSnapshot(position), mListener);
     }
 
+    /**
+     * ViewHolder class for holding item views in the RecyclerView.
+     */
     class ViewHolder extends RecyclerView.ViewHolder {
         Drawable c;
-
         ImageView imageView;
         TextView nameView;
 
+        /**
+         * ViewHolder constructor
+         * @param itemView the root view of the ViewHolder
+         */
         public ViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.notebook_item_image);
             nameView = itemView.findViewById(R.id.notebook_item_name);
         }
 
+        /**
+         * Binds data to the ViewHolder.
+         *
+         * Hide items that are marked as isHidden
+         * Correctly display the folder/note icons and respective colors
+         *
+         * @param snapshot data snapshot
+         * @param listener The listener for onClick events
+         */
         public void bind(final DocumentSnapshot snapshot,
                          final OnNoteSelectedListener listener) {
 
@@ -161,7 +202,7 @@ public class NotesAdapter extends FirestoreAdapter<NotesAdapter.ViewHolder> {
 
                     nameView.setText(notes.getName());  // Use the name from the Notes object
 
-                    //TODO: FOR SOME REASON, THE ICON IS SHOWING FOR IS HIDDEN NOTE
+                    //TODO: FOR SOME REASON, THERE IS SPACE AT THE TOP
                     if (notes.getIsHidden()) {
                         // If the note is hidden, do not show it in the RecyclerView
                         itemView.setVisibility(View.GONE);

@@ -19,7 +19,6 @@
         android:id="@+id/notebook_item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/notebook_item_image"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="4dp"

@@ -163,8 +163,6 @@ public class NoteEditor extends AppCompatActivity {
         }
     }
 
-
-
     public void updateNote(){
         String editedText = noteEditText.getText().toString();
         noteTextView.setText(editedText);
