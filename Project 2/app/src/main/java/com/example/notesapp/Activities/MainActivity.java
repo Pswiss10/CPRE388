@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity implements
 
     private FirebaseUser currUser;
     private RecyclerView NotebooksRecycler;
-
     private FirebaseFirestore mFirestore;
     private NotesAdapter mAdapter;
     private String userID;
@@ -84,13 +83,13 @@ public class MainActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         currUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        // Assuming your user data is stored in a "users" collection
-        String userId = currUser.getUid();
-        NotebooksRecycler = findViewById(R.id.recycler_notebooks);
-        FirebaseFirestore.setLoggingEnabled(true);
         mFirestore = FirebaseUtil.getFirestore();
         userID = FirebaseHelper.getInstance().getCurrentUserId();
+
+        // Assuming your user data is stored in a "users" collection
+
+        FirebaseFirestore.setLoggingEnabled(true);
+
 
         if (currUser != null) {
             // Assuming you have a reference to your Firestore database
@@ -144,8 +143,7 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         setContentView(R.layout.activity_main);
-
-
+        NotebooksRecycler = findViewById(R.id.recycler_notebooks);
         collectionPathsArray = createNewCollectionPath();
         updateCollectionPathString(collectionPathsArray); // set path initially as root collection
 
