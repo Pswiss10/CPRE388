@@ -32,6 +32,8 @@ import com.example.notesapp.R;
 
 import com.example.notesapp.adapter.NotesAdapter;
 import com.example.notesapp.util.FirebaseUtil;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -81,12 +83,69 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        NotebooksRecycler = findViewById(R.id.recycler_notebooks);
+        currUser = FirebaseAuth.getInstance().getCurrentUser();
 
+        // Assuming your user data is stored in a "users" collection
+        String userId = currUser.getUid();
+        NotebooksRecycler = findViewById(R.id.recycler_notebooks);
         FirebaseFirestore.setLoggingEnabled(true);
         mFirestore = FirebaseUtil.getFirestore();
         userID = FirebaseHelper.getInstance().getCurrentUserId();
+
+        if (currUser != null) {
+            // Assuming you have a reference to your Firestore database
+
+            try {
+                // Get the user document by user ID
+                mFirestore.collection("users")
+                        .document(userID)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+                                    if (document.exists()) {
+                                        // Get the "theme" attribute from the user document
+                                        String theme = document.getString("theme");
+                                        // Now you have the "theme" attribute, you can use it as needed
+                                        Log.d(TAG, "Theme: " + theme);
+                                        switch (theme.toLowerCase()){
+                                            case "black":
+                                                setTheme(R.style.blackTheme);
+                                                break;
+                                            case "blue":
+                                                setTheme(R.style.blueTheme);
+                                                break;
+                                            case "green":
+                                                setTheme(R.style.Base_Theme_NotesApp);
+                                                break;
+                                            case "red":
+                                                setTheme(R.style.redTheme);
+                                                break;
+                                            default:
+                                                //Teal is default color
+                                                break;
+                                        }
+                                    } else {
+                                        Log.d(TAG, "No such document");
+                                    }
+                                } else {
+                                    Log.w(TAG, "Error getting document", task.getException());
+                                }
+                            }
+                        });
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.d("Error", "error", e);
+            }
+        } else {
+            Log.d("Theme", "Skipping");
+        }
+
+        setContentView(R.layout.activity_main);
+
+
         collectionPathsArray = createNewCollectionPath();
         updateCollectionPathString(collectionPathsArray); // set path initially as root collection
 
@@ -100,8 +159,6 @@ public class MainActivity extends AppCompatActivity implements
                 .collection(collectionPathString);
 
         initRecyclerView();
-
-        currUser = FirebaseAuth.getInstance().getCurrentUser();
     }
 
     public void updateCollectionPathString(ArrayList<String> collectionPathList) {
@@ -536,22 +593,26 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void changeColorWithPrefrences(String color) {
+        CollectionReference db = FirebaseHelper.getInstance().getFirestore().collection("users");
+        String currUserID = FirebaseHelper.getInstance().getCurrentUserId();
+        DocumentReference updateTheme = db.document(currUserID);
+        Map<String, Object> dataToUpdate = new HashMap<>();
         //TODO change the app color within this method and save it to system preferences
         switch (color){
             case "Black":
-                //TODO
+                dataToUpdate.put("theme", "black");
 
                 break;
             case "Blue":
-                //TODO
+                dataToUpdate.put("theme", "blue");
 
                 break;
             case "Green":
-                //TODO
+                dataToUpdate.put("theme", "green");
 
                 break;
             case "Red":
-                //TODO
+                dataToUpdate.put("theme", "red");
 
                 break;
             default:
@@ -559,8 +620,12 @@ public class MainActivity extends AppCompatActivity implements
 
                 break;
         }
+        updateTheme.update(dataToUpdate)
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Document successfully updated"))
+                .addOnFailureListener(e -> Log.e("Firestore", "Error updating document", e));
 
-
+        Intent intent = new Intent(MainActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 
 }

@@ -6,11 +6,14 @@ public class User {
     private String lastName;
     private String email;
 
-    public User(String id, String firstName, String lastName, String email) {
+    private String theme;
+
+    public User(String id, String firstName, String lastName, String email, String theme) {
        this.id = id;
        this.firstName = firstName;
        this.lastName = lastName;
        this.email = email;
+       this.theme = theme;
     }
 
     public String getId() {
@@ -28,4 +31,6 @@ public class User {
     public String getEmail() {
         return email;
     }
+
+    public String getTheme() { return theme; }
 }

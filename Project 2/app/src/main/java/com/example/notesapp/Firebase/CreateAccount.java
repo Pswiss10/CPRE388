@@ -72,6 +72,7 @@ public class CreateAccount extends AppCompatActivity {
         final String password = passwordEditText.getText().toString();
         final String firstName = firstNameEditText.getText().toString();
         final String lastName = lastNameEditText.getText().toString();
+        final String theme = "Green";
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -86,7 +87,7 @@ public class CreateAccount extends AppCompatActivity {
                             String userId = mAuth.getCurrentUser().getUid();
 
                             // Store additional user information in Firestore
-                            storeUserDataInFirestore(userId, firstName, lastName, email);
+                            storeUserDataInFirestore(userId, firstName, lastName, email, theme);
 
                             toLoginPage();
 
@@ -99,13 +100,13 @@ public class CreateAccount extends AppCompatActivity {
                 });
     }
 
-    private void storeUserDataInFirestore(String userId, String firstName, String lastName, String email) {
+    private void storeUserDataInFirestore(String userId, String firstName, String lastName, String email, String theme) {
         // Access Firestore instance
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         // Create a new user document in the "users" collection
         // Here, you can add other fields such as first name, last name, etc.
-        User user = new User(userId, firstName, lastName, email); // Replace with actual user data
+        User user = new User(userId, firstName, lastName, email, theme); // Replace with actual user data
         db.collection("users")
                 .document(userId)
                 .set(user)
