@@ -5,6 +5,31 @@
          <item name="colorPrimary">@color/my_light_primary</item>
     </style>
 
+    <style name="redTheme" parent="Theme.Material3.DayNight">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/red</item>
+    </style>
+
+    <style name="blackTheme" parent="Theme.Material3.DayNight">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/black</item>
+    </style>
+
+    <style name="whiteTheme" parent="Theme.Material3.DayNight">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/white</item>
+    </style>
+
+    <style name="blueTheme" parent="Theme.Material3.DayNight">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="tealTheme" parent="Theme.Material3.DayNight">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/teal</item>
+    </style>
+
     <style name="Theme.NotesApp" parent="Base.Theme.NotesApp" />
 
     <color name="my_light_primary">#3BCF5B</color>
