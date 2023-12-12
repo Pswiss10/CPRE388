@@ -22,7 +22,12 @@
 
     <style name="blueTheme" parent="Theme.Material3.DayNight">
         <!-- Customize your light theme here. -->
-        <item name="colorPrimary">@color/blue</item>
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="tealTheme" parent="Theme.Material3.DayNight">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/teal</item>
     </style>
 
     <style name="Theme.NotesApp" parent="Base.Theme.NotesApp" />

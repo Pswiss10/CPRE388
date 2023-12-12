@@ -1,13 +1,23 @@
 package com.example.notesapp.Models;
 
+/**
+ * Class to store user information
+ */
 public class User {
     private String id;
     private String firstName;
     private String lastName;
     private String email;
-
     private String theme;
 
+    /**
+     * Constructor for the User class
+     * @param id
+     * @param firstName
+     * @param lastName
+     * @param email
+     * @param theme
+     */
     public User(String id, String firstName, String lastName, String email, String theme) {
        this.id = id;
        this.firstName = firstName;
@@ -16,6 +26,10 @@ public class User {
        this.theme = theme;
     }
 
+    /**
+     * Get the id of the user
+     * @return string, userID
+     */
     public String getId() {
         return id;
     }

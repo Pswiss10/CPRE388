@@ -31,12 +31,15 @@ import android.widget.ArrayAdapter;
 import com.example.notesapp.Enums.FileType;
 import com.example.notesapp.Firebase.FirebaseHelper;
 import com.example.notesapp.R;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.checkerframework.checker.units.qual.A;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,6 +54,8 @@ public class NoteEditor extends AppCompatActivity {
     private String font = "noto sans";
     private String noteName = "New Note";
     private String notebookColor = "blue";
+    private boolean inSubFolder;
+    private String folderID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +92,10 @@ public class NoteEditor extends AppCompatActivity {
         }
         if(getIntent().hasExtra("notebookColor")) {
             notebookColor = receivedBundle.getString("notebookColor");
+        }
+        if(getIntent().hasExtra("inSubFolder")) {
+            inSubFolder = receivedBundle.getBoolean("inSubFolder");
+            folderID = receivedBundle.getString("folderID");
         }
 
         updateLookOfTextView();
@@ -133,7 +142,11 @@ public class NoteEditor extends AppCompatActivity {
             CollectionReference db = FirebaseHelper.getInstance().getFirestore().collection("users");
 
             String currUserID = FirebaseHelper.getInstance().getCurrentUserId();
-            DocumentReference updateNote = db.document(currUserID).collection("notebooks").document(documentID);
+            String path = "notebooks";
+            if(inSubFolder) {
+                path = "notebooks/" + folderID + "/notes/";
+            }
+            DocumentReference updateNote = db.document(currUserID).collection(path).document(documentID);
 
             Map<String, Object> dataToUpdate = new HashMap<>();
             dataToUpdate.put("content", noteTextView.getText().toString());
@@ -141,6 +154,7 @@ public class NoteEditor extends AppCompatActivity {
             dataToUpdate.put("Font", font);
             dataToUpdate.put("name", noteName);
             dataToUpdate.put("color", notebookColor.toLowerCase());
+            dataToUpdate.put("lastModified", Timestamp.now());
 
             updateNote.update(dataToUpdate)
                     .addOnSuccessListener(aVoid -> Log.d("Firestore", "Document successfully updated"))
@@ -162,8 +176,6 @@ public class NoteEditor extends AppCompatActivity {
             return super.onOptionsItemSelected(item);
         }
     }
-
-
 
     public void updateNote(){
         String editedText = noteEditText.getText().toString();
