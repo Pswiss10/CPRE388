@@ -29,6 +29,7 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
     private View mRootView;
     private Spinner mCategorySpinner;
     private Spinner mSortSpinner;
+    private Spinner mDirectionSpinner;
 
     private FilterListener mFilterListener;
 
@@ -41,6 +42,7 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
 
         mCategorySpinner = mRootView.findViewById(R.id.spinner_category);
         mSortSpinner = mRootView.findViewById(R.id.spinner_sort);
+        mDirectionSpinner = mRootView.findViewById(R.id.spinner_direction);
 
         mRootView.findViewById(R.id.button_search).setOnClickListener(this);
         mRootView.findViewById(R.id.button_cancel).setOnClickListener(this);
@@ -88,11 +90,14 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
     @Nullable
     private String getSelectedType() {
         String selected = (String) mCategorySpinner.getSelectedItem();
-        String notes = "Note";
-        String folders = "Folder";
-        if (selected.equals(notes) || selected.equals(folders)) {
-            return selected;
-        } else {
+        String notes = "Notes";
+        String folders = "Folders";
+        if(selected.equals(notes)){
+            return "note";
+        } else if (selected.equals(folders)) {
+            return "folder";
+        }
+        else {
             return null;
         }
     }
@@ -116,14 +121,16 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
 
     @Nullable
     private Query.Direction getSortDirection() {
-        String selected = (String) mSortSpinner.getSelectedItem();
-        if (getString(R.string.sortAlphabetically).equals(selected)) {
+        String selected = (String) mDirectionSpinner.getSelectedItem();
+        String ascending= "Ascending";
+        String descending = "Descending";
+
+        if (ascending.equals(selected)) {
             return Query.Direction.ASCENDING;
-        } if (getString(R.string.sortLastModifiedDate).equals(selected)) {
-            return Query.Direction.ASCENDING;
-        } if (getString(R.string.sortCreatedDate).equals(selected)) {
-            return Query.Direction.ASCENDING;
+        } else if (descending.equals(selected)) {
+            return Query.Direction.DESCENDING;
         }
+
         return null;
     }
 

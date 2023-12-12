@@ -51,6 +51,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.File;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -85,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements
     private FilterDialogFragment mFilterDialog;
     private TextView mCurrentSearchView;
     private TextView mCurrentSortByView;
+    private TextView mCurrentDirectionView;
     private MainActivityViewModel mViewModel;
 
     /**
@@ -124,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements
 
         // View model
         mViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
+        onFilter(Filters.getDefault());
     }
 
     /**
@@ -192,17 +196,35 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     *
+     * @param filters
+     */
     @Override
     public void onFilter(Filters filters) {
-        Query query = mFirestore.collection("notebooks");
+        Query query = currCollection;
+        String s = collectionPathString;
 
-        // TODO: Filter by category (equality filter)
-        if(filters.hasType()) {
+        // User can filter by notes, folders, or all items
+        if (filters.hasType()) {
             query = query.whereEqualTo("type", filters.getType().toLowerCase());
         }
-        // TODO: Sort by specified order (orderBy with direction)
+
+        /**
+         * NOTE: alphabetical sorting sorts A-Z, then a-z, not aA-zZ
+         */
         if(filters.hasSortBy()) {
-            query = query.orderBy(filters.getSortBy());
+            String sortBy = filters.getSortBy();
+            Query.Direction sortDirection = filters.getSortDirection();
+            if(sortBy.equals("alphabetical")) {
+                query = query.orderBy("name", sortDirection);
+            }
+            else if(sortBy.equals("created")) {
+                query = query.orderBy("created", sortDirection);
+
+            } else if(sortBy.equals("lastOpened")) {
+                query = query.orderBy("lastOpened", sortDirection);
+            }
         }
 
         // Limit items
@@ -210,6 +232,7 @@ public class MainActivity extends AppCompatActivity implements
         // Update the query
         currCollection = query;
         mAdapter.setQuery(query);
+        NotebooksRecycler.setAdapter(mAdapter);
 
         // Set header
         mCurrentSearchView.setText(Html.fromHtml(filters.getSearchDescription(this)));
@@ -219,6 +242,10 @@ public class MainActivity extends AppCompatActivity implements
         mViewModel.setFilters(filters);
     }
 
+    /**
+     *
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.filter_bar) {
@@ -228,11 +255,17 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     *
+     */
     public void onFilterClicked() {
         // Show the dialog containing filter options
         mFilterDialog.show(getSupportFragmentManager(), FilterDialogFragment.TAG);
     }
 
+    /**
+     *
+     */
     public void onClearFilterClicked() {
         mFilterDialog.resetFilters();
         onFilter(Filters.getDefault());
@@ -252,6 +285,7 @@ public class MainActivity extends AppCompatActivity implements
      * Change application color
      * Change current folder color
      *
+     * @author Charlene, Peter
      * @param menu
      * @return true if successful
      */
@@ -284,6 +318,7 @@ public class MainActivity extends AppCompatActivity implements
      * Change application color
      * Go back to main
      *
+     * @author Charlene, Peter
      * @param item
      * @return true if successful
      */
@@ -315,6 +350,7 @@ public class MainActivity extends AppCompatActivity implements
     /**
      * When a user selects a menu item, a popup will appear asking for
      * the name of the new item
+     * @author Charlene
      * @param fileType, NOTE or FOLDER
      * @return name entered by user
      */
@@ -368,6 +404,7 @@ public class MainActivity extends AppCompatActivity implements
      * Options: {"Red", "Blue", "Green", "Grey", "Black",
      * "Orange", "Pink", "Yellow", "Purple"}
      *
+     * @author Charlene
      * @param name of the item as entered by user
      * @param fileType of the item selected by user
      */
@@ -427,6 +464,11 @@ public class MainActivity extends AppCompatActivity implements
         dataToAdd.put("Font", "noto sans");
         dataToAdd.put("type", "note");
         dataToAdd.put("isHidden", false);
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = currentDateTime.format(formatter);
+        dataToAdd.put("created", formattedDateTime);
+        dataToAdd.put("lastModified", formattedDateTime);
 
         // Add other fields as needed
         // Add data to the user's subcollection

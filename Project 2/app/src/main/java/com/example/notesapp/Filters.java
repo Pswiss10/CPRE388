@@ -17,7 +17,7 @@ public class Filters {
     public static Filters getDefault() {
         Filters filters = new Filters();
         filters.setSortBy(Notes.FIELD_ALPHABETICAL);
-        filters.setSortDirection(Query.Direction.DESCENDING);
+        filters.setSortDirection(Query.Direction.ASCENDING);
         return filters;
     }
 

@@ -37,6 +37,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.checkerframework.checker.units.qual.A;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -141,6 +143,10 @@ public class NoteEditor extends AppCompatActivity {
             dataToUpdate.put("Font", font);
             dataToUpdate.put("name", noteName);
             dataToUpdate.put("color", notebookColor.toLowerCase());
+            LocalDateTime currentDateTime = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formattedDateTime = currentDateTime.format(formatter);
+            dataToUpdate.put("lastModified", formattedDateTime);
 
             updateNote.update(dataToUpdate)
                     .addOnSuccessListener(aVoid -> Log.d("Firestore", "Document successfully updated"))

@@ -39,11 +39,17 @@
         <item>@string/sortCreatedDate</item>
     </string-array>
 
+    <!-- Ways you can sort items (DIRECTION)-->
+    <string-array name="sort_by_direction">
+        <item>Ascending</item>
+        <item>Descending</item>
+    </string-array>
+
     <!-- Choice for Type -->
     <string-array name="type">
         <item>All Items</item>
-        <item>Note</item>
-        <item>Folder</item>
+        <item>Notes</item>
+        <item>Folders</item>
     </string-array>
 
 </resources>
