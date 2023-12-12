@@ -8,6 +8,11 @@ import java.io.Serializable;
  * Class to store item (notes/folder) information
  */
 public class Notes implements Serializable {
+
+    public static final String FIELD_ALPHABETICAL = "alphabetical";
+    public static final String FIELD_CREATED = "created";
+    public static final String FIELD_LAST_MODIFIED = "lastModified";
+
     private String name;
     private String color;
     private String type;

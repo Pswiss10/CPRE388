@@ -3,6 +3,8 @@ package com.example.notesapp.Activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,6 +12,7 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,14 +28,18 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.notesapp.FilterDialogFragment;
+import com.example.notesapp.Filters;
 import com.example.notesapp.Firebase.FirebaseHelper;
 import com.example.notesapp.Enums.FileType;
 import com.example.notesapp.Firebase.CreateAccount;
+import com.example.notesapp.MainActivityViewModel;
 import com.example.notesapp.R;
 
 import com.example.notesapp.adapter.NotesAdapter;
 import com.example.notesapp.util.FirebaseUtil;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -45,6 +52,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.File;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -59,7 +68,9 @@ import java.util.Map;
  * Allows users to click through menu options
  */
 public class MainActivity extends AppCompatActivity implements
-        NotesAdapter.OnNoteSelectedListener  {
+        View.OnClickListener,
+        NotesAdapter.OnNoteSelectedListener,
+        FilterDialogFragment.FilterListener {
 
     private static final String TAG = "MainActivity";
     String enteredText = "";
@@ -72,7 +83,14 @@ public class MainActivity extends AppCompatActivity implements
     String collectionPathString = "notebooks";
     ArrayList<String> collectionPathsArray;
     private int selectedOption = -1;
+    private NotesAdapter.OnNoteSelectedListener listener;
     private String newAppColor = "";
+    private FilterDialogFragment mFilterDialog;
+    private TextView mCurrentSearchView;
+    private TextView mCurrentSortByView;
+    private TextView mCurrentDirectionView;
+    private MainActivityViewModel mViewModel;
+    boolean inSubFolder= false;
 
     /**
      * onCreate for the Main Activity class
@@ -86,6 +104,8 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         NotebooksRecycler = findViewById(R.id.recycler_notebooks);
+        mCurrentSearchView = findViewById(R.id.text_current_search);
+        mCurrentSortByView = findViewById(R.id.text_current_sort_by);
 
         FirebaseFirestore.setLoggingEnabled(true);
         mFirestore = FirebaseUtil.getFirestore();
@@ -100,8 +120,16 @@ public class MainActivity extends AppCompatActivity implements
 
         currCollection = mFirestore.collection("users").document(userID)
                 .collection(collectionPathString);
+
+        View filterBar = findViewById(R.id.filter_bar);
+        filterBar.setOnClickListener(this);
+        mFilterDialog = new FilterDialogFragment();
         initRecyclerView();
         currUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        // View model
+        mViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
+        onFilter(Filters.getDefault());
     }
 
     /**
@@ -171,6 +199,81 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     /**
+     *
+     * @param filters
+     */
+    @Override
+    public void onFilter(Filters filters) {
+        Query query = currCollection;
+        String s = collectionPathString;
+
+        // User can filter by notes, folders, or all items
+        if (filters.hasType()) {
+            query = query.whereEqualTo("type", filters.getType().toLowerCase());
+        }
+
+        /**
+         * NOTE: alphabetical sorting sorts A-Z, then a-z, not aA-zZ
+         */
+        if(filters.hasSortBy()) {
+            String sortBy = filters.getSortBy();
+            Query.Direction sortDirection = filters.getSortDirection();
+            if(sortBy.equals("alphabetical")) {
+                query = query.orderBy("name", sortDirection);
+            }
+            else if(sortBy.equals("created")) {
+                query = query.orderBy("created", sortDirection);
+
+            } else if(sortBy.equals("lastModified")) {
+                query = query.orderBy("lastModified", sortDirection);
+            }
+        }
+
+        // Limit items
+        query = query.limit(50);
+        // Update the query
+        currCollection = query;
+        mAdapter.setQuery(query);
+        NotebooksRecycler.setAdapter(mAdapter);
+
+        // Set header
+        mCurrentSearchView.setText(Html.fromHtml(filters.getSearchDescription(this)));
+        mCurrentSortByView.setText(filters.getOrderDescription(this));
+
+        // Save filters
+        mViewModel.setFilters(filters);
+    }
+
+    /**
+     *
+     * @param v
+     */
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.filter_bar) {
+            onFilterClicked();
+        } else if (v.getId() == R.id.button_clear_filter) {
+            onClearFilterClicked();
+        }
+    }
+
+    /**
+     *
+     */
+    public void onFilterClicked() {
+        // Show the dialog containing filter options
+        mFilterDialog.show(getSupportFragmentManager(), FilterDialogFragment.TAG);
+    }
+
+    /**
+     *
+     */
+    public void onClearFilterClicked() {
+        mFilterDialog.resetFilters();
+        onFilter(Filters.getDefault());
+    }
+
+    /**
      * Populate the options menu in the header depending on the directory of the user
      *
      * If the user is in home, they may:
@@ -184,6 +287,7 @@ public class MainActivity extends AppCompatActivity implements
      * Change application color
      * Change current folder color
      *
+     * @author Charlene, Peter
      * @param menu
      * @return true if successful
      */
@@ -216,6 +320,7 @@ public class MainActivity extends AppCompatActivity implements
      * Change application color
      * Go back to main
      *
+     * @author Charlene, Peter
      * @param item
      * @return true if successful
      */
@@ -247,6 +352,7 @@ public class MainActivity extends AppCompatActivity implements
     /**
      * When a user selects a menu item, a popup will appear asking for
      * the name of the new item
+     * @author Charlene
      * @param fileType, NOTE or FOLDER
      * @return name entered by user
      */
@@ -300,6 +406,7 @@ public class MainActivity extends AppCompatActivity implements
      * Options: {"Red", "Blue", "Green", "Grey", "Black",
      * "Orange", "Pink", "Yellow", "Purple"}
      *
+     * @author Charlene
      * @param name of the item as entered by user
      * @param fileType of the item selected by user
      */
@@ -359,6 +466,17 @@ public class MainActivity extends AppCompatActivity implements
         dataToAdd.put("Font", "noto sans");
         dataToAdd.put("type", "note");
         dataToAdd.put("isHidden", false);
+        dataToAdd.put("content", "Blank Note");
+        dataToAdd.put("created", Timestamp.now());
+        dataToAdd.put("lastModified", Timestamp.now());
+        if(!collectionPathString.equals("notebooks")) {
+            inSubFolder = true;
+            dataToAdd.put("inSubFolder", true);
+            dataToAdd.put("folderID", getFolderID(collectionPathString));
+        } else {
+            inSubFolder = false;
+            dataToAdd.put("inSubFolder", false);
+        }
 
         // Add other fields as needed
         // Add data to the user's subcollection
@@ -373,6 +491,8 @@ public class MainActivity extends AppCompatActivity implements
                     bundle.putString("Text Color", "Black");
                     bundle.putString("notebookColor", color);
                     bundle.putString("type", "note");
+                    bundle.putBoolean("inSubFolder", inSubFolder);
+                    bundle.putString("folderID", getFolderID(collectionPathString));
                     intent.putExtras(bundle);
                     startActivity(intent);
                     Log.d("Firestore", "Document added to userData with ID: " + subDocumentId);
@@ -535,12 +655,19 @@ public class MainActivity extends AppCompatActivity implements
     public void onNoteSelected(DocumentSnapshot note) {
         Intent intent = new Intent(this, NoteViewer.class);
         Bundle bundle = new Bundle();
+        boolean inSubFolder = !collectionPathString.equals("notebooks") ? true : false;
+
         bundle.putString("documentID", note.getId());
-        bundle.putCharSequence("NoteTextValue", note.get("content", String.class));
+        bundle.putString("NoteTextValue", note.get("content", String.class));
         bundle.putString("noteName", note.get("name", String.class));
         bundle.putString("Font", note.get("Font", String.class));
         bundle.putString("Text Color", note.get("Text Color", String.class));
         bundle.putString("notebookColor", note.get("color", String.class));
+        bundle.putBoolean("inSubFolder", inSubFolder);
+        if(inSubFolder) {
+            bundle.putString("folderID", getFolderID(collectionPathString));
+        }
+
         intent.putExtras(bundle);
         startActivity(intent);
     }
