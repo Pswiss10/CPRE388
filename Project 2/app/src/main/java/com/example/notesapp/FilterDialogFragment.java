@@ -112,7 +112,7 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
         if (sortAlphabetically.equals(selected)) {
             return Notes.FIELD_ALPHABETICAL;
         } if (sortLastModifiedDate.equals(selected)) {
-            return Notes.FIELD_LAST_OPENED;
+            return Notes.FIELD_LAST_MODIFIED;
         } if (sortCreatedDate.equals(selected)) {
             return Notes.FIELD_CREATED;
         }

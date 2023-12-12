@@ -39,6 +39,7 @@ import com.example.notesapp.R;
 import com.example.notesapp.adapter.NotesAdapter;
 import com.example.notesapp.util.FirebaseUtil;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -89,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements
     private TextView mCurrentSortByView;
     private TextView mCurrentDirectionView;
     private MainActivityViewModel mViewModel;
+    boolean inSubFolder= false;
 
     /**
      * onCreate for the Main Activity class
@@ -222,8 +224,8 @@ public class MainActivity extends AppCompatActivity implements
             else if(sortBy.equals("created")) {
                 query = query.orderBy("created", sortDirection);
 
-            } else if(sortBy.equals("lastOpened")) {
-                query = query.orderBy("lastOpened", sortDirection);
+            } else if(sortBy.equals("lastModified")) {
+                query = query.orderBy("lastModified", sortDirection);
             }
         }
 
@@ -464,11 +466,17 @@ public class MainActivity extends AppCompatActivity implements
         dataToAdd.put("Font", "noto sans");
         dataToAdd.put("type", "note");
         dataToAdd.put("isHidden", false);
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String formattedDateTime = currentDateTime.format(formatter);
-        dataToAdd.put("created", formattedDateTime);
-        dataToAdd.put("lastModified", formattedDateTime);
+        dataToAdd.put("content", "Blank Note");
+        dataToAdd.put("created", Timestamp.now());
+        dataToAdd.put("lastModified", Timestamp.now());
+        if(!collectionPathString.equals("notebooks")) {
+            inSubFolder = true;
+            dataToAdd.put("inSubFolder", true);
+            dataToAdd.put("folderID", getFolderID(collectionPathString));
+        } else {
+            inSubFolder = false;
+            dataToAdd.put("inSubFolder", false);
+        }
 
         // Add other fields as needed
         // Add data to the user's subcollection
@@ -483,6 +491,8 @@ public class MainActivity extends AppCompatActivity implements
                     bundle.putString("Text Color", "Black");
                     bundle.putString("notebookColor", color);
                     bundle.putString("type", "note");
+                    bundle.putBoolean("inSubFolder", inSubFolder);
+                    bundle.putString("folderID", getFolderID(collectionPathString));
                     intent.putExtras(bundle);
                     startActivity(intent);
                     Log.d("Firestore", "Document added to userData with ID: " + subDocumentId);
@@ -645,12 +655,19 @@ public class MainActivity extends AppCompatActivity implements
     public void onNoteSelected(DocumentSnapshot note) {
         Intent intent = new Intent(this, NoteViewer.class);
         Bundle bundle = new Bundle();
+        boolean inSubFolder = !collectionPathString.equals("notebooks") ? true : false;
+
         bundle.putString("documentID", note.getId());
-        bundle.putCharSequence("NoteTextValue", note.get("content", String.class));
+        bundle.putString("NoteTextValue", note.get("content", String.class));
         bundle.putString("noteName", note.get("name", String.class));
         bundle.putString("Font", note.get("Font", String.class));
         bundle.putString("Text Color", note.get("Text Color", String.class));
         bundle.putString("notebookColor", note.get("color", String.class));
+        bundle.putBoolean("inSubFolder", inSubFolder);
+        if(inSubFolder) {
+            bundle.putString("folderID", getFolderID(collectionPathString));
+        }
+
         intent.putExtras(bundle);
         startActivity(intent);
     }

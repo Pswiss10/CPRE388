@@ -37,6 +37,8 @@ public class NoteViewer extends AppCompatActivity {
     private String noteName = "New Note";
 
     private String notebookColor = "blue";
+    private boolean inSubFolder;
+    private String folderID;
 
     /**
      * onCreate for the NoteViewer activity on launch
@@ -83,6 +85,14 @@ public class NoteViewer extends AppCompatActivity {
             notebookColor = receivedBundle.getString("notebookColor");
         }
 
+        if(getIntent().hasExtra("notebookColor")) {
+            notebookColor = receivedBundle.getString("notebookColor");
+        }
+        if(getIntent().hasExtra("inSubFolder")) {
+            inSubFolder = receivedBundle.getBoolean("inSubFolder");
+            folderID = receivedBundle.getString("folderID");
+        }
+
         updateLookOfTextView();
     }
 
@@ -122,6 +132,10 @@ public class NoteViewer extends AppCompatActivity {
             options.putString("Text Color", textColor);
             options.putString("noteName", noteName);
             options.putString("notebookColor", notebookColor.toLowerCase());
+            if(inSubFolder) {
+                options.putBoolean("inSubFolder", true);
+                options.putString("folderID", folderID);
+            }
             intent.putExtras(options);
             startActivity(intent);
             return true;
