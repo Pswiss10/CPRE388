@@ -44,10 +44,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-/**
-* Activity to edit notes for our application
-* @author Peter Wissman
-*/
 public class NoteEditor extends AppCompatActivity {
 
     private TextView noteTextView;
@@ -64,7 +60,9 @@ public class NoteEditor extends AppCompatActivity {
 
 
     /**
-    * OnCreate method for 
+    * OnCreate method for the Note Editor
+     * Gathers information from bundles to display on the screen
+     * sets listeners for the Activity
     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +132,11 @@ public class NoteEditor extends AppCompatActivity {
         });
     }
 
+    /**
+     * creates the menu drop down for this activity
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater = getMenuInflater();
@@ -141,6 +144,13 @@ public class NoteEditor extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Method for when the user clicks an item in the menu
+     * CompleteNote sends all the current content and styling about the note to firebase
+     * update styles allows the user to change the note's sytle but doesn't push it to the database
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         int itemId = item.getItemId();
@@ -186,12 +196,18 @@ public class NoteEditor extends AppCompatActivity {
         }
     }
 
+    /**
+     * updates the textview with the user's edited note from the edit text
+     */
     public void updateNote(){
         String editedText = noteEditText.getText().toString();
         noteTextView.setText(editedText);
         noteEditText.getText().clear();
     }
 
+    /**
+     * changes focus from the edit text to the activity
+     */
     private void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         if (imm != null) {
@@ -199,6 +215,11 @@ public class NoteEditor extends AppCompatActivity {
         }
     }
 
+    /**
+     * popup for when a user clicks edit styles
+     * this method contains all the logic for when a user changes items in the update styles popup
+     * contains listeners for the popup and then updates the note based off of these inputs
+     */
     public void newPopup() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
@@ -288,6 +309,9 @@ public class NoteEditor extends AppCompatActivity {
         dialog.show();
     }
 
+    /**
+     * Method that changes the style of the note when the user is done with the popup or when the page loads
+     */
     private void updateLookOfTextView(){
         int fontId;
         switch (font){
