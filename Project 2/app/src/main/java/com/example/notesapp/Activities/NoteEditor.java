@@ -43,6 +43,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+* Activity to edit notes for our application
+* @author Peter Wissman
+*/
 public class NoteEditor extends AppCompatActivity {
 
     private TextView noteTextView;
@@ -57,6 +62,10 @@ public class NoteEditor extends AppCompatActivity {
     private boolean inSubFolder;
     private String folderID;
 
+
+    /**
+    * OnCreate method for 
+    */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
