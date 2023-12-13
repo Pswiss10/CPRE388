@@ -112,6 +112,19 @@ public class MainActivity extends AppCompatActivity implements
 
         FirebaseFirestore.setLoggingEnabled(true);
 
+        collectionPathsArray = createNewCollectionPath(); // set path initially as root collection
+
+        Bundle receivedBundle = getIntent().getExtras();
+        if (getIntent().hasExtra("type") && receivedBundle.getCharSequence("type").toString().equals("folder")) {
+            collectionPathsArray = receivedBundle.getStringArrayList("path");
+        } else if (getIntent().hasExtra("bundlePath")) {
+            collectionPathsArray = receivedBundle.getStringArrayList("bundlePath");
+        }
+
+        updateCollectionPathString(collectionPathsArray);
+
+        currCollection = mFirestore.collection("users").document(userID)
+                .collection(collectionPathString);
 
         if (currUser != null) {
 
@@ -177,17 +190,6 @@ public class MainActivity extends AppCompatActivity implements
         NotebooksRecycler = findViewById(R.id.recycler_notebooks);
         mCurrentSearchView = findViewById(R.id.text_current_search);
         mCurrentSortByView = findViewById(R.id.text_current_sort_by);
-
-        collectionPathsArray = createNewCollectionPath();
-        updateCollectionPathString(collectionPathsArray); // set path initially as root collection
-
-        Bundle receivedBundle = getIntent().getExtras();
-        if (getIntent().hasExtra("type") && receivedBundle.getCharSequence("type").toString().equals("folder")){
-            updateCollectionPathString(receivedBundle.getStringArrayList("path"));
-        }
-
-        currCollection = mFirestore.collection("users").document(userID)
-                .collection(collectionPathString);
 
         View filterBar = findViewById(R.id.filter_bar);
         filterBar.setOnClickListener(this);
@@ -860,6 +862,12 @@ public class MainActivity extends AppCompatActivity implements
                 .addOnFailureListener(e -> Log.e("Firestore", "Error updating document", e));
 
         Intent intent = new Intent(MainActivity.this, MainActivity.class);
+        //if we are not in the root folder, send bundlePath
+        if(!collectionPathString.equals("notebooks")) {
+            Bundle bundle = new Bundle();
+            bundle.putStringArrayList("bundlePath", collectionPathsArray);
+            intent.putExtras(bundle);
+        }
         startActivity(intent);
     }
 }
