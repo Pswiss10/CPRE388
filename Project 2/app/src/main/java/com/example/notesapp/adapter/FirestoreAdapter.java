@@ -59,6 +59,9 @@ public abstract class FirestoreAdapter<VH extends RecyclerView.ViewHolder>
         }
     }
 
+    /**
+     * A method to stop listening for changes in mRegistration
+     */
     public void stopListening() {
         if (mRegistration != null) {
             mRegistration.remove();
@@ -69,6 +72,10 @@ public abstract class FirestoreAdapter<VH extends RecyclerView.ViewHolder>
         notifyDataSetChanged();
     }
 
+    /**
+     * A method for setting the Query for a Firestore object
+     * @param query The current Firestore query
+     */
     public void setQuery(Query query) {
         // Stop listening
         stopListening();
@@ -82,16 +89,29 @@ public abstract class FirestoreAdapter<VH extends RecyclerView.ViewHolder>
         startListening();
     }
 
+    /**
+     * Gets the item count of the snapshot
+     * @return The size of the snapshot
+     */
     @Override
     public int getItemCount() {
         return mSnapshots.size();
     }
 
+    /**
+     * Gets the snapshot index of the DocumentSnapshot
+     * @param index the index of the snapshot
+     * @return The document snapshot from the Firebase
+     */
     protected DocumentSnapshot getSnapshot(int index) {
         return mSnapshots.get(index);
     }
 
-    // Add this method
+    /**
+     *  This method watches for changes within the DocumentSnapshot and updates accordingly
+     * @param documentSnapshots The value of the event. {@code null} if there was an error.
+     * @param e The error if there was error. {@code null} otherwise.
+     */
     @Override
     public void onEvent(QuerySnapshot documentSnapshots,
                         FirebaseFirestoreException e) {
@@ -119,10 +139,19 @@ public abstract class FirestoreAdapter<VH extends RecyclerView.ViewHolder>
         onDataChanged();
     }
 
+    /**
+     * This method notifies the Firebase of a new item being added
+     * @param change A change in the DocumentSnapshot
+     */
     protected void onDocumentAdded(DocumentChange change) {
         mSnapshots.add(change.getNewIndex(), change.getDocument());
         notifyItemInserted(change.getNewIndex());
     }
+
+    /**
+     * This method notifies the Firebase of an item being changed
+     * @param change A change in the DocumentSnapshot
+     */
     protected void onDocumentModified(DocumentChange change) {
         if (change.getOldIndex() == change.getNewIndex()) {
             // Item changed but remained in same position
@@ -135,6 +164,11 @@ public abstract class FirestoreAdapter<VH extends RecyclerView.ViewHolder>
             notifyItemMoved(change.getOldIndex(), change.getNewIndex());
         }
     }
+
+    /**
+     * This method notifies the Firebase of an item being removed
+     * @param change A change in the DocumentSnapshot
+     */
     protected void onDocumentRemoved(DocumentChange change) {
         mSnapshots.remove(change.getOldIndex());
         notifyItemRemoved(change.getOldIndex());

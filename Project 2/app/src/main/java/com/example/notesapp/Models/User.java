@@ -34,17 +34,33 @@ public class User {
         return id;
     }
 
+    /**
+     * Get the first name of the user
+     * @return firstName the first name of the user
+     */
     public String getFirstName() {
         return firstName;
     }
 
+    /**
+     * Get the last name of the user
+     * @return lastName the last name of the user
+     */
     public String getLastName() {
         return lastName;
     }
 
+    /**
+     * Get the email of the user
+     * @return email The email for the user
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Get the theme of the user
+     * @return theme the theme of the user
+     */
     public String getTheme() { return theme; }
 }

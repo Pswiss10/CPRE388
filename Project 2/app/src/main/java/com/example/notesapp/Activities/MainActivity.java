@@ -110,16 +110,12 @@ public class MainActivity extends AppCompatActivity implements
         mFirestore = FirebaseUtil.getFirestore();
         userID = FirebaseHelper.getInstance().getCurrentUserId();
 
-        // Assuming your user data is stored in a "users" collection
-
         FirebaseFirestore.setLoggingEnabled(true);
 
 
         if (currUser != null) {
-            // Assuming you have a reference to your Firestore database
 
             try {
-                // Get the user document by user ID
                 mFirestore.collection("users")
                         .document(userID)
                         .get()
@@ -153,8 +149,12 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
+    /**
+     * This method is important for setting the theme and continuing the
+     * onCreate() process, since we have to start a new intent to update the
+     * theme.
+     */
     private void applyThemeAndSetContentView() {
-        // Now you have the globalTheme value, switch and set theme accordingly
         switch (globalTheme) {
             case "black":
                 setTheme(R.style.blackTheme);
@@ -168,12 +168,11 @@ public class MainActivity extends AppCompatActivity implements
             case "red":
                 setTheme(R.style.redTheme);
                 break;
-            default:
+            case "teal":
                 setTheme(R.style.tealTheme);
                 break;
         }
 
-        // Set the content view after setting the theme
         setContentView(R.layout.activity_main);
         NotebooksRecycler = findViewById(R.id.recycler_notebooks);
         mCurrentSearchView = findViewById(R.id.text_current_search);
@@ -852,9 +851,8 @@ public class MainActivity extends AppCompatActivity implements
                 dataToUpdate.put("theme", "red");
 
                 break;
-            default:
-                //Teal is default color
-
+            case "Teal":
+                dataToUpdate.put("theme", "teal");
                 break;
         }
         updateTheme.update(dataToUpdate)

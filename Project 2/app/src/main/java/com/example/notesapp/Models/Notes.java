@@ -29,10 +29,10 @@ public class Notes implements Serializable {
     // Assuming you have another constructor for creating Notes instances
     /**
      * Notes constructor
-     * @param name
-     * @param color
-     * @param type
-     * @param isHidden
+     * @param name The name of the note
+     * @param color The color of the note icon
+     * @param type The type (note or folder)
+     * @param isHidden Decides if an object should be hidden
      */
     public Notes(String name, String color, String type, boolean isHidden) {
         this.name = name;
