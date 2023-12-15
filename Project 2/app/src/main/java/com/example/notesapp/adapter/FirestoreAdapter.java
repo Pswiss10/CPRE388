@@ -49,10 +49,17 @@ public abstract class FirestoreAdapter<VH extends RecyclerView.ViewHolder>
 
     private ArrayList<DocumentSnapshot> mSnapshots = new ArrayList<>();
 
+    /**
+     * Set the query to be the param input
+     * @param query The Firestore query to be used for data retrieval
+     */
     public FirestoreAdapter(Query query) {
         mQuery = query;
     }
 
+    /**
+     * Start listening for changes in the Firestore query
+     */
     public void startListening() {
         if (mQuery != null && mRegistration == null) {
             mRegistration = mQuery.addSnapshotListener(this);

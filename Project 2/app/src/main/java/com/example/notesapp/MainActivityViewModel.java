@@ -2,28 +2,25 @@ package com.example.notesapp;
 
 import androidx.lifecycle.ViewModel;
 
+/**
+ * ViewModel class for managing the data of the MainActivity.
+ * Handles filters used in the MainActivity.
+ */
 public class MainActivityViewModel extends ViewModel {
 
-    private boolean mIsSigningIn;
     private Filters mFilters;
 
+    /**
+     * Constructor class for the MainActivityView Model that sets mFilters as the default filters
+     */
     public MainActivityViewModel() {
-        mIsSigningIn = false;
         mFilters = Filters.getDefault();
     }
 
-    public boolean getIsSigningIn() {
-        return mIsSigningIn;
-    }
-
-    public void setIsSigningIn(boolean mIsSigningIn) {
-        this.mIsSigningIn = mIsSigningIn;
-    }
-
-    public Filters getFilters() {
-        return mFilters;
-    }
-
+    /**
+     * Set filters in the onCreate
+     * @param mFilters filters being used
+     */
     public void setFilters(Filters mFilters) {
         this.mFilters = mFilters;
     }

@@ -12,6 +12,10 @@ public class FirebaseUtil {
     private static FirebaseAuth AUTH;
     private static AuthUI AUTH_UI;
 
+    /**
+     * Get the Firestore to be used
+     * @return Instance of FIrebaseFirestory
+     */
     public static FirebaseFirestore getFirestore() {
         if (FIRESTORE == null) {
             FIRESTORE = FirebaseFirestore.getInstance();
@@ -24,34 +28,6 @@ public class FirebaseUtil {
         }
 
         return FIRESTORE;
-    }
-
-    public static FirebaseAuth getAuth() {
-        if (AUTH == null) {
-            AUTH = FirebaseAuth.getInstance();
-
-            // Connect to the Firebase Auth emulator when appropriate. The host '10.0.2.2' is a
-            // special IP address to let the Android emulator connect to 'localhost'.
-            if (sUseEmulators) {
-                AUTH.useEmulator("10.0.2.2", 9099);
-            }
-        }
-
-        return AUTH;
-    }
-
-    public static AuthUI getAuthUI() {
-        if (AUTH_UI == null) {
-            AUTH_UI = AuthUI.getInstance();
-
-            // Connect to the Firebase Auth emulator when appropriate. The host '10.0.2.2' is a
-            // special IP address to let the Android emulator connect to 'localhost'.
-            if (sUseEmulators) {
-                AUTH_UI.useEmulator("10.0.2.2", 9099);
-            }
-        }
-
-        return AUTH_UI;
     }
 
 }

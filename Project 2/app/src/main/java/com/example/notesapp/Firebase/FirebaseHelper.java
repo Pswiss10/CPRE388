@@ -26,7 +26,6 @@ public class FirebaseHelper {
 
     /**
      * Gets the singleton instance of FirebaseHelper
-     *
      * @return The singleton instance of FirebaseHelper
      */
     public static synchronized FirebaseHelper getInstance() {
@@ -38,7 +37,6 @@ public class FirebaseHelper {
 
     /**
      * Gets the ID of the currently authenticated user
-     *
      * @return The user ID or null if no user is authenticated
      */
     public String getCurrentUserId() {
@@ -48,7 +46,6 @@ public class FirebaseHelper {
 
     /**
      * Gets the instance of FirebaseFirestore
-     *
      * @return The instance of FirebaseFirestore
      */
     public FirebaseFirestore getFirestore() {

@@ -33,6 +33,18 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
 
     private FilterListener mFilterListener;
 
+    /**
+     * Initialize the components and onClick listeners to be used by the FilterDialogFragment
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return mRootView with the onClickListeners
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -50,6 +62,10 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
         return mRootView;
     }
 
+    /**
+     * Attaches the fragment to the activity
+     * @param context the context to attach to
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -59,6 +75,9 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
         }
     }
 
+    /**
+     * Called when the dialog is to be displayed, and adjusts the window
+     */
     @Override
     public void onResume() {
         super.onResume();
@@ -67,6 +86,10 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
                 ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
+    /**
+     * OnClick of the cancel or search button, navigate to onClick listeners
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.button_search) {
@@ -76,6 +99,9 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
         }
     }
 
+    /**
+     * When filter is applied, update the filters to be of the user's selection
+     */
     public void onSearchClicked() {
         if (mFilterListener != null) {
             mFilterListener.onFilter(getFilters());
@@ -83,6 +109,9 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
         dismiss();
     }
 
+    /**
+     * If cancel is clicked, dismiss the fragment
+     */
     public void onCancelClicked() {
         dismiss();
     }
@@ -119,6 +148,10 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
         return null;
     }
 
+    /**
+     * Get sort direction, ascending or descending based on the user input of the fragment
+     * @return the query direction selected by the user
+     */
     @Nullable
     private Query.Direction getSortDirection() {
         String selected = (String) mDirectionSpinner.getSelectedItem();
@@ -134,6 +167,9 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
         return null;
     }
 
+    /**
+     * Reset filters
+     */
     public void resetFilters() {
         if (mRootView != null) {
             mCategorySpinner.setSelection(0);
@@ -141,6 +177,10 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
         }
     }
 
+    /**
+     * Get current filters that user has set
+     * @return Filters object containing sortBy, type, and direction
+     */
     public Filters getFilters() {
         Filters filters = new Filters();
         if (mRootView != null) {

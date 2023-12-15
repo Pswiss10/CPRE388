@@ -109,9 +109,8 @@ public class MainActivity extends AppCompatActivity implements
         currUser = FirebaseAuth.getInstance().getCurrentUser();
         mFirestore = FirebaseUtil.getFirestore();
         userID = FirebaseHelper.getInstance().getCurrentUserId();
-
         FirebaseFirestore.setLoggingEnabled(true);
-
+        
         collectionPathsArray = createNewCollectionPath(); // set path initially as root collection
 
         Bundle receivedBundle = getIntent().getExtras();
@@ -269,13 +268,13 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     /**
-     *
-     * @param filters
+     * When filter is changed or MainActivity is created, update the query depending
+     * on the user's filter preferences and update the view
+     * @param filters given by the user in the fragment, or the default values
      */
     @Override
     public void onFilter(Filters filters) {
         Query query = currCollection;
-        String s = collectionPathString;
 
         // User can filter by notes, folders, or all items
         if (filters.hasType()) {
@@ -301,21 +300,21 @@ public class MainActivity extends AppCompatActivity implements
 
         // Limit items
         query = query.limit(50);
-        // Update the query
         currCollection = query;
         mAdapter.setQuery(query);
         NotebooksRecycler.setAdapter(mAdapter);
 
         // Set header
-        mCurrentSearchView.setText(Html.fromHtml(filters.getSearchDescription(this)));
-        mCurrentSortByView.setText(filters.getOrderDescription(this));
+        mCurrentSearchView.setText((filters.getSearchDescription()));
+        mCurrentSortByView.setText(filters.getOrderDescription());
 
         // Save filters
         mViewModel.setFilters(filters);
     }
 
     /**
-     *
+     * OnClick of the filter bar or clear filter elements, move to onFilterClicked or
+     * onClearFilterCLicked listeners
      * @param v
      */
     @Override
@@ -328,15 +327,14 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     /**
-     *
+     * WHen the filter is clicked, show the dialog containing filter options
      */
     public void onFilterClicked() {
-        // Show the dialog containing filter options
         mFilterDialog.show(getSupportFragmentManager(), FilterDialogFragment.TAG);
     }
 
     /**
-     *
+     * WHen the clear filter element is clicked. reset the filters and filter the default values
      */
     public void onClearFilterClicked() {
         mFilterDialog.resetFilters();

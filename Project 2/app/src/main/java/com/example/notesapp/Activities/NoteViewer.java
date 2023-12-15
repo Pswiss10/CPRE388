@@ -153,7 +153,15 @@ public class NoteViewer extends AppCompatActivity {
             CollectionReference db = FirebaseHelper.getInstance().getFirestore().collection("users");
 
             String currUserID = FirebaseHelper.getInstance().getCurrentUserId();
+            String path = "notebooks";
+
             DocumentReference deleteItem = db.document(currUserID).collection("notebooks").document(documentID);
+            DocumentReference folderItem;
+
+            if(inSubFolder) {
+                folderItem = db.document(currUserID).collection("notebooks").document(folderID);
+                deleteItem = folderItem.collection("notes").document(documentID);
+            }
 
             deleteItem.delete()
                     .addOnSuccessListener(aVoid -> {
